@@ -1,5 +1,6 @@
 package com.myproject.project.service;
 
+import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.repository.UserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,18 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
+    }
+
+    public UserEntity registerUser(UserRegistrationDto userRegistrationDto) {
+        UserEntity newUser = new UserEntity()
+                .setUsername(userRegistrationDto.getUsername())
+                .setFirstName(userRegistrationDto.getFirstName())
+                .setLastName(userRegistrationDto.getLastName())
+                .setEmail(userRegistrationDto.getEmail())
+                .setPassword(this.passwordEncoder.encode(userRegistrationDto.getPassword()))
+                .setAge(userRegistrationDto.getAge());
+
+        return this.userRepository.save(newUser);
     }
 
     public void login(UserEntity userEntity) {

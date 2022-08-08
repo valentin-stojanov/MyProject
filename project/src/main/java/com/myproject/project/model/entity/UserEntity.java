@@ -2,6 +2,7 @@ package com.myproject.project.model.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class UserEntity {
 
     private String firstName;
     private String lastName;
+    @Positive
+    private int age;
 
     @NotBlank
     private String password;
@@ -89,6 +92,15 @@ public class UserEntity {
 
     public UserEntity setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public UserEntity setAge(int age) {
+        this.age = age;
         return this;
     }
 }
