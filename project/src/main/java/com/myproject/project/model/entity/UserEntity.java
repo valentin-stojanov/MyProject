@@ -1,7 +1,5 @@
 package com.myproject.project.model.entity;
 
-import org.hibernate.annotations.Fetch;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
@@ -18,7 +16,8 @@ public class UserEntity {
     @NotBlank
     private String username;
 
-    private String fullName;
+    private String firstName;
+    private String lastName;
 
     @NotBlank
     private String password;
@@ -66,12 +65,12 @@ public class UserEntity {
         return this;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public UserEntity setFullName(String fullName) {
-        this.fullName = fullName;
+    public UserEntity setFirstName(String fullName) {
+        this.firstName = fullName;
         return this;
     }
 
@@ -81,6 +80,15 @@ public class UserEntity {
 
     public UserEntity setRoles(List<RoleEntity> roles) {
         this.roles = roles;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UserEntity setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 }
