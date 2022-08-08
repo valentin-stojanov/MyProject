@@ -1,5 +1,6 @@
-<header>
-    <nav class="main-nav">
+<header xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <nav class="main-nav" sec:authorize="isAnonymous()">
         <ul>
             <li>
                 <a th:href="@{/}">Home</a>
@@ -13,6 +14,11 @@
             <li>
                 <a href="/">About</a>
             </li>
+        </ul>
+    </nav>
+
+    <nav class="main-nav"sec:authorize="isAuthenticated()" >
+        <ul>
             <li>
                 <a href="/">Add new route</a>
             </li>
@@ -23,7 +29,10 @@
                 <a href="/">Admin</a>
             </li>
             <li>
-                <a href="/">Logout</a>
+                <form th:action="@{/users/logout}"
+                      th:method="post">
+                    <input class="btn" type="submit" th:value="Logout">
+                </form>
             </li>
         </ul>
     </nav>
