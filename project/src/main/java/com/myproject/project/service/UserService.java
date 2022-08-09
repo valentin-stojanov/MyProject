@@ -2,6 +2,7 @@ package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.entity.UserEntity;
+import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.UserRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,23 +17,21 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
+    private final UserMapper userMapper;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
-                       UserDetailsService userDetailsService) {
+                       UserDetailsService userDetailsService,
+                       UserMapper userMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
+        this.userMapper = userMapper;
     }
 
     public UserEntity registerUser(UserRegistrationDto userRegistrationDto) {
-        UserEntity newUser = new UserEntity()
-                .setUsername(userRegistrationDto.getUsername())
-                .setFirstName(userRegistrationDto.getFirstName())
-                .setLastName(userRegistrationDto.getLastName())
-                .setEmail(userRegistrationDto.getEmail())
-                .setPassword(this.passwordEncoder.encode(userRegistrationDto.getPassword()))
-                .setAge(userRegistrationDto.getAge());
+        UserEntity newUser = this.userMapper.toUserEntity(userRegistrationDto);
+        newUser.setPassword(this.passwordEncoder.encode(userRegistrationDto.getPassword()));
 
         return this.userRepository.save(newUser);
     }

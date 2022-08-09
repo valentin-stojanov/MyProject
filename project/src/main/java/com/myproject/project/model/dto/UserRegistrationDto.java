@@ -83,4 +83,17 @@ public class UserRegistrationDto {
         this.confirmPassword = confirmPassword;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "UserRegistrationDto{" +
+                "username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                ", password='" + (password != null ? "[PROTECTED]" : null) + '\'' +
+                ", confirmPassword='" + (confirmPassword != null ? "[PROTECTED]" : null) + '\'' +
+                '}';
+    }
 }
