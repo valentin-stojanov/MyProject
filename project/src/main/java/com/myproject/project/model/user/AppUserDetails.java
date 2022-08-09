@@ -7,22 +7,23 @@ import java.util.Collection;
 
 public class AppUserDetails implements UserDetails {
 
-    private final String username;
     private final String password;
     private final String email;
-    private final String fullName;
+    private final String firstName;
+    private final String lastName;
 
     private final Collection<GrantedAuthority> authorities;
 
-    public AppUserDetails(String username,
-                          String password,
-                          String email,
-                          String fullName,
-                          Collection<GrantedAuthority> authorities) {
-        this.username = username;
+    public AppUserDetails(
+            String password,
+            String email,
+            String firstName,
+            String lastName,
+            Collection<GrantedAuthority> authorities) {
         this.password = password;
         this.email = email;
-        this.fullName = fullName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.authorities = authorities;
     }
 
@@ -30,8 +31,12 @@ public class AppUserDetails implements UserDetails {
         return email;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override
@@ -41,12 +46,12 @@ public class AppUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return this.email;
     }
 
     @Override

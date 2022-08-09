@@ -5,8 +5,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 public class UserRegistrationDto {
-    @NotBlank
-    private String username;
     private String firstName;
     private String lastName;
     @NotBlank
@@ -19,15 +17,6 @@ public class UserRegistrationDto {
     private String confirmPassword;
 
     public UserRegistrationDto() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public UserRegistrationDto setUsername(String username) {
-        this.username = username;
-        return this;
     }
 
     public String getFirstName() {
@@ -87,7 +76,6 @@ public class UserRegistrationDto {
     @Override
     public String toString() {
         return "UserRegistrationDto{" +
-                "username='" + username + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

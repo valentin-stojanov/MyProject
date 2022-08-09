@@ -13,10 +13,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    @NotBlank
-    private String username;
-
     private String firstName;
     private String lastName;
     @Positive
@@ -38,15 +34,6 @@ public class UserEntity {
 
     public UserEntity setId(Long id) {
         this.id = id;
-        return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public UserEntity setUsername(String username) {
-        this.username = username;
         return this;
     }
 
