@@ -31,7 +31,8 @@
                                placeholder="First name">
                         <small id="firstNameError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            First name length must be more than 2 characters</small>
+                            First name length must be more than 2 characters
+                        </small>
                     </div>
                 </div>
 
@@ -47,7 +48,8 @@
                                type="text"
                                id="inputLastName"
                                class="form-control"
-                               aria-describedby="lastNameHelpInline">
+                               aria-describedby="lastNameHelpInline"
+                               placeholder="Last name">
                         <small id="lastNameError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">Last name length must be
                             more than
@@ -67,10 +69,15 @@
                                type="email"
                                id="inputEmail"
                                class="form-control"
-                               aria-describedby="emailHelpInline">
+                               aria-describedby="emailHelpInline"
+                               placeholder="Email">
                         <small id="emailError"
-                               class="invalid-feedback  form-text bg-danger rounded text-white">Must be valid
-                            email</small>
+                               class="invalid-feedback  form-text bg-danger rounded text-white">
+                            <div
+                                    th:each="err : ${#fields.errors('email')}"
+                                    th:text="${err}"
+                            />
+                        </small>
                     </div>
                 </div>
                 <div>
@@ -85,7 +92,8 @@
                                id="inputAge"
                                class="form-control"
                                min="0" max="100"
-                               aria-describedby="ageHelpInline">
+                               aria-describedby="ageHelpInline"
+                               placeholder="Age">
                         <small id="ageError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">Must be valid
                             age</small>
@@ -102,7 +110,8 @@
                                type="password"
                                id="inputPassword"
                                class="form-control"
-                               aria-describedby="passwordHelpInline">
+                               aria-describedby="passwordHelpInline"
+                               placeholder="Password">
                         <small id="passwordError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
                             Password length must be between 5 and 20 characters and passwords should match.
@@ -121,7 +130,8 @@
                                type="password"
                                id="inputConfirmPassword"
                                class="form-control"
-                               aria-describedby="confirmPasswordHelpInline">
+                               aria-describedby="confirmPasswordHelpInline"
+                               placeholder="Confirm password">
                         <small id="confirmPasswordError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
                             Password length must be between 5 and 20 characters and passwords should match.

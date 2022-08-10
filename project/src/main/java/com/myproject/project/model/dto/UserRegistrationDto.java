@@ -1,6 +1,7 @@
 package com.myproject.project.model.dto;
 
 import com.myproject.project.model.validation.FieldsMatch;
+import com.myproject.project.model.validation.UniqueUserEmail;
 
 import javax.validation.constraints.*;
 
@@ -14,8 +15,9 @@ public class UserRegistrationDto {
     @NotBlank
     @Size(min = 2, max = 20)
     private String lastName;
-    @NotBlank
-    @Email
+    @NotBlank(message = "User email should be provided.")
+    @Email(message = "User email should be valid.")
+    @UniqueUserEmail(message = "The email is already occupied")
     private String email;
     @Positive
     @Max(100)

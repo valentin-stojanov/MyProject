@@ -1,17 +1,23 @@
 package com.myproject.project.model.validation;
 
+import com.myproject.project.repository.UserRepository;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
 
 public class UniqueUserEmailValidator implements ConstraintValidator<UniqueUserEmail, String> {
-    @Override
-    public void initialize(Annotation constraintAnnotation) {
 
+    private final UserRepository userRepository;
+
+    public UniqueUserEmailValidator(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        return false;
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+
+        return this.userRepository
+                .findByEmail(value)
+                .isEmpty();
     }
 }
