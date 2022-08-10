@@ -1,18 +1,22 @@
 package com.myproject.project.model.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 public class UserRegistrationDto {
+    @NotBlank
+    @Size(min = 2, max = 20)
     private String firstName;
+    @NotBlank
+    @Size(min = 2, max = 20)
     private String lastName;
     @NotBlank
     @Email
     private String email;
     @Positive
+    @Max(100)
     private Integer age;
     @NotBlank
+    @Size(min = 5, max = 20)
     private String password;
     private String confirmPassword;
 

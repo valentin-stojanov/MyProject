@@ -6,6 +6,7 @@ import com.myproject.project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,23 +22,28 @@ public class UserRegistrationController {
         this.userService = userService;
     }
 
+    @ModelAttribute("userRegistrationModel")
+    public UserRegistrationDto initUserRegistrationModel(){
+        return new UserRegistrationDto();
+    }
+
     @GetMapping("/register")
     public String register(){
         return "register";
     }
 
     @PostMapping("/register")
-    public String register(@Valid UserRegistrationDto userModel,
+    public String register(@Valid UserRegistrationDto userRegistrationModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()){
             redirectAttributes
-                    .addFlashAttribute("userModel", userModel)
-                    .addFlashAttribute("org.springframework.validation.BindingResult.userModel", bindingResult);
-            return "redirect:/register";
+                    .addFlashAttribute("userRegistrationModel", userRegistrationModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userRegistrationModel", bindingResult);
+            return "redirect:/users/register";
         }
 
-        UserEntity newUser = this.userService.registerUser(userModel);
+        UserEntity newUser = this.userService.registerUser(userRegistrationModel);
         this.userService.login(newUser);
 
         return "redirect:/";
