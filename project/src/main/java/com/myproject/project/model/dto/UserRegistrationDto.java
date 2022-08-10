@@ -1,7 +1,12 @@
 package com.myproject.project.model.dto;
 
+import com.myproject.project.model.validation.FieldsMatch;
+
 import javax.validation.constraints.*;
 
+@FieldsMatch(firstField = "password",
+        secondField = "confirmPassword",
+        message = "Passwords do not match!")
 public class UserRegistrationDto {
     @NotBlank
     @Size(min = 2, max = 20)
