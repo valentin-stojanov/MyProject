@@ -25,7 +25,7 @@ spring:
       hibernate:
         format_sql: true
   #Cloudinary Properties
-  cloudinary:
+cloudinary:
   api-key: 579953547744991
   api-secret: ${CLOUDINARY_API_SECRET}
   cloud-name: valentin08
