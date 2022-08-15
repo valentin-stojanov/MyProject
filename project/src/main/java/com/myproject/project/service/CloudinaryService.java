@@ -35,7 +35,7 @@ public class CloudinaryService {
 
             String url = uploadResult.getOrDefault(URL,
                     "https://previews.123rf.com/images/olejio/olejio1802/olejio180200041/95585020-funny-design-404-page-not-found-vector-illustration-geek-with-metal-detector-searching-the-big-data.jpg");
-            String publicId = uploadResult.getOrDefault(PUBLIC_ID, "no id");
+            String publicId = uploadResult.getOrDefault(PUBLIC_ID, "no public id");
             result = new CloudinaryImageDto()
                     .setPublicId(publicId)
                     .setUrl(url);

@@ -28,4 +28,4 @@ spring:
 cloudinary:
   api-key: 579953547744991
   api-secret: ${CLOUDINARY_API_SECRET}
-  cloud-name: valentin08
+  cloud-name: trippictures
