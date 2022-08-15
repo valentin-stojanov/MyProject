@@ -1,17 +1,17 @@
-package com.myproject.project.service;
+package com.myproject.project.model.dto;
 
-public class CloudinaryImage {
+public class CloudinaryImageDto {
     private String url;
     private String publicId;
 
-    public CloudinaryImage() {
+    public CloudinaryImageDto() {
     }
 
     public String getUrl() {
         return url;
     }
 
-    public CloudinaryImage setUrl(String url) {
+    public CloudinaryImageDto setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -20,7 +20,7 @@ public class CloudinaryImage {
         return publicId;
     }
 
-    public CloudinaryImage setPublicId(String publicId) {
+    public CloudinaryImageDto setPublicId(String publicId) {
         this.publicId = publicId;
         return this;
     }

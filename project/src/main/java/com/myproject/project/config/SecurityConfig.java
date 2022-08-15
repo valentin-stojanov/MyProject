@@ -20,7 +20,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.
                 // define which requests are allowed and which not
@@ -28,7 +28,12 @@ public class SecurityConfig {
                 // everyone can download static resources (css, js, images)
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 // everyone can log in and register
-                        antMatchers("/", "/users/login", "/users/register", "/route").permitAll().
+                        antMatchers("/",
+                        "/users/login",
+                        "/users/register",
+                        "/route",
+                        "/pictures/all",
+                        "/pictures/delete").permitAll().
                 // all other pages are available for logger in users
                         anyRequest().
                 authenticated().
