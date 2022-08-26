@@ -1,24 +1,29 @@
 package com.myproject.project.web;
 
-import com.myproject.project.model.dto.PictureUploadDto;
-import com.myproject.project.model.dto.PictureViewModel;
-import com.myproject.project.service.PictureService;
+import com.myproject.project.model.dto.RouteAddDto;
+import com.myproject.project.service.RouteService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.List;
+import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/routes")
 public class RouteController {
 
-    private final PictureService pictureService;
 
-    public RouteController(PictureService pictureService) {
-        this.pictureService = pictureService;
+    private final RouteService routeService;
+
+    public RouteController(RouteService routeService) {
+        this.routeService = routeService;
+    }
+
+    @ModelAttribute
+    public RouteAddDto initRouteAddDto(){
+        return new RouteAddDto();
     }
 
     @GetMapping("/add")
@@ -27,27 +32,21 @@ public class RouteController {
     }
 
     @PostMapping("/add")
-    public String addPicture(PictureUploadDto pictureUploadDto) throws IOException {
-        this.pictureService.addPicture(pictureUploadDto);
-        return "redirect:/pictures/all";
-    }
+    public String addPicture(@Valid RouteAddDto routeAddDto,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes){
 
+        if (bindingResult.hasErrors()){
+            redirectAttributes
+                    .addFlashAttribute("routeAddDto", routeAddDto)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.routeAddDto", bindingResult);
 
+            return "redirect:/routes/add";
+        }
 
-    @GetMapping("/pictures/all")
-    public String allPictures(Model model) {
-        List<PictureViewModel> pictures = this.pictureService.getAllPictures();
-        model.addAttribute("pictures", pictures);
-        return "all";
-    }
-
-    @Transactional
-    @DeleteMapping("/pictures/delete")
-    public String delete(@RequestParam("public_id") String publicId){
-        this.pictureService.deleteByPublicId(publicId);
+        this.routeService
 
         return "redirect:/pictures/all";
     }
-
 
 }

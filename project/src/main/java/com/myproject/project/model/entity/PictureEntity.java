@@ -13,6 +13,12 @@ public class PictureEntity {
     private String url;
     private String publicId;
 
+    @ManyToOne
+    private UserEntity author;
+
+    @ManyToOne
+    private RouteEntity route;
+
     public PictureEntity() {
     }
 
@@ -49,6 +55,24 @@ public class PictureEntity {
 
     public PictureEntity setPublicId(String publicId) {
         this.publicId = publicId;
+        return this;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public PictureEntity setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public RouteEntity getRoute() {
+        return route;
+    }
+
+    public PictureEntity setRoute(RouteEntity route) {
+        this.route = route;
         return this;
     }
 }
