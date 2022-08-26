@@ -5,16 +5,14 @@ import com.myproject.project.model.dto.PictureViewModel;
 import com.myproject.project.service.PictureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
 @Controller
+@RequestMapping("/routes")
 public class RouteController {
 
     private final PictureService pictureService;
@@ -23,12 +21,12 @@ public class RouteController {
         this.pictureService = pictureService;
     }
 
-    @GetMapping("/route")
+    @GetMapping("/add")
     public String addRoute() {
         return "add-route";
     }
 
-    @PostMapping("/route")
+    @PostMapping("/add")
     public String addPicture(PictureUploadDto pictureUploadDto) throws IOException {
         this.pictureService.addPicture(pictureUploadDto);
         return "redirect:/pictures/all";

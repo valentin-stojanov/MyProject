@@ -20,7 +20,7 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="main-nav"sec:authorize="isAuthenticated()" >
         <ul>
             <li>
-                <a href="/">Add new route</a>
+                <a th:href="@{/routes/add}">Add new route</a>
             </li>
             <li>
                 <a href="/">Profile</a>
