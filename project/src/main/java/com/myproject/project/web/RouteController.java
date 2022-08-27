@@ -29,6 +29,10 @@ public class RouteController {
         return new RouteAddDto();
     }
 
+    @GetMapping()
+    public String routes(){
+        return "routes";
+    }
     @GetMapping("/add")
     public String addRoute() {
         return "add-route";
@@ -51,6 +55,11 @@ public class RouteController {
         this.routeService.addNewRoute(routeAddDto, userDetails);
 
         return "redirect:/pictures/all";
+    }
+
+    @GetMapping("/details/{id}")
+    public String details(){
+        return "route-details";
     }
 
 }
