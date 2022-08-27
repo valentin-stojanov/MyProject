@@ -2,12 +2,15 @@ package com.myproject.project.web;
 
 import com.myproject.project.model.dto.RouteAddDto;
 import com.myproject.project.service.RouteService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 
 @Controller
@@ -32,9 +35,10 @@ public class RouteController {
     }
 
     @PostMapping("/add")
-    public String addPicture(@Valid RouteAddDto routeAddDto,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes){
+    public String addRoute(@Valid RouteAddDto routeAddDto,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal UserDetails userDetails) throws IOException {
 
         if (bindingResult.hasErrors()){
             redirectAttributes
@@ -44,7 +48,7 @@ public class RouteController {
             return "redirect:/routes/add";
         }
 
-        this.routeService
+        this.routeService.addNewRoute(routeAddDto, userDetails);
 
         return "redirect:/pictures/all";
     }

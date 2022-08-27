@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 
 public class RouteAddDto {
@@ -16,7 +17,7 @@ public class RouteAddDto {
     @NotNull
     private LevelEnum level;
     private String videoUrl;
-    private Set<RouteCategoryEnum> categories;
+    private List<RouteCategoryEnum> categories;
 
     public String getName() {
         return name;
@@ -63,11 +64,11 @@ public class RouteAddDto {
         return this;
     }
 
-    public Set<RouteCategoryEnum> getCategories() {
+    public List<RouteCategoryEnum> getCategories() {
         return categories;
     }
 
-    public RouteAddDto setCategories(Set<RouteCategoryEnum> categories) {
+    public RouteAddDto setCategories(List<RouteCategoryEnum> categories) {
         this.categories = categories;
         return this;
     }

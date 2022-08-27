@@ -27,7 +27,7 @@ public class RouteEntity {
 
     private String videoUrl;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<CategoryEntity> categories;
 
     @ManyToOne
