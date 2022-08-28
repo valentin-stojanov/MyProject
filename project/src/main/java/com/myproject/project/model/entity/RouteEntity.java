@@ -4,6 +4,7 @@ import com.myproject.project.model.enums.LevelEnum;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class RouteEntity {
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "route")
+    @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)// @Transactional is used on findAllRoutesView in RouteService!
     private List<PictureEntity> pictures;
 
     public RouteEntity() {

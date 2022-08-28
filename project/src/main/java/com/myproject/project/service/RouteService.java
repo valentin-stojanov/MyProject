@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.RouteAddDto;
+import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.model.entity.CategoryEntity;
 import com.myproject.project.model.entity.RouteEntity;
 import com.myproject.project.model.entity.UserEntity;
@@ -9,11 +10,14 @@ import com.myproject.project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class RouteService {
+    private static String DEFAULT_IMAGE_URL = "https://res.cloudinary.com/trippictures/image/upload/v1661692507/png-transparent-albums-computer-icons-others_avqku6.png";
     private final RouteRepository routeRepository;
     private final UserRepository userRepository;
 
@@ -42,6 +46,21 @@ public class RouteService {
                 .setAuthor(author);
 
         this.routeRepository.save(newRoute);
+    }
+
+    @Transactional
+    public List<RouteViewModel> findAllRoutesView() {
+        return this.routeRepository
+                .findAll()
+                .stream()
+                .map(e -> new RouteViewModel()
+                        .setId(e.getId())
+                        .setName(e.getName())
+                        .setPictureUrl(e.getPictures().isEmpty() ?
+                                DEFAULT_IMAGE_URL :
+                                e.getPictures().get(0).getUrl())
+                        .setDescription(e.getDescription()))
+                .collect(Collectors.toList());
     }
 }
 

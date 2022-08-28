@@ -1,16 +1,19 @@
 package com.myproject.project.web;
 
 import com.myproject.project.model.dto.RouteAddDto;
+import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.service.RouteService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -30,9 +33,15 @@ public class RouteController {
     }
 
     @GetMapping()
-    public String routes(){
+    public String routes(Model model){
+
+        List<RouteViewModel> routeViewModels = this.routeService
+                .findAllRoutesView();
+        model.addAttribute("routes", routeViewModels);
+
         return "routes";
     }
+
     @GetMapping("/add")
     public String addRoute() {
         return "add-route";
@@ -54,7 +63,7 @@ public class RouteController {
 
         this.routeService.addNewRoute(routeAddDto, userDetails);
 
-        return "redirect:/pictures/all";
+        return "redirect:/routes";
     }
 
     @GetMapping("/details/{id}")
