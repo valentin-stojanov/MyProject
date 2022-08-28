@@ -48,7 +48,7 @@ public class RouteService {
         this.routeRepository.save(newRoute);
     }
 
-    @Transactional
+    @Transactional//because pictures(List<PictureEntity>) in RouteEntity are lazy loaded.
     public List<RouteViewModel> findAllRoutesView() {
         return this.routeRepository
                 .findAll()

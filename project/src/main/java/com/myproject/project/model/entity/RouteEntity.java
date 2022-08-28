@@ -37,7 +37,7 @@ public class RouteEntity {
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
-    @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)// @Transactional is used on findAllRoutesView in RouteService!
+    @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)
     private List<PictureEntity> pictures;
 
     public RouteEntity() {
