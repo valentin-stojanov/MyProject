@@ -52,6 +52,7 @@
         <section id="map">
 
         </section>
+
 <!--        <section id="video">-->
 <!--            <iframe id="frame" src="https://www.youtube.com/embed/">-->
 <!--            </iframe>-->
@@ -110,7 +111,35 @@
     -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-    <script th:src="@{/js/map.js}"></script>
+
+    <script th:inline="javascript">
+        const map = L.map('map').setView([42.76, 25.23], 8);
+
+        L.tileLayer('http://bgmtile.uni-plovdiv.net:40158/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© bgmtile.uni-plovdiv.net'
+        }).addTo(map);
+
+        const gpxFile = [[${route.gpxCoordinates}]];
+
+        const g = new L.GPX(gpxFile, {
+                async: true,
+                polyline_options: {
+                    color: 'red',
+                    weight: 3
+                }
+            }
+        );
+
+        g.on('loaded', function (e) {
+            const gpx = e.target
+            map.flyToBounds(gpx.getBounds());
+            const distance = gpx.get_distance();
+            const info = "Distance: " + distance + " m </br>";
+            gpx.getLayers()[0].bindPopup(info);
+        }).addTo(map);
+    </script>
+<!--    <script th:src="@{/js/map.js}"></script>-->
 </div>
 <div th:replace="fragments/footer"></div>
 </body>
