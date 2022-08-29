@@ -140,8 +140,8 @@
         g.on('loaded', function (e) {
             const gpx = e.target
             map.flyToBounds(gpx.getBounds());
-            const distance = gpx.get_distance();
-            const info = "Distance: " + distance + " m </br>";
+            const distance = (gpx.get_distance()/1000).toFixed(2);
+            const info = "Distance: " + distance + " km </br>";
             gpx.getLayers()[0].bindPopup(info);
         }).addTo(map);
     </script>
