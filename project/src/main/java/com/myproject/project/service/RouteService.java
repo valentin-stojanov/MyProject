@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.RouteAddDto;
+import com.myproject.project.model.dto.RouteDetailsViewModel;
 import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.model.entity.CategoryEntity;
 import com.myproject.project.model.entity.RouteEntity;
@@ -61,6 +62,22 @@ public class RouteService {
                                 e.getPictures().get(0).getUrl())
                         .setDescription(e.getDescription()))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public RouteDetailsViewModel findRouteById(Long id) {
+
+        RouteEntity routeEntity = this.routeRepository.findById(id).get();
+
+        RouteDetailsViewModel routeDetailsViewModel = new RouteDetailsViewModel()
+                .setDescription(routeEntity.getDescription())
+                .setName(routeEntity.getName())
+                .setPictures(routeEntity.getPictures())
+                .setGpxCoordinates(routeEntity.getGpxCoordinates())
+                .setVideoUrl(routeEntity.getVideoUrl())
+                .setLevel(routeEntity.getLevel());
+
+        return routeDetailsViewModel;
     }
 }
 

@@ -3,6 +3,7 @@ package com.myproject.project.web;
 import com.myproject.project.model.dto.RouteAddDto;
 import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.service.RouteService;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -67,7 +68,10 @@ public class RouteController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(){
+    public String details(@PathVariable Long id, Model model){
+
+        model.addAttribute("route", this.routeService.findRouteById(id));
+
         return "route-details";
     }
 
