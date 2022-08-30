@@ -4,6 +4,8 @@ import com.myproject.project.model.dto.CloudinaryImageDto;
 import com.myproject.project.model.dto.PictureUploadDto;
 import com.myproject.project.model.dto.PictureViewModel;
 import com.myproject.project.model.entity.PictureEntity;
+import com.myproject.project.model.entity.RouteEntity;
+import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.repository.PictureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,19 +24,21 @@ public class PictureService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    public void addPicture(PictureUploadDto pictureUploadDto) throws IOException {
+    public void addPicture(PictureUploadDto pictureUploadDto, UserEntity author, RouteEntity route) throws IOException {
         PictureEntity picture = createPictureEntity(pictureUploadDto.getPicture(),
-                pictureUploadDto.getTitle());
+                pictureUploadDto.getTitle(), author, route);
 
         this.pictureRepository.save(picture);
     }
 
-    private PictureEntity createPictureEntity(MultipartFile multipartFile, String title) throws IOException {
+    private PictureEntity createPictureEntity(MultipartFile multipartFile, String title, UserEntity author, RouteEntity route) throws IOException {
         CloudinaryImageDto uploaded = this.cloudinaryService.upload(multipartFile);
         return new PictureEntity()
                 .setPublicId(uploaded.getPublicId())
                 .setTitle(title)
-                .setUrl(uploaded.getUrl());
+                .setUrl(uploaded.getUrl())
+                .setAuthor(author)
+                .setRoute(route);
     }
 
     public List<PictureViewModel> getAllPictures() {

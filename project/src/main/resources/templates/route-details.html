@@ -31,7 +31,9 @@
             </div>
             <div>
                 <h4>Choose picture</h4>
-                <form action="/" method="POST" enctype="multipart/form-data">
+                <form th:action="@{/routes/details/{id}(id=*{id})}"
+                      th:method="post"
+                      enctype="multipart/form-data">
                     <input type="hidden" id="id" name="routeId">
                     <div class="form-group">
                         <label>
@@ -116,7 +118,11 @@
     <script th:inline="javascript">
         const map = L.map('map').setView([42.76, 25.23], 8);
 
-        L.tileLayer('http://bgmtile.uni-plovdiv.net:40158/{z}/{x}/{y}.png', {
+        // L.tileLayer('http://bgmtile.uni-plovdiv.net:40158/{z}/{x}/{y}.png', {
+        //     maxZoom: 19,
+        //     attribution: '© bgmtile.uni-plovdiv.net'
+        // }).addTo(map);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '© bgmtile.uni-plovdiv.net'
         }).addTo(map);

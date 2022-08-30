@@ -6,6 +6,7 @@ import com.myproject.project.model.enums.LevelEnum;
 import java.util.List;
 
 public class RouteDetailsViewModel {
+    private Long id;
     private String gpxCoordinates;
     private String description;
     private LevelEnum level;
@@ -14,6 +15,15 @@ public class RouteDetailsViewModel {
     private List<PictureEntity> pictures;
 
     public RouteDetailsViewModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public RouteDetailsViewModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getGpxCoordinates() {

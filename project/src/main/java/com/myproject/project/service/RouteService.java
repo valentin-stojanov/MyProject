@@ -10,6 +10,7 @@ import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.RouteMatcher;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -70,6 +71,7 @@ public class RouteService {
         RouteEntity routeEntity = this.routeRepository.findById(id).get();
 
         RouteDetailsViewModel routeDetailsViewModel = new RouteDetailsViewModel()
+                .setId(routeEntity.getId())
                 .setDescription(routeEntity.getDescription())
                 .setName(routeEntity.getName())
                 .setPictures(routeEntity.getPictures())
@@ -78,6 +80,11 @@ public class RouteService {
                 .setLevel(routeEntity.getLevel());
 
         return routeDetailsViewModel;
+    }
+
+    public RouteEntity findRouteEntityById(Long id){
+        RouteEntity routeEntity = this.routeRepository.findById(id).get();
+        return routeEntity;
     }
 }
 

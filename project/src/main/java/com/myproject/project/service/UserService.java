@@ -48,4 +48,11 @@ public class UserService {
                 .getContext()
                 .setAuthentication(auth);
     }
+
+    public UserEntity findUserByEmail(String email){
+
+        return this.userRepository
+                .findByEmail(email)
+                .orElseThrow();
+    }
 }
