@@ -30,7 +30,7 @@
 
             </div>
             <div>
-                <h4>Choose picture</h4>
+                <h4>Picture title</h4>
                 <form th:action="@{/routes/details/{id}(id=*{id})}"
                       th:method="post"
                       enctype="multipart/form-data">
@@ -42,7 +42,8 @@
                     </div>
                     <div class="image-upload">
                         <label for="picture">
-                            <img src="/images/add-img.png" alt=""/>
+                            <h4>Choose picture</h4>
+                            <img class="btn-primary rounded" src="/images/add-img.png" alt=""/>
                         </label>
                         <input style="display: none" id="picture" type="file" name="picture"/>
                     </div>
@@ -64,9 +65,8 @@
             <h4>Description:</h4>
             <p id="route-description">Description: </p>
         </section>
-        <section class="gallery">
-            <img class="rounded" src="/images/pic4.jpg" height="100%" alt="">
-            <img class="rounded" src="/images/pic1.jpg" height="100%" alt="">
+        <section class="gallery" >
+            <img class="rounded" th:each="p : *{pictures}" th:src="${p.url}" height="100%" alt="">
         </section>
         <section class="comments">
             <h1>Comments</h1>
@@ -146,7 +146,7 @@
         g.on('loaded', function (e) {
             const gpx = e.target
             map.flyToBounds(gpx.getBounds());
-            const distance = (gpx.get_distance()/1000).toFixed(2);
+            const distance = (gpx.get_distance() / 1000).toFixed(2);
             const info = "Distance: " + distance + " km </br>";
             gpx.getLayers()[0].bindPopup(info);
         }).addTo(map);

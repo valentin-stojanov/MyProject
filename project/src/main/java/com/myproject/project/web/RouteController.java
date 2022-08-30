@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -94,11 +95,9 @@ public class RouteController {
 
         RouteEntity route = this.routeService.findRouteEntityById(id);
 
-        //TODO: refactoring this part!!!
+        //TODO: refactor this part!!!
         if (route.getAuthor().getEmail().equals(author.getEmail())) {
-            //add picture
             this.pictureService.addPicture(pictureUploadDto, author, route);
-            //TODO: implement showing pictures for given route!
             return "redirect:/routes/details/" + id;
         } else{
             //don't have permission for this action

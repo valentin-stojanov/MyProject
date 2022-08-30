@@ -10,7 +10,6 @@ import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.RouteMatcher;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -74,7 +73,7 @@ public class RouteService {
                 .setId(routeEntity.getId())
                 .setDescription(routeEntity.getDescription())
                 .setName(routeEntity.getName())
-                .setPictures(routeEntity.getPictures())
+                .setPictures(routeEntity.getPictures().stream().toList())// .stream().toList() is needed so collection of PictureEntity to be initialized.
                 .setGpxCoordinates(routeEntity.getGpxCoordinates())
                 .setVideoUrl(routeEntity.getVideoUrl())
                 .setLevel(routeEntity.getLevel());
