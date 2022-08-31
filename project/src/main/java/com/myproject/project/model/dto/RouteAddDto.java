@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public class RouteAddDto {
-    @Size(min = 3, max = 30, message = "Route name must be between 3 and 30 characters!")
+    @Size(min = 3, max = 50, message = "Route name must be between 3 and 50 characters!")
     private String name;
     private String description;
     private MultipartFile gpxCoordinates;
