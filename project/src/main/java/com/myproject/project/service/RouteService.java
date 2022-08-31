@@ -76,7 +76,8 @@ public class RouteService {
                 .setPictures(routeEntity.getPictures().stream().toList())// .stream().toList() is needed so collection of PictureEntity to be initialized.
                 .setGpxCoordinates(routeEntity.getGpxCoordinates())
                 .setVideoUrl(routeEntity.getVideoUrl())
-                .setLevel(routeEntity.getLevel());
+                .setLevel(routeEntity.getLevel())
+                .setAuthorFullName(routeEntity.getAuthor().getFirstName() + " " + routeEntity.getAuthor().getLastName());
 
         return routeDetailsViewModel;
     }

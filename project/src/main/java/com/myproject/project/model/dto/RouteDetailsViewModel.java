@@ -14,11 +14,22 @@ public class RouteDetailsViewModel {
     private String videoUrl;
     private List<PictureEntity> pictures;
 
+    private String authorFullName;
+
     public RouteDetailsViewModel() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getAuthorFullName() {
+        return authorFullName;
+    }
+
+    public RouteDetailsViewModel setAuthorFullName(String authorFullName) {
+        this.authorFullName = authorFullName;
+        return this;
     }
 
     public RouteDetailsViewModel setId(Long id) {
