@@ -31,7 +31,7 @@
             </div>
             <div>
                 <h4>Picture title</h4>
-                <form th:action="@{/routes/details/{id}(id=*{id})}"
+                <form th:action="@{/routes/details/{id}/pictures(id=*{id})}"
                       th:method="post"
                       enctype="multipart/form-data">
                     <input type="hidden" id="id" name="routeId">
@@ -67,7 +67,12 @@
                th:text="*{description}">Description: </p>
         </section>
         <section class="gallery">
-            <img class="rounded" th:each="p : *{pictures}" th:src="${p.url}" height="100%" alt="">
+            <div th:each="p : *{pictures}">
+                <img class="rounded"  th:src="${p.url}" height="100%" alt="">
+                <form>
+
+                </form>
+            </div>
         </section>
         <section class="comments">
             <h1>Comments</h1>

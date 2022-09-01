@@ -87,7 +87,7 @@ public class RouteController {
         return "route-details";
     }
 
-    @PostMapping("/details/{id}")
+    @PostMapping("/details/{id}/pictures")
     public String addPictureToRoute(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, PictureUploadDto pictureUploadDto) throws IOException {
 
 
