@@ -29,8 +29,7 @@
                 </th:block>
 
             </div>
-            <div>
-
+            <div th:if="${#authentication.getName()} == *{authorEmail}">
                 <form th:action="@{/routes/details/{id}/pictures(id=*{id})}"
                       th:method="post"
                       enctype="multipart/form-data">
