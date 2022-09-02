@@ -32,8 +32,8 @@ INSERT INTO pictures(title, public_id, url, author_id, route_id)
 VALUES ('снимка 2', 'so6e0jkw18hmugduqubw',
         'http://res.cloudinary.com/trippictures/image/upload/v1661933852/so6e0jkw18hmugduqubw.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 3', 'okfezq0l6l8fha67zzhh',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661933869/okfezq0l6l8fha67zzhh.jpg', 1, 1);
+VALUES ('снимка 3', 'vysydaxj0spxz3mvi504',
+        'http://res.cloudinary.com/trippictures/image/upload/v1662131201/vysydaxj0spxz3mvi504.jpg', 1, 1);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
 VALUES ('снимка 1', 'khip0s0hasjqsgymwjj3',
