@@ -77,7 +77,8 @@ public class RouteService {
                 .setGpxCoordinates(routeEntity.getGpxCoordinates())
                 .setVideoUrl(routeEntity.getVideoUrl())
                 .setLevel(routeEntity.getLevel())
-                .setAuthorFullName(routeEntity.getAuthor().getFirstName() + " " + routeEntity.getAuthor().getLastName());
+                .setAuthorFullName(routeEntity.getAuthor().getFirstName() + " " + routeEntity.getAuthor().getLastName())
+                .setAuthorEmail(routeEntity.getAuthor().getEmail());
 
         return routeDetailsViewModel;
     }
@@ -85,6 +86,10 @@ public class RouteService {
     public RouteEntity findRouteEntityById(Long id){
         RouteEntity routeEntity = this.routeRepository.findById(id).get();
         return routeEntity;
+    }
+
+    public boolean isAuthor(UserDetails userDetails) {
+        return false;
     }
 }
 

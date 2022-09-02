@@ -70,9 +70,12 @@ public class RouteController {
     }
 
     @GetMapping("/details/{id}")
-    public String details(@PathVariable Long id, Model model){
+    public String details(@PathVariable Long id,
+                          Model model,
+                          @AuthenticationPrincipal UserDetails userDetails){
 
         model.addAttribute("route", this.routeService.findRouteById(id));
+        model.addAttribute("isAuthor", this.routeService.isAuthor(userDetails));
 
         return "route-details";
     }

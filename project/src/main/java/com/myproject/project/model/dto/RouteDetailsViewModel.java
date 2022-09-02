@@ -13,10 +13,20 @@ public class RouteDetailsViewModel {
     private String name;
     private String videoUrl;
     private List<PictureEntity> pictures;
-
     private String authorFullName;
 
+    private String authorEmail;
+
     public RouteDetailsViewModel() {
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public RouteDetailsViewModel setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+        return this;
     }
 
     public Long getId() {

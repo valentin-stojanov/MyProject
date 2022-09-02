@@ -29,32 +29,34 @@ public class PictureController {
         this.routeService = routeService;
     }
 
-    @PostMapping("/routes/details/{id}/pictures")
-    public String addPictureToRoute(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, PictureUploadDto pictureUploadDto) throws IOException {
-
+    @PostMapping("/routes/details/{routeId}/pictures")
+    public String addPictureToRoute(@PathVariable Long routeId,
+                                    @AuthenticationPrincipal UserDetails userDetails,
+                                    PictureUploadDto pictureUploadDto) throws IOException {
 
         UserEntity author = this.userService.findUserByEmail(userDetails.getUsername());
+        RouteEntity route = this.routeService.findRouteEntityById(routeId);
 
-        RouteEntity route = this.routeService.findRouteEntityById(id);
+        boolean isAuthorOfRoute = route.getAuthor().getEmail().equals(author.getEmail());
 
         //TODO: refactor this part!!!
-        if (route.getAuthor().getEmail().equals(author.getEmail())) {
+        if (isAuthorOfRoute) {
             this.pictureService.addPicture(pictureUploadDto, author, route);
         } else{
             //don't have permission for this action
         }
-        return "redirect:/routes/details/" + id;
+        return "redirect:/routes/details/" + routeId;
 
     }
 
     @Transactional
-    @DeleteMapping("/routes/details/{id}/pictures")
-    public String deletePictureForRoute(@PathVariable Long id,
+    @DeleteMapping("/routes/details/{routeId}/pictures")
+    public String deletePictureForRoute(@PathVariable Long routeId,
                                         @AuthenticationPrincipal UserDetails userDetails,
                                         @RequestParam("public_id") String publicId){
 
         UserEntity author = this.userService.findUserByEmail(userDetails.getUsername());
-        RouteEntity route = this.routeService.findRouteEntityById(id);
+        RouteEntity route = this.routeService.findRouteEntityById(routeId);
 
         boolean isAuthorOfPicture = route.getAuthor().getEmail().equals(author.getEmail())
                 && route.getPictures()
@@ -67,7 +69,7 @@ public class PictureController {
             ////don't have permission for this action
         }
 
-        return "redirect:/routes/details/" + id;
+        return "redirect:/routes/details/" + routeId;
     }
 
 //    @GetMapping("/pictures/all")

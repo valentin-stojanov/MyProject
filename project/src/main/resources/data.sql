@@ -1,6 +1,9 @@
 INSERT INTO users (id, email, age, first_name, last_name, password)
 VALUES (1, 'test@mail.com', 25, 'Test', 'Testov',
         '57e7759fd2d59275fc3c3cd5dd2ace5013b39ee972999412f3f5f5c3382b6765c2571ef86648abe2');
+INSERT INTO users (id, email, age, first_name, last_name, password)
+VALUES (2, 'user@mail.com', 25, 'User', 'Userov',
+        '57e7759fd2d59275fc3c3cd5dd2ace5013b39ee972999412f3f5f5c3382b6765c2571ef86648abe2');
 
 INSERT INTO routes (name, description, gpx_coordinates, level, author_id)
 VALUES ('Хижа Ком - Творчески дом Петрохан',
