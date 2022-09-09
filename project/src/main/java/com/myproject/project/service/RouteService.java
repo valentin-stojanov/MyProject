@@ -88,8 +88,5 @@ public class RouteService {
         return routeEntity;
     }
 
-    public boolean isAuthor(UserDetails userDetails) {
-        return false;
-    }
 }
 

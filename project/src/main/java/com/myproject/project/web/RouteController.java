@@ -2,9 +2,7 @@ package com.myproject.project.web;
 
 import com.myproject.project.model.dto.RouteAddDto;
 import com.myproject.project.model.dto.RouteViewModel;
-import com.myproject.project.service.PictureService;
 import com.myproject.project.service.RouteService;
-import com.myproject.project.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -71,11 +69,9 @@ public class RouteController {
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable Long id,
-                          Model model,
-                          @AuthenticationPrincipal UserDetails userDetails){
+                          Model model){
 
         model.addAttribute("route", this.routeService.findRouteById(id));
-        model.addAttribute("isAuthor", this.routeService.isAuthor(userDetails));
 
         return "route-details";
     }

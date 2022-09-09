@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
+import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.UserRepository;
@@ -56,4 +57,13 @@ public class UserService {
                 .orElseThrow();
     }
 
+    public UserViewModel getUserInfo(String username) {
+        UserEntity user = this.userRepository.findByEmail(username).get();
+
+        UserViewModel userViewModel = new UserViewModel()
+                .setFullName(user.getFirstName() + " " + user.getLastName())
+                .setAge(user.getAge())
+                .setEmail(user.getEmail());
+        return userViewModel;
+    }
 }
