@@ -57,3 +57,6 @@ VALUES ('снимка 2', 'qxpoo6mdovu4q3legrvx',
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
 VALUES ('снимка 3', 'e86augeitpg5lyovhhma',
         'http://res.cloudinary.com/trippictures/image/upload/v1661935292/e86augeitpg5lyovhhma.jpg', 1, 3);
+
+INSERT INTO comments(id, created,text, author_id, route_id)
+VALUES (1, now(), 'Test comment', 1, 1);

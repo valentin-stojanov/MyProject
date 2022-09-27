@@ -40,6 +40,7 @@ public class RouteEntity {
     @OneToMany(mappedBy = "route", fetch = FetchType.LAZY)
     private List<PictureEntity> pictures;
 
+
     public RouteEntity() {
         this.comments = new ArrayList<>();
         this.categories = new ArrayList<>();

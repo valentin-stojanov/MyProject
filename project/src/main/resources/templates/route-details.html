@@ -10,7 +10,7 @@
 
     <div th:replace="fragments/navigation"></div>
 
-    <input type="hidden" name="routeId" id="routeId">
+    <input type="hidden" name="routeId" id="routeId" th:value="${route.id}">
     <div class="details-main"
          th:object="${route}">
         <section class="route-info text-center">
@@ -123,10 +123,9 @@
         </section>
         <p style="visibility: hidden">GPX Download: <a id="gpxDownload"></a></p>
     </div>
-    <!-- Scripts: track and comments
-    <script th:src="@{/js/track.js}"></script>
+
     <script th:src="@{/js/comments.js}"></script>
-    -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
 
