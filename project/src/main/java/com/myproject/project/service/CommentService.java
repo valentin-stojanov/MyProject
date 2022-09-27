@@ -8,6 +8,7 @@ import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class CommentService {
         this.routeRepository = routeRepository;
     }
 
+    @Transactional
     public List<CommentViewModel> getCommentsForRoute(Long routeId){
         Optional<RouteEntity> routeOpt = this.routeRepository.findById(routeId);
 

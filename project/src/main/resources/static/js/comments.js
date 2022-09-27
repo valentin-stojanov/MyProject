@@ -21,11 +21,11 @@ function asComment(c) {
     return commentHtml;
 }
 
-fetch(`http:localhost:8080/api/${routeId}/comments`)
+fetch(`http://localhost:8080/api/${routeId}/comments`)
     .then(response => response.json())
     .then(data => {
         for (const comment of data) {
-            allComments.push(data);
+            allComments.push(comment);
         }
         displayComment(allComments);
     })
