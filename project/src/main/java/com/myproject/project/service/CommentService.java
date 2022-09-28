@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.CommentViewModel;
+import com.myproject.project.model.dto.NewCommentDto;
 import com.myproject.project.model.entity.CommentEntity;
 import com.myproject.project.model.entity.RouteEntity;
 import com.myproject.project.repository.CommentRepository;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -26,10 +26,10 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentViewModel> getCommentsForRoute(Long routeId){
+    public List<CommentViewModel> getCommentsForRoute(Long routeId) {
         Optional<RouteEntity> routeOpt = this.routeRepository.findById(routeId);
 
-        if (routeOpt.isEmpty()){
+        if (routeOpt.isEmpty()) {
             throw new ObjectNotFoundException("Route with id " + routeId + "was not found!");
         }
 
@@ -41,7 +41,7 @@ public class CommentService {
                 .toList();
     }
 
-    private CommentViewModel mapAsComment(CommentEntity commentEntity){
+    private CommentViewModel mapAsComment(CommentEntity commentEntity) {
         CommentViewModel commentViewModel = new CommentViewModel();
         commentViewModel
                 .setCommentId(commentEntity.getId())
@@ -52,5 +52,9 @@ public class CommentService {
                 .setUser(commentEntity.getAuthor().getFirstName() + " " + commentEntity.getAuthor().getLastName());
 
         return commentViewModel;
+    }
+
+    public CommentViewModel createComment(NewCommentDto newCommentDto) {
+// TODO: create and save ne comment.
     }
 }
