@@ -89,7 +89,7 @@
             <div>
                 <!-- Comments submission -->
                 <form id="commentForm" method="POST"
-                      action="/">
+                      th:action="@{/api/{routeId}/comments(routeId=${route.id})}">
                     <div class="form-group">
                         <h4>Leave a comment</h4>
                         <label for="message">Message</label>
@@ -124,11 +124,9 @@
         <p style="visibility: hidden">GPX Download: <a id="gpxDownload"></a></p>
     </div>
 
-    <script th:src="@{/js/comments.js}"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
-
+    <script th:src="@{/js/comments.js}"></script>
     <script th:inline="javascript">
         const map = L.map('map').setView([42.76, 25.23], 8);
 

@@ -4,12 +4,15 @@ import com.myproject.project.model.dto.CommentViewModel;
 import com.myproject.project.model.dto.NewCommentDto;
 import com.myproject.project.model.entity.CommentEntity;
 import com.myproject.project.model.entity.RouteEntity;
+import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.repository.CommentRepository;
 import com.myproject.project.repository.RouteRepository;
+import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +22,14 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final RouteRepository routeRepository;
+    private final UserRepository userRepository;
 
-    public CommentService(CommentRepository commentRepository, RouteRepository routeRepository) {
+    public CommentService(CommentRepository commentRepository,
+                          RouteRepository routeRepository,
+                          UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.routeRepository = routeRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -55,6 +62,23 @@ public class CommentService {
     }
 
     public CommentViewModel createComment(NewCommentDto newCommentDto) {
-// TODO: create and save ne comment.
+        RouteEntity routeEntity = this.routeRepository
+                .findById(newCommentDto.getRouteId())
+                .orElseThrow(() -> new ObjectNotFoundException("Route with id " + newCommentDto.getRouteId() + " not found!!!"));
+
+        UserEntity author = this.userRepository
+                .findByEmail(newCommentDto.getCreator())
+                .orElseThrow(() -> new ObjectNotFoundException("User with email " + newCommentDto.getCreator() + " not found!!!"));
+
+        CommentEntity newComment = new CommentEntity();
+        newComment
+                .setText(newCommentDto.getMessage())
+                .setCreated(LocalDateTime.now())
+                .setRoute(routeEntity)
+                .setAuthor(author);
+
+        CommentEntity savedComment = this.commentRepository.save(newComment);
+
+        return mapAsComment(savedComment);
     }
 }

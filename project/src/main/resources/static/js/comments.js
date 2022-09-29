@@ -1,6 +1,12 @@
 const routeId = document.getElementById('routeId').value;
 const commentCtnr = document.getElementById('commentCtnr');
 
+const csrHeaderName = document.head.querySelector('[name=_csrf_header]').content;
+const csrHeaderValue = document.head.querySelector('[name=_csrf]').content;
+
+const commentForm = document.getElementById('commentForm');
+commentForm.addEventListener("submit", handleCommentSubmit);
+
 const allComments = [];
 
 const displayComment = (comments) => {
@@ -28,4 +34,10 @@ fetch(`http://localhost:8080/api/${routeId}/comments`)
             allComments.push(comment);
         }
         displayComment(allComments);
-    })
+    });
+async function handleCommentSubmit(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+
+}
