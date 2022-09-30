@@ -35,9 +35,46 @@ fetch(`http://localhost:8080/api/${routeId}/comments`)
         }
         displayComment(allComments);
     });
+
+
 async function handleCommentSubmit(event) {
     event.preventDefault();
 
     const form = event.currentTarget;
+    const url = form.action;
+    const formData = new FormData(form);
 
+    try {
+        const responseData = await postFormDataAsJson({url, formData});
+
+        commentCtnr.insertAdjacentHTML("afterbegin", asComment(responseData))
+        form.reset();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function postFormDataAsJson({url, formData}){
+
+    const plainFormData = Object.fromEntries(formData.entries());
+    const formDataAsJsonString = JSON.stringify(plainFormData);
+
+    const fetchOptions = {
+        method: "POST",
+        headers: {
+            [csrHeaderName] : csrHeaderValue,
+            "Content-Type" : "application/json",
+            "Accept" : "application/json"
+        },
+        body: formDataAsJsonString
+    }
+
+    const response = await fetch(url, fetchOptions);
+
+    if ((!response.ok)){
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
+    }
+
+    return response.json();
 }
