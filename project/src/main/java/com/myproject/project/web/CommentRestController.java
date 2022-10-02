@@ -35,7 +35,11 @@ public class CommentRestController {
     public ResponseEntity<CommentViewModel> newComment(@PathVariable Long routeId,
                                                        @AuthenticationPrincipal UserDetails principal,
                                                        @RequestBody @Valid NewCommentDto newCommentDto){
-        newCommentDto.setRouteId(routeId);
+
+        newCommentDto
+                .setRouteId(routeId)
+                .setCreator(principal.getUsername());
+
         CommentViewModel newComment = this.commentService.createComment(newCommentDto);
         URI locationOfNewComment = URI.create(String.format("/api/%s/comments/%s", routeId, newComment.getCommentId()));
 
