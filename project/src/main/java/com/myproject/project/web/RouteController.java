@@ -40,7 +40,7 @@ public class RouteController {
                 .findAllRoutesView();
         model.addAttribute("routes", routeViewModels);
 
-        return "routes";
+        return "routesN";
     }
 
     @GetMapping("/add")

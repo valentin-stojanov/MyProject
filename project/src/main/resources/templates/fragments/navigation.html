@@ -1,102 +1,57 @@
-<section id="navigation">
-    <nav class="navbar navbar-expand-md navbar-light fixed-top"
-         xmlns:th="http://www.thymeleaf.org"
-         xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-        <div class="container-xxl">
-            <a th:href="@{/}" class="navbar-brand">
-                <span class="fw-bold text-secondary">Home</span>
-            </a>
-            <!--            toggle button for mobile nav-->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<nav class="navbar navbar-expand-md navbar-light "
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <div class="container-xxl">
+        <a th:href="@{/}" class="navbar-brand">
+            <span class="fw-bold text-secondary">Home</span>
+        </a>
+        <!--            toggle button for mobile nav-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!--           Navbar anonymous links-->
-            <div class="collapse navbar-collapse justify-content-end align-center"
-                 id="main-nav"
-                 sec:authorize="isAnonymous()">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a th:href="@{/users/login}"
-                           class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/users/register}"
-                           class="nav-link">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/}"
-                           class="nav-link">About</a>
-                    </li>
-                </ul>
-            </div>
-            <!--           Navbar authenticated links-->
-            <div class="collapse navbar-collapse justify-content-end align-center"
-                 id="main-nav"
-                 sec:authorize="isAuthenticated()">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a th:href="@{/routes/add}"
-                           class="nav-link">Add new route</a>
-                    </li>
-                    <li class="nav-item">
-                        <a th:href="@{/users/profile}"
-                           class="nav-link">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <form th:action="@{/users/logout}"
-                              th:method="post"
-                              class="nav-link">
-                            <input type="submit" th:value="Logout">
-                        </form>
-                    </li>
-                </ul>
-            </div>
+        <!--           Navbar anonymous links-->
+        <div class="collapse navbar-collapse justify-content-end align-center"
+             id="main-nav"
+             sec:authorize="isAnonymous()">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a th:href="@{/users/login}"
+                       class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/users/register}"
+                       class="nav-link">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/}"
+                       class="nav-link">About</a>
+                </li>
+            </ul>
         </div>
-    </nav>
-</section>
-
-<!--<header xmlns:th="http://www.thymeleaf.org"-->
-<!--        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
-<!--    <nav class="main-nav" sec:authorize="isAnonymous()">-->
-<!--        <ul>-->
-<!--            <li>-->
-<!--                <a th:href="@{/}">Home</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:href="@{/users/login}">Login</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:href="@{/users/register}">Register</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a href="/">About</a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-
-<!--    <nav class="main-nav" sec:authorize="isAuthenticated()">-->
-<!--        <ul>-->
-<!--            <li>-->
-<!--                <a th:href="@{/}">Home</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:href="@{/routes/add}">Add new route</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:href="@{/users/profile}">Profile</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a href="/">Admin</a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <form th:action="@{/users/logout}"-->
-<!--                      th:method="post">-->
-<!--                    <input class="btn" type="submit" th:value="Logout">-->
-<!--                </form>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-<!--</header>-->
+        <!--           Navbar authenticated links-->
+        <div class="collapse navbar-collapse justify-content-end align-center"
+             id="main-nav"
+             sec:authorize="isAuthenticated()">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a th:href="@{/routes/add}"
+                       class="nav-link">Add new route</a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/users/profile}"
+                       class="nav-link">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/users/logout}"
+                          th:method="post"
+                          class="nav-link">
+                        <input type="submit" th:value="Logout">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
