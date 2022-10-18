@@ -73,7 +73,7 @@ public class RouteController {
 
         model.addAttribute("route", this.routeService.findRouteById(id));
 
-        return "route-details";
+        return "route-detailsN";
     }
 
 }

@@ -1,0 +1,71 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>My project</title>
+    <div th:replace="fragments/head"></div>
+</head>
+<body>
+
+    <div th:replace="fragments/navigation"></div>
+
+    <input type="hidden" name="routeId" id="routeId" th:value="${route.id}"/>
+    <section id="route-info"
+    th:object="${route}">
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+                <section id="map">
+
+                </section>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+        <script th:inline="javascript">
+            const map = L.map('map').setView([42.76, 25.23], 8);
+
+            // L.tileLayer('http://bgmtile.uni-plovdiv.net:40158/{z}/{x}/{y}.png', {
+            //     maxZoom: 19,
+            //     attribution: '© bgmtile.uni-plovdiv.net'
+            // }).addTo(map);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            const gpxFile = [[${route.gpxCoordinates}]];
+
+            const g = new L.GPX(gpxFile, {
+                    async: true,
+                    polyline_options: {
+                        color: 'magenta',
+                        weight: 4
+                    },
+                    marker_options: {
+                        startIconUrl: '/images/map-marker-icons/pin-icon-start.png',
+                        endIconUrl: '/images/map-marker-icons/pin-icon-start.png',
+                        shadowUrl: '/images/map-marker-icons/pin-shadow.png',
+                    }
+                }
+            );
+
+            g.on('loaded', function (e) {
+                const gpx = e.target
+                map.flyToBounds(gpx.getBounds());
+                const distance = (gpx.get_distance() / 1000).toFixed(2);
+                const info = "Distance: " + distance + " km </br>";
+                gpx.getLayers()[0].bindPopup(info);
+            }).addTo(map);
+        </script>
+    </section>
+
+
+
+    <div th:replace="fragments/footer"></div>
+
+
+</body>
+</html>

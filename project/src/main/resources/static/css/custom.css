@@ -9,3 +9,9 @@
     height: 15vw;
     object-fit: contain;
 }
+
+#map {
+    width: 100%;
+    height: 50vh;
+    border-radius: 10px;
+}
