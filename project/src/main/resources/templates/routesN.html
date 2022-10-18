@@ -9,30 +9,30 @@
     <!--Navbar-->
     <div th:replace="fragments/navigation"></div>
 
-    <section>
-        <div class="container-lg"
-             th:each="r : ${routes}"
-             th:object="${r}">
+    <div class="container-md ">
+        <div class="row justify-content-start">
+            <div class="col">
+                <h2 class="h4 pb-2 mb-4 text-secondary border-bottom border-secondary">Routes</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
 
-            <h2 th:text="*{name}">Your Route</h2>
-            <p th:text="*{description}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae alias reiciendis
-                deleniti possimus nemo
-                non repellendus?
-                Quae atque vero modi quidem! Autem cupiditate fugit doloribus ad amet, asperiores provident commodi.</p>
-            <a th:href="@{/routes/details/{id}(id = *{id})}" class="btn">Learn More</a>
-
-            <div class="row my-5 align-items-center justify-content-center">
-                <div class="col-8 col-lg-4 col-xl-3">
-                    <div class="card">
-                        <div class="card-body text-center py-4">
-                            hello
-                            <img class="img-fluid" th:src="*{pictureUrl}" alt="Title image">
-                        </div>
+            <div class="col-md-6"
+                 th:each="r : ${routes}"
+                 th:object="${r}">
+                <div class="card mb-3">
+                    <img th:src="*{pictureUrl}"
+                         class="card-img-top mt-2" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="*{name}">Card title</h5>
+<!--                        <p class="card-text" th:text="*{description}">This is a wider card with supporting text below as-->
+<!--                            a natural lead-in to additional content. This content is a little bit longer.</p>-->
+                        <a th:href="@{/routes/details/{id}(id = *{id})}" class="btn">Learn More</a>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
 
 
