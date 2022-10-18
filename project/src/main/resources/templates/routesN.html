@@ -9,14 +9,13 @@
     <!--Navbar-->
     <div th:replace="fragments/navigation"></div>
 
-    <div class="container-md ">
+    <div class="container">
         <div class="row justify-content-start">
             <div class="col">
                 <h2 class="h4 pb-2 mb-4 text-secondary border-bottom border-secondary">Routes</h2>
             </div>
         </div>
         <div class="row justify-content-center mt-3">
-
             <div class="col-md-6"
                  th:each="r : ${routes}"
                  th:object="${r}">
