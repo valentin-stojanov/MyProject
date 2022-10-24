@@ -15,3 +15,17 @@
     height: 50vh;
     border-radius: 10px;
 }
+
+img {
+    max-width: 100%;
+}
+ .gallery img {
+     background-color: aliceblue;
+     padding: 15px;
+     width: 100%;
+      cursor: pointer;
+ }
+
+ #gallery-modal .modal-img {
+     width: 100%;
+ }
