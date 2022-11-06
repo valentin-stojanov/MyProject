@@ -24,8 +24,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        #show SQL statements only if needed!
+#        show_sql: true
+
   #Cloudinary Properties
 cloudinary:
   api-key: 579953547744991
   api-secret: ${CLOUDINARY_API_SECRET}
   cloud-name: trippictures
+
+  #Loggers
+#logging:
+#  level:
+#    sql: debug

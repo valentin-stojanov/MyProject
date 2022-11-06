@@ -51,6 +51,35 @@
                 </section>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <div th:if="${#authentication.getName()} == *{authorEmail}">
+                    <form th:action="@{/routes/details/{id}/pictures(id=*{id})}"
+                          th:method="post"
+                          enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label>
+                                <h4>Picture title</h4>
+                                <input type="text" name="title">
+                            </label>
+                        </div>
+                        <div class="image-upload">
+                            <!--                        <label for="picture">-->
+                            <h4>Choose picture</h4>
+                            <!--                            <img class="btn-primary rounded" src="/images/add-img.png" alt="" width="100" height="100"/>-->
+                            <button class="btn-primary rounded">
+                                <input id="picture" type="file" accept="image/*" name="picture"/>
+                            </button>
+                            <!--                        </label>-->
+
+                        </div>
+                        <div class="form-group">
+                            <button class="btn-secondary rounded">Upload Picture</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <section class="gallery">
             <div class="row gy-4 row-cols-1 row-cols-sm-2 row-cols-md-3">
                 <div class="col mb-2"
