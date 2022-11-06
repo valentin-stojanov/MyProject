@@ -29,14 +29,14 @@ VALUES ('с. Гара Лакатник - хижа Лескова',
         1);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 1', 'ixk3dur4be9ws7c69y36',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661933830/ixk3dur4be9ws7c69y36.jpg', 1, 1);
+VALUES ('снимка 1', 'x1o4vzxqyaltq1d69i9s',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667775008/x1o4vzxqyaltq1d69i9s.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 2', 'so6e0jkw18hmugduqubw',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661933852/so6e0jkw18hmugduqubw.jpg', 1, 1);
+VALUES ('снимка 2', 'amm3uokznaluvectwfsn',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667775192/amm3uokznaluvectwfsn.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 3', 'vysydaxj0spxz3mvi504',
-        'http://res.cloudinary.com/trippictures/image/upload/v1662131201/vysydaxj0spxz3mvi504.jpg', 1, 1);
+VALUES ('снимка 3', 'd30r91b1n9znkxz3dbwv',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667775270/d30r91b1n9znkxz3dbwv.jpg', 1, 1);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
 VALUES ('снимка 1', 'khip0s0hasjqsgymwjj3',
