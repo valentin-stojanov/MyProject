@@ -104,19 +104,25 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                                     </button>
-                                    <form th:if="${#authentication.getName()} == *{authorEmail}"
-                                          th:action="@{/routes/details/{id}/pictures(id=*{id})}"
-                                          th:method="delete">
-                                        <input type="hidden"
-                                               th:name="public_id"
-                                               th:value="${p.publicId}">
-                                        <button class="btn-danger rounded">Delete</button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <h1 class="text-center fs-5" th:text="${p.title}">Picture title</h1>
+                    <div class="row">
+                        <div class="col">
+                            <h1 class="text-center fs-5" th:text="${p.title}">Picture title</h1>
+                        </div>
+                        <div class="col">
+                            <form th:if="${#authentication.getName()} == *{authorEmail}"
+                                  th:action="@{/routes/details/{id}/pictures(id=*{id})}"
+                                  th:method="delete">
+                                <input type="hidden"
+                                       th:name="public_id"
+                                       th:value="${p.publicId}">
+                                <input class="btn-danger rounded" type="submit" value="Delete"/>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -147,7 +153,7 @@
         </div>
         <div class="row">
             <div class="col">
-                    <span id="commentCtnr"><!-- Comments section, filled in by script --></span>
+                <span id="commentCtnr"><!-- Comments section, filled in by script --></span>
                 <!-- EO: All comments section -->
             </div>
         </div>

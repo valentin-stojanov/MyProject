@@ -29,8 +29,8 @@ VALUES ('с. Гара Лакатник - хижа Лескова',
         1);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 1', 'tvvmaiocsycm61tw44dm',
-        'https://res.cloudinary.com/trippictures/image/upload/v1667917694/tvvmaiocsycm61tw44dm.jpg', 1, 1);
+VALUES ('снимка 1', 'lki41pezqbbk3nk3joap',
+        'https://res.cloudinary.com/trippictures/image/upload/v1667918319/lki41pezqbbk3nk3joap.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
 VALUES ('снимка 2', 'cn9juk6acqlvkixjorw7',
         'http://res.cloudinary.com/trippictures/image/upload/v1667916730/cn9juk6acqlvkixjorw7.jpg', 1, 1);
