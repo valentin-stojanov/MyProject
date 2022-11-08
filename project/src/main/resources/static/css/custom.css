@@ -1,7 +1,8 @@
 .background {
     background-image: url("../images/background.jpg");
     background-size: cover;
-    height: 60vh;
+    height: 100vh;
+    background-attachment: fixed;
 }
 
 .card-img-top {
