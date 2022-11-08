@@ -43,7 +43,7 @@ public class UserController {
         UserViewModel userViewModel = this.userService.getUserInfo(userDetails.getUsername());
 
         model.addAttribute("userView", userViewModel);
-        return "profile";
+        return "profileN";
     }
 
 }
