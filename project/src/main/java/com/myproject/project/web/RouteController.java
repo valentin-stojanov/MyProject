@@ -45,7 +45,7 @@ public class RouteController {
 
     @GetMapping("/add")
     public String addRoute() {
-        return "add-route";
+        return "add-routeN";
     }
 
     @PostMapping("/add")
