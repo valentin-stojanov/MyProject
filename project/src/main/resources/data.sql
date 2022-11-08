@@ -29,34 +29,32 @@ VALUES ('с. Гара Лакатник - хижа Лескова',
         1);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 1', 'x1o4vzxqyaltq1d69i9s',
-        'http://res.cloudinary.com/trippictures/image/upload/v1667775008/x1o4vzxqyaltq1d69i9s.jpg', 1, 1);
+VALUES ('снимка 1', 'tvvmaiocsycm61tw44dm',
+        'https://res.cloudinary.com/trippictures/image/upload/v1667917694/tvvmaiocsycm61tw44dm.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 2', 'amm3uokznaluvectwfsn',
-        'http://res.cloudinary.com/trippictures/image/upload/v1667775192/amm3uokznaluvectwfsn.jpg', 1, 1);
+VALUES ('снимка 2', 'cn9juk6acqlvkixjorw7',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667916730/cn9juk6acqlvkixjorw7.jpg', 1, 1);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 3', 'd30r91b1n9znkxz3dbwv',
-        'http://res.cloudinary.com/trippictures/image/upload/v1667775270/d30r91b1n9znkxz3dbwv.jpg', 1, 1);
+VALUES ('снимка 3', 'ufiazphr4o78xpbz4yet',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667916773/ufiazphr4o78xpbz4yet.jpg', 1, 1);
+--
+INSERT INTO pictures(title, public_id, url, author_id, route_id)
+VALUES ('снимка 1', 'dq0ogkfn1mclp6bshlqo',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667917205/dq0ogkfn1mclp6bshlqo.jpg', 1, 2);
+INSERT INTO pictures(title, public_id, url, author_id, route_id)
+VALUES ('снимка 2', 'qc74ipqxfi5pefekzbpg',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667917278/qc74ipqxfi5pefekzbpg.jpg', 1, 2);
+INSERT INTO pictures(title, public_id, url, author_id, route_id)
+VALUES ('снимка 3', 'plvrhqt5bf2rq7uisaqk',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667917341/plvrhqt5bf2rq7uisaqk.jpg', 1, 2);
 
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 1', 'khip0s0hasjqsgymwjj3',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661934838/khip0s0hasjqsgymwjj3.jpg', 1, 2);
+VALUES ('снимка 1', 'tqqhxnan4rrxcucypidm',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667917400/tqqhxnan4rrxcucypidm.jpg', 1, 3);
 INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 2', 'a2fe51cjznarihuoqq1t',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661934856/a2fe51cjznarihuoqq1t.jpg', 1, 2);
-INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 3', 'h2hhxdgui77s8fa5kdr1',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661934869/h2hhxdgui77s8fa5kdr1.jpg', 1, 2);
+VALUES ('снимка 2', 'tw4oabw4phwr7dtua4ta',
+        'http://res.cloudinary.com/trippictures/image/upload/v1667917463/tw4oabw4phwr7dtua4ta.jpg', 1, 3);
 
-INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 1', 'q9fr8gx5m6aurmzp3ubs',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661935267/q9fr8gx5m6aurmzp3ubs.jpg', 1, 3);
-INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 2', 'qxpoo6mdovu4q3legrvx',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661935280/qxpoo6mdovu4q3legrvx.jpg', 1, 3);
-INSERT INTO pictures(title, public_id, url, author_id, route_id)
-VALUES ('снимка 3', 'e86augeitpg5lyovhhma',
-        'http://res.cloudinary.com/trippictures/image/upload/v1661935292/e86augeitpg5lyovhhma.jpg', 1, 3);
 
 INSERT INTO comments(id, created,text, author_id, route_id)
 VALUES (1, now(), 'Test comment', 1, 1);
