@@ -10,19 +10,25 @@ commentForm.addEventListener("submit", handleCommentSubmit);
 const allComments = [];
 
 const displayComment = (comments) => {
-    commentCtnr.innerHTML = comments.map(
-        (c) => {
-            return asComment(c);
-        }
-    ).join('');
+
+    for (const comment of comments) {
+        commentCtnr.appendChild(asComment(comment));
+    }
 }
 
 function asComment(c) {
-    let commentHtml = `<div id="commentCtnr-${c.commentId}">`
 
-    commentHtml += `<h4>${c.user} (${c.created})</h4><br/>`
-    commentHtml += `<p>${c.message}</p>`
-    commentHtml += `</div>`
+    const commentHtml = document.createElement('div', {id: ("commentCtnr-" + c.commentId)});
+    commentHtml.id = "commentCtnr-" + c.commentId;
+
+    const h4 = document.createElement('h4');
+    h4.textContent = c.created;
+
+    const p = document.createElement('p');
+    p.textContent = c.message;
+
+    commentHtml.appendChild(h4);
+    commentHtml.appendChild(p);
 
     return commentHtml;
 }
@@ -54,7 +60,7 @@ async function handleCommentSubmit(event) {
     }
 }
 
-async function postFormDataAsJson({url, formData}){
+async function postFormDataAsJson({url, formData}) {
 
     const plainFormData = Object.fromEntries(formData.entries());
     const formDataAsJsonString = JSON.stringify(plainFormData);
@@ -62,16 +68,16 @@ async function postFormDataAsJson({url, formData}){
     const fetchOptions = {
         method: "POST",
         headers: {
-            [csrHeaderName] : csrHeaderValue,
-            "Content-Type" : "application/json",
-            "Accept" : "application/json"
+            [csrHeaderName]: csrHeaderValue,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         },
         body: formDataAsJsonString
     }
 
     const response = await fetch(url, fetchOptions);
 
-    if ((!response.ok)){
+    if ((!response.ok)) {
         const errorMessage = await response.text();
         throw new Error(errorMessage);
     }
