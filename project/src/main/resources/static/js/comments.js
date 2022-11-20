@@ -52,9 +52,11 @@ async function handleCommentSubmit(event) {
 
     try {
         const responseData = await postFormDataAsJson({url, formData});
+        const comment = asComment(responseData);
 
-        commentCtnr.insertAdjacentHTML("afterbegin", asComment(responseData))
+        commentCtnr.append(comment);
         form.reset();
+        comment.scrollIntoView({behavior: "smooth", block: "start"});
     } catch (error) {
         console.log(error);
     }
