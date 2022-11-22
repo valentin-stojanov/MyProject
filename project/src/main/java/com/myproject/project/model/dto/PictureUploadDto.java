@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PictureUploadDto {
     private String title;
+
     private MultipartFile picture;
 
     public PictureUploadDto() {
