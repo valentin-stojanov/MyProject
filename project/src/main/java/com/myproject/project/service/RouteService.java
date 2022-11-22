@@ -8,6 +8,7 @@ import com.myproject.project.model.entity.RouteEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
+import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class RouteService {
-    private static String DEFAULT_IMAGE_URL = "https://res.cloudinary.com/trippictures/image/upload/v1661692507/png-transparent-albums-computer-icons-others_avqku6.png";
+    private static final String DEFAULT_IMAGE_URL = "https://res.cloudinary.com/trippictures/image/upload/v1661692507/png-transparent-albums-computer-icons-others_avqku6.png";
     private final RouteRepository routeRepository;
     private final UserRepository userRepository;
 
@@ -32,7 +33,7 @@ public class RouteService {
 
         UserEntity author = this.userRepository
                 .findByEmail(userDetails.getUsername())
-                .orElseThrow();
+                .orElseThrow(() -> new ObjectNotFoundException("User with email " + userDetails.getUsername() + " was not found."));
 
         RouteEntity newRoute = new RouteEntity()
                 .setName(routeAddDto.getName())
@@ -67,7 +68,7 @@ public class RouteService {
     @Transactional
     public RouteDetailsViewModel findRouteById(Long id) {
 
-        RouteEntity routeEntity = this.routeRepository.findById(id).get();
+        RouteEntity routeEntity = findRouteEntityById(id);
 
         RouteDetailsViewModel routeDetailsViewModel = new RouteDetailsViewModel()
                 .setId(routeEntity.getId())
@@ -84,8 +85,9 @@ public class RouteService {
     }
 
     public RouteEntity findRouteEntityById(Long id){
-        RouteEntity routeEntity = this.routeRepository.findById(id).get();
-        return routeEntity;
+        return this.routeRepository
+                .findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Route with id " + id +" was not found!"));
     }
 
 }
