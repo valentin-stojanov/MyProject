@@ -69,20 +69,9 @@
                                 <img id="uploadPreview" style="width: 200px; height: 200px; display: none"/>
                                 <button class="btn-primary rounded">
                                     <input id="picture" type="file" required accept="image/*" name="picture"
-                                           onchange="PreviewImage();"/>
+                                           onchange="previewImage();"/>
                                 </button>
-                                <script type="text/javascript">
-                                    function PreviewImage() {
-                                        const oFReader = new FileReader();
-                                        oFReader.readAsDataURL(document.getElementById("picture").files[0]);
 
-                                        oFReader.onload = function (oFREvent) {
-                                            const img = document.getElementById("uploadPreview");
-                                            img.src = oFREvent.target.result;
-                                            img.style.display = 'block';
-                                        }
-                                    }
-                                </script>
                             </label>
 
                         </div>
@@ -222,6 +211,7 @@
         crossorigin="anonymous"></script>
 <script src="/js/gallery.js"></script>
 <script src="/js/comments.js"></script>
+<script src="/js/imagePreview.js"></script>
 
 </body>
 </html>
