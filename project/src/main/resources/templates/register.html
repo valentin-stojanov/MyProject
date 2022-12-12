@@ -23,7 +23,7 @@
                         <input th:field="*{firstName}"
                                th:errorclass="is-invalid"
                                name="firstName"
-                               required minlength="2" maxlength="20"
+                               minlength="2" maxlength="35"
                                type="text"
                                id="inputFirstName"
                                class="form-control"
@@ -31,7 +31,7 @@
                                placeholder="First name">
                         <small id="firstNameError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            First name length must be more than 2 characters
+                            <div>First name errors.</div>
                         </small>
                     </div>
                 </div>
@@ -44,16 +44,19 @@
                         <input th:field="*{lastName}"
                                th:errorclass="is-invalid"
                                name="lastName"
-                               required minlength="2" maxlength="20"
+                               minlength="2" maxlength="35"
                                type="text"
                                id="inputLastName"
                                class="form-control"
                                aria-describedby="lastNameHelpInline"
                                placeholder="Last name">
                         <small id="lastNameError"
-                               class="invalid-feedback  form-text bg-danger rounded text-white">Last name length must be
-                            more than
-                            2 characters</small>
+                               class="invalid-feedback  form-text bg-danger rounded text-white">
+                            <div th:each="err : ${#fields.errors()}"
+                                 th:text="${err}">Last name errors.
+                            </div>
+                        </small>
+
                     </div>
                 </div>
 
@@ -73,10 +76,9 @@
                                placeholder="Email">
                         <small id="emailError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            <div
-                                    th:each="err : ${#fields.errors('email')}"
-                                    th:text="${err}"
-                            />
+                            <div th:each="err : ${#fields.errors('email')}"
+                                 th:text="${err}">Email errors.
+                            </div>
                         </small>
                     </div>
                 </div>
@@ -87,7 +89,8 @@
                     <div class="col-auto">
                         <input th:field="*{age}"
                                th:errorclass="is-invalid"
-                               name="age" required
+                               name="age"
+                               required
                                type="number"
                                id="inputAge"
                                class="form-control"
@@ -95,8 +98,11 @@
                                aria-describedby="ageHelpInline"
                                placeholder="Age">
                         <small id="ageError"
-                               class="invalid-feedback  form-text bg-danger rounded text-white">Must be valid
-                            age</small>
+                               class="invalid-feedback  form-text bg-danger rounded text-white">
+                            <div th:each="err : ${#fields.errors('age')}"
+                                 th:text="${err}">Age errors
+                            </div>
+                        </small>
                     </div>
                 </div>
                 <div>

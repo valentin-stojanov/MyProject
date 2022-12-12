@@ -5,22 +5,26 @@ import com.myproject.project.model.validation.UniqueUserEmail;
 
 import javax.validation.constraints.*;
 
-@FieldsMatch(firstField = "password",
-        secondField = "confirmPassword",
-        message = "Passwords do not match!")
+@FieldsMatch(firstField = "password", secondField = "confirmPassword", message = "Passwords do not match!")
 public class UserRegistrationDto {
-    @NotBlank
-    @Size(min = 2, max = 20)
+    @NotBlank(message = "First name must not be blank.")
+    @Size(min = 2, max = 35,
+            message = "Last name length must be between 2 and 35 characters.")
     private String firstName;
-    @NotBlank
-    @Size(min = 2, max = 20)
+    @NotBlank(message = "Last name must not be blank.")
+    @Size(min = 2, max = 35,
+            message = "Last name length must be between 2 and 35 characters.")
     private String lastName;
     @NotBlank(message = "User email should be provided.")
     @Email(message = "User email should be valid.")
     @UniqueUserEmail(message = "The email is already occupied")
     private String email;
-    @Positive
-    @Max(100)
+
+    @NotNull(message = "Age must not be empty.")
+//    @Digits(integer = 2, fraction = 0)
+//    @Pattern(regexp = "^[1-9]\\d?$", message = "Must be a number.")
+    @Positive(message = "Age must be positive.")
+    @Max(value = 100, message = "Max age is 100.")
     private Integer age;
     @NotBlank
     @Size(min = 5, max = 20)
@@ -86,13 +90,6 @@ public class UserRegistrationDto {
 
     @Override
     public String toString() {
-        return "UserRegistrationDto{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                ", password='" + (password != null ? "[PROTECTED]" : null) + '\'' +
-                ", confirmPassword='" + (confirmPassword != null ? "[PROTECTED]" : null) + '\'' +
-                '}';
+        return "UserRegistrationDto{" + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", email='" + email + '\'' + ", age=" + age + ", password='" + (password != null ? "[PROTECTED]" : null) + '\'' + ", confirmPassword='" + (confirmPassword != null ? "[PROTECTED]" : null) + '\'' + '}';
     }
 }
