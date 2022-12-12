@@ -21,8 +21,6 @@ public class UserRegistrationDto {
     private String email;
 
     @NotNull(message = "Age must not be empty.")
-//    @Digits(integer = 2, fraction = 0)
-//    @Pattern(regexp = "^[1-9]\\d?$", message = "Must be a number.")
     @Positive(message = "Age must be positive.")
     @Max(value = 100, message = "Max age is 100.")
     private Integer age;

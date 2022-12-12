@@ -99,9 +99,10 @@
                                placeholder="Age">
                         <small id="ageError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            <div th:each="err : ${#fields.errors('age')}"
-                                 th:text="${err}">Age errors
-                            </div>
+<!--                            <div th:each="err : ${#fields.errors('age')}"-->
+<!--                                 th:text="${err}">Age errors-->
+<!--                            </div>-->
+                            Age must be between 0 and 100!
                         </small>
                     </div>
                 </div>
