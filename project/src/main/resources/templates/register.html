@@ -31,7 +31,9 @@
                                placeholder="First name">
                         <small id="firstNameError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            <div>First name errors.</div>
+                            <div th:each="err : ${#fields.errors('firstName')}"
+                                 th:text="${err}">First name errors.
+                            </div>
                         </small>
                     </div>
                 </div>
@@ -52,7 +54,7 @@
                                placeholder="Last name">
                         <small id="lastNameError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            <div th:each="err : ${#fields.errors()}"
+                            <div th:each="err : ${#fields.errors('lastName')}"
                                  th:text="${err}">Last name errors.
                             </div>
                         </small>
@@ -99,9 +101,9 @@
                                placeholder="Age">
                         <small id="ageError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-<!--                            <div th:each="err : ${#fields.errors('age')}"-->
-<!--                                 th:text="${err}">Age errors-->
-<!--                            </div>-->
+                            <!--                            <div th:each="err : ${#fields.errors('age')}"-->
+                            <!--                                 th:text="${err}">Age errors-->
+                            <!--                            </div>-->
                             Age must be between 0 and 100!
                         </small>
                     </div>
@@ -121,7 +123,10 @@
                                placeholder="Password">
                         <small id="passwordError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            Password length must be between 5 and 20 characters and passwords should match.
+                            <div th:each="err : ${#fields.errors('password')}"
+                                 th:text="${err}">Password length must be between 5 and 20 characters and passwords
+                                should match.
+                            </div>
                         </small>
                     </div>
                 </div>
@@ -141,7 +146,10 @@
                                placeholder="Confirm password">
                         <small id="confirmPasswordError"
                                class="invalid-feedback  form-text bg-danger rounded text-white">
-                            Password length must be between 5 and 20 characters and passwords should match.
+                            <div th:each="err : ${#fields.errors('confirmPassword')}"
+                                 th:text="${err}">Password length must be between 5 and 20 characters and passwords
+                                should match.
+                            </div>
                         </small>
                     </div>
                 </div>

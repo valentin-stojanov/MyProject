@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 public class UserRegistrationDto {
     @NotBlank(message = "First name must not be blank.")
     @Size(min = 2, max = 35,
-            message = "Last name length must be between 2 and 35 characters.")
+            message = "First name length must be between 2 and 35 characters.")
     private String firstName;
     @NotBlank(message = "Last name must not be blank.")
     @Size(min = 2, max = 35,
@@ -24,8 +24,8 @@ public class UserRegistrationDto {
     @Positive(message = "Age must be positive.")
     @Max(value = 100, message = "Max age is 100.")
     private Integer age;
-    @NotBlank
-    @Size(min = 5, max = 20)
+    @NotBlank(message = "Password must not be empty.")
+    @Size(min = 5, max = 20, message = "Password must be between 5 and 30 characters.")
     private String password;
     private String confirmPassword;
 
