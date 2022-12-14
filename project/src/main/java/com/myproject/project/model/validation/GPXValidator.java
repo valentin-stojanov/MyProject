@@ -3,27 +3,30 @@ package com.myproject.project.model.validation;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-
-import static org.springframework.util.ResourceUtils.getFile;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GPXValidator {
 
-    private Validator initValidator(String xsdPath) throws SAXException, FileNotFoundException {
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        Source schemaFile = new StreamSource(getFile(xsdPath));
-        Schema schema = factory.newSchema(schemaFile);
-        return schema.newValidator();
-    }
+    public static boolean validateXMLSchema(String xsdPath, InputStream gpxInputStream){
 
-    private File getFile(String location) {
-        return new File(getClass().getClassLoader().getResource(location).getFile());
+        try {
+            SchemaFactory factory =
+                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(new File(xsdPath));
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(gpxInputStream));
+            System.out.println();
+        } catch (IOException | SAXException e) {
+            System.out.println("Exception: "+e.getMessage());
+            return false;
+        }
+        return true;
     }
 }

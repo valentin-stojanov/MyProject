@@ -6,11 +6,13 @@ import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.model.entity.CategoryEntity;
 import com.myproject.project.model.entity.RouteEntity;
 import com.myproject.project.model.entity.UserEntity;
+import com.myproject.project.model.validation.GPXValidator;
 import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -34,6 +36,9 @@ public class RouteService {
         UserEntity author = this.userRepository
                 .findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + userDetails.getUsername() + " was not found."));
+
+        MultipartFile gpxCoordinates = routeAddDto.getGpxCoordinates();
+        boolean isValidGPXFile = GPXValidator.validateXMLSchema("src/main/resources/gpx.xsd", gpxCoordinates.getInputStream());
 
         RouteEntity newRoute = new RouteEntity()
                 .setName(routeAddDto.getName())
