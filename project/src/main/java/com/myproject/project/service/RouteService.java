@@ -37,9 +37,6 @@ public class RouteService {
                 .findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + userDetails.getUsername() + " was not found."));
 
-        MultipartFile gpxCoordinates = routeAddDto.getGpxCoordinates();
-        boolean isValidGPXFile = GPXValidator.validateXMLSchema("src/main/resources/gpx.xsd", gpxCoordinates.getInputStream());
-
         RouteEntity newRoute = new RouteEntity()
                 .setName(routeAddDto.getName())
                 .setDescription(routeAddDto.getDescription())

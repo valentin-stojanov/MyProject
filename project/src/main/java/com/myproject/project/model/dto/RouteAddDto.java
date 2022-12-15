@@ -2,17 +2,18 @@ package com.myproject.project.model.dto;
 
 import com.myproject.project.model.enums.RouteCategoryEnum;
 import com.myproject.project.model.enums.LevelEnum;
+import com.myproject.project.model.validation.ValidateXML;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Set;
 
 public class RouteAddDto {
     @Size(min = 3, max = 50, message = "Route name must be between 3 and 50 characters!")
     private String name;
     private String description;
+    @ValidateXML(xsdPath = "src/main/resources/gpx.xsd")
     private MultipartFile gpxCoordinates;
     @NotNull
     private LevelEnum level;
