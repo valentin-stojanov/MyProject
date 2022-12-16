@@ -35,7 +35,10 @@ public class XMLValidator implements ConstraintValidator<ValidateXML, MultipartF
             validator.validate(new StreamSource(gpxCoordinates.getInputStream()));
         } catch (IOException | SAXException e) {
 //            System.out.println("Exception: "+e.getMessage());
-
+            context
+                    .buildConstraintViolationWithTemplate(e.getMessage())
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
             return false;
         }
         return true;
