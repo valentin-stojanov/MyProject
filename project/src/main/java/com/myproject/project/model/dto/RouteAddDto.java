@@ -19,8 +19,7 @@ public class RouteAddDto {
     private LevelEnum level;
     private String videoUrl;
 
-    //TODO: add custom message for validation! (at least one category mus be selected)
-    @Size(min = 1)
+    @Size(min = 1, message = "At least one category must be selected.")
     private List<RouteCategoryEnum> categories;
 
     public String getName() {

@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group">
                         <textarea name="description"
-
+                                  th:field="*{description}"
                                   required minlength="5"
                                   id="inputDescription"
                                   class="form-control"
@@ -114,10 +114,17 @@
                                th:each="c : ${T(com.myproject.project.model.enums.RouteCategoryEnum).values()}"
                                th:text="${c}"
                                th:value="${c}"
+                               th:errorclass="is-invalid"
                                class="m-3"
                                type="checkbox"
                                name="categories"
                                id="categories">
+                        <small id="categoriesError"
+                               class="invalid-feedback  form-text bg-danger rounded text-white">
+                            <div th:each="err : ${#fields.errors('categories')}"
+                                 th:text="${err}">Categories error.
+                            </div>
+                        </small>
                         <br>
                     </div>
                 </div>
