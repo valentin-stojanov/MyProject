@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
+import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.enums.RoleEnum;
@@ -43,12 +44,26 @@ class UserServiceTest {
     private UserMapper userMapperMock;
     private UserService toTest;
 
+    private UserEntity testUserEntity;
+
     @BeforeEach
     void setUp() {
         toTest = new UserService(passwordEncoderMock,
                 userRepositoryMock,
                 userDetailsServiceMock,
                 userMapperMock);
+
+        testUserEntity = new UserEntity()
+                .setEmail("test@example.com")
+                .setPassword("topsecret")
+                .setFirstName("Test")
+                .setLastName("Testov")
+                .setAge(18)
+                .setRoles(List.of(
+                                new RoleEntity().setRole(RoleEnum.ADMIN),
+                                new RoleEntity().setRole(RoleEnum.USER)
+                        )
+                );
     }
 
     @Test
@@ -78,16 +93,7 @@ class UserServiceTest {
 
     @Test
     void shouldFindUserByEmail() {
-        UserEntity testUserEntity = new UserEntity()
-                .setEmail("test@example.com")
-                .setPassword("topsecret")
-                .setFirstName("Test")
-                .setLastName("Testov")
-                .setRoles(List.of(
-                                new RoleEntity().setRole(RoleEnum.ADMIN),
-                                new RoleEntity().setRole(RoleEnum.USER)
-                        )
-                );
+
         when(userRepositoryMock.findByEmail(testUserEntity.getEmail()))
                 .thenReturn(Optional.of(testUserEntity));
 
@@ -104,7 +110,16 @@ class UserServiceTest {
     }
 
     @Test
-    @Disabled
-    void getUserInfo() {
+    void shouldGetUserInfo() {
+        when(userRepositoryMock.findByEmail(testUserEntity.getEmail()))
+                .thenReturn(Optional.of(testUserEntity));
+
+        UserViewModel userInfo = toTest.getUserInfo(testUserEntity.getEmail());
+
+        Assertions.assertEquals(testUserEntity.getFirstName() + " " + testUserEntity.getLastName(),
+                userInfo.getFullName());
+        Assertions.assertEquals(testUserEntity.getAge(), userInfo.getAge());
+        Assertions.assertEquals(testUserEntity.getEmail(), userInfo.getEmail());
+
     }
 }
