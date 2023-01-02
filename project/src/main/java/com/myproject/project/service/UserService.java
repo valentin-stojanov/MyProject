@@ -5,6 +5,7 @@ import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.UserRepository;
+import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,7 +55,7 @@ public class UserService {
 
         return this.userRepository
                 .findByEmail(email)
-                .orElseThrow();
+                .orElseThrow(() -> new ObjectNotFoundException("Email: " + email + " was not found!"));
     }
 
     public UserViewModel getUserInfo(String username) {
