@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final PasswordEncoder passwordEncoder;
@@ -59,7 +61,13 @@ public class UserService {
     }
 
     public UserViewModel getUserInfo(String username) {
-        UserEntity user = this.userRepository.findByEmail(username).get();
+        Optional<UserEntity> optionalUserEntity = this.userRepository.findByEmail(username);
+
+        if (optionalUserEntity.isEmpty()){
+            throw new ObjectNotFoundException("User with email: " + username + " was not found!");
+        }
+
+        UserEntity user = optionalUserEntity.get();
 
         UserViewModel userViewModel = new UserViewModel()
                 .setFullName(user.getFirstName() + " " + user.getLastName())

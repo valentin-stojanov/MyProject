@@ -120,6 +120,11 @@ class UserServiceTest {
                 userInfo.getFullName());
         Assertions.assertEquals(testUserEntity.getAge(), userInfo.getAge());
         Assertions.assertEquals(testUserEntity.getEmail(), userInfo.getEmail());
+    }
 
+    @Test
+    void shouldNotGetUserInfo() {
+        Assertions.assertThrows(ObjectNotFoundException.class,
+                () -> toTest.getUserInfo(testUserEntity.getEmail()));
     }
 }
