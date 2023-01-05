@@ -24,15 +24,21 @@ public class PictureService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    public void addPicture(PictureUploadDto pictureUploadDto, UserEntity author, RouteEntity route) throws IOException {
+    public void addPicture(PictureUploadDto pictureUploadDto, UserEntity author, RouteEntity route) {
         PictureEntity picture = createPictureEntity(pictureUploadDto.getPicture(),
                 pictureUploadDto.getTitle(), author, route);
 
         this.pictureRepository.save(picture);
     }
 
-    private PictureEntity createPictureEntity(MultipartFile multipartFile, String title, UserEntity author, RouteEntity route) throws IOException {
-        CloudinaryImageDto uploaded = this.cloudinaryService.upload(multipartFile);
+    private PictureEntity createPictureEntity(MultipartFile multipartFile, String title, UserEntity author, RouteEntity route) {
+        CloudinaryImageDto uploaded = null;
+        try {
+            uploaded = this.cloudinaryService.upload(multipartFile);
+        } catch (Exception e) {
+            //TODO: check this code!(Type of exception)
+            throw new IllegalArgumentException(e.getMessage());
+        }
         return new PictureEntity()
                 .setPublicId(uploaded.getPublicId())
                 .setTitle(title)

@@ -10,9 +10,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 
 @Controller
 public class PictureController {
@@ -32,7 +32,7 @@ public class PictureController {
     @PostMapping("/routes/details/{routeId}/pictures")
     public String addPictureToRoute(@PathVariable Long routeId,
                                     @AuthenticationPrincipal UserDetails userDetails,
-                                    PictureUploadDto pictureUploadDto) throws IOException {
+                                    PictureUploadDto pictureUploadDto) {
 
         UserEntity author = this.userService.findUserByEmail(userDetails.getUsername());
         RouteEntity route = this.routeService.findRouteEntityById(routeId);
@@ -71,6 +71,15 @@ public class PictureController {
 
         return "redirect:/routes/details/" + routeId;
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ModelAndView onIllegalArgument(IllegalArgumentException iae) {
+        ModelAndView modelAndView = new ModelAndView("picture-error");
+        modelAndView.addObject("error", iae.getMessage());
+
+        return modelAndView;
+    }
+
 
 //    @GetMapping("/pictures/all")
 //    public String allPictures(Model model) {
