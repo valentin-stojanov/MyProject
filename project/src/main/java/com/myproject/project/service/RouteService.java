@@ -3,9 +3,9 @@ package com.myproject.project.service;
 import com.myproject.project.model.dto.RouteAddDto;
 import com.myproject.project.model.dto.RouteDetailsViewModel;
 import com.myproject.project.model.dto.RouteViewModel;
-import com.myproject.project.model.entity.CategoryEntity;
 import com.myproject.project.model.entity.RouteEntity;
 import com.myproject.project.model.entity.UserEntity;
+import com.myproject.project.model.mapper.RouteMapper;
 import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
@@ -22,11 +22,14 @@ public class RouteService {
     private static final String DEFAULT_IMAGE_URL = "https://res.cloudinary.com/trippictures/image/upload/v1661692507/png-transparent-albums-computer-icons-others_avqku6.png";
     private final RouteRepository routeRepository;
     private final UserRepository userRepository;
+    private final RouteMapper routeMapper;
 
     public RouteService(RouteRepository routeRepository,
-                        UserRepository userRepository) {
+                        UserRepository userRepository,
+                        RouteMapper routeMapper) {
         this.routeRepository = routeRepository;
         this.userRepository = userRepository;
+        this.routeMapper = routeMapper;
     }
 
     public void addNewRoute(RouteAddDto routeAddDto, UserDetails userDetails) throws IOException {
@@ -35,17 +38,19 @@ public class RouteService {
                 .findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ObjectNotFoundException("User with email " + userDetails.getUsername() + " was not found."));
 
-        RouteEntity newRoute = new RouteEntity()
-                .setName(routeAddDto.getName())
-                .setDescription(routeAddDto.getDescription())
-                .setGpxCoordinates(new String(routeAddDto.getGpxCoordinates().getBytes()))
-                .setLevel(routeAddDto.getLevel())
-                .setVideoUrl(routeAddDto.getVideoUrl())
-                .setCategories(routeAddDto.getCategories().stream().map(
-                        c -> new CategoryEntity()
-                                .setName(c))
-                        .collect(Collectors.toList()))
-                .setAuthor(author);
+//        RouteEntity newRoute = new RouteEntity()
+//                .setName(routeAddDto.getName())
+//                .setDescription(routeAddDto.getDescription())
+//                .setGpxCoordinates(new String(routeAddDto.getGpxCoordinates().getBytes()))
+//                .setLevel(routeAddDto.getLevel())
+//                .setVideoUrl(routeAddDto.getVideoUrl())
+//                .setCategories(routeAddDto.getCategories().stream().map(
+//                        c -> new CategoryEntity()
+//                                .setName(c))
+//                        .collect(Collectors.toList()))
+//                .setAuthor(author);
+
+        RouteEntity newRoute = this.routeMapper.toRouteEntity(routeAddDto, author);
 
         this.routeRepository.save(newRoute);
     }
