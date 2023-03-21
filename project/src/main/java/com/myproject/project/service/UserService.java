@@ -35,8 +35,6 @@ public class UserService {
 
     public UserEntity registerUser(UserRegistrationDto userRegistrationDto) {
         UserEntity newUser = this.userMapper.toUserEntity(userRegistrationDto);
-        newUser.setPassword(this.passwordEncoder.encode(userRegistrationDto.getPassword()));
-
         return this.userRepository.save(newUser);
     }
 
@@ -53,7 +51,7 @@ public class UserService {
                 .setAuthentication(auth);
     }
 
-    public UserEntity findUserByEmail(String email){
+    public UserEntity findUserByEmail(String email) {
 
         return this.userRepository
                 .findByEmail(email)
@@ -63,7 +61,7 @@ public class UserService {
     public UserViewModel getUserInfo(String username) {
         Optional<UserEntity> optionalUserEntity = this.userRepository.findByEmail(username);
 
-        if (optionalUserEntity.isEmpty()){
+        if (optionalUserEntity.isEmpty()) {
             throw new ObjectNotFoundException("User with email: " + username + " was not found!");
         }
 

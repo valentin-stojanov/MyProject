@@ -86,7 +86,7 @@ class UserServiceTest {
 
         toTest.registerUser(userRegistrationDto);
         verify(userMapperMock).toUserEntity(userRegistrationDto);
-        verify(passwordEncoderMock).encode(userRegistrationDto.getPassword());
+//        verify(passwordEncoderMock).encode(userRegistrationDto.getPassword());
         verify(userRepositoryMock).save(any(UserEntity.class));
 
     }
