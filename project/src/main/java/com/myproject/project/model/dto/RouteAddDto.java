@@ -13,7 +13,8 @@ public class RouteAddDto {
     @Size(min = 3, max = 50, message = "Route name must be between 3 and 50 characters!")
     private String name;
     private String description;
-    @ValidateXML(xsdPath = "src/main/resources/gpx.xsd")
+
+    @ValidateXML()
     private MultipartFile gpxCoordinates;
     @NotNull
     private LevelEnum level;
