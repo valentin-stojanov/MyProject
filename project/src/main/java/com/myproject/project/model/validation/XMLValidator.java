@@ -12,6 +12,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class XMLValidator implements ConstraintValidator<ValidateXML, MultipartFile> {
 
@@ -30,7 +31,8 @@ public class XMLValidator implements ConstraintValidator<ValidateXML, MultipartF
         try {
             SchemaFactory factory =
                     SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new File(this.xsdPath));
+            Schema schema = factory.newSchema(new URL("http://www.topografix.com/GPX/1/1/gpx.xsd"));
+//            Schema schema = factory.newSchema(new File(this.xsdPath));
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(gpxCoordinates.getInputStream()));
         } catch (IOException | SAXException e) {
