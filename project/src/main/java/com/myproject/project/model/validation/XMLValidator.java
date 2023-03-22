@@ -21,7 +21,7 @@ public class XMLValidator implements ConstraintValidator<ValidateXML, MultipartF
 
     @Override
     public void initialize(ValidateXML constraintAnnotation) {
-        this.xsdPath = constraintAnnotation.xsdPath();
+        this.xsdPath = constraintAnnotation.localXsdPath();
         this.xsdURL = constraintAnnotation.xsdURL();
         this.message = constraintAnnotation.message();
     }

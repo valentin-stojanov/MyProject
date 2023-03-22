@@ -14,7 +14,7 @@ public class RouteAddDto {
     private String name;
     private String description;
 
-    @ValidateXML()
+    @ValidateXML(xsdURL = "https://www.topografix.com/GPX/1/1/gpx.xsd")
     private MultipartFile gpxCoordinates;
     @NotNull
     private LevelEnum level;
