@@ -32,6 +32,8 @@ public class XMLValidator implements ConstraintValidator<ValidateXML, MultipartF
             SchemaFactory factory =
                     SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new URL("http://www.topografix.com/GPX/1/1/gpx.xsd"));
+
+//            Use this for validation with local gpx.xsd schema.
 //            Schema schema = factory.newSchema(new File(this.xsdPath));
             Validator validator = schema.newValidator();
             validator.validate(new StreamSource(gpxCoordinates.getInputStream()));
