@@ -16,6 +16,8 @@ spring:
   sql:
     init:
       mode: always
+      encoding: UTF-8
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
@@ -24,12 +26,12 @@ spring:
     open-in-view: false
     properties:
       hibernate:
-        generate_statistics: true
-        use_sql_comments: true
-        format_sql: true
-#        show SQL statements only if needed!
-        show_sql: true
-        type: trace
+#        generate_statistics: true
+#        use_sql_comments: true
+#        format_sql: true
+##        show SQL statements only if needed!
+#        show_sql: true
+#        type: trace
 
   #Cloudinary Properties
 cloudinary:
@@ -40,4 +42,7 @@ cloudinary:
   #Loggers
 logging:
   level:
-    sql: debug
+    org.springframework: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: Trace
+#    sql: debug
