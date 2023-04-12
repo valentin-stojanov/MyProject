@@ -33,6 +33,18 @@ spring:
 #        show_sql: true
 #        type: trace
 
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 365d
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+
+
   #Cloudinary Properties
 cloudinary:
   api-key: 579953547744991
