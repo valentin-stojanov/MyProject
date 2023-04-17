@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,14 +34,30 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
+    public void createUserIfNotExist(String email){
+        Optional<UserEntity> userOpt = this.userRepository.findByEmail(email);
+
+        if (userOpt.isEmpty()){
+            UserEntity newUser = new UserEntity()
+                    .setEmail(email)
+                    .setPassword(null)
+                    .setFirstName("New")
+                    .setLastName("User")
+                    .setPassword("OAuth2_authentication")
+                    .setRoles(List.of());
+
+            this.userRepository.save(newUser);
+        }
+    }
+
     public UserEntity registerUser(UserRegistrationDto userRegistrationDto) {
         UserEntity newUser = this.userMapper.toUserEntity(userRegistrationDto);
         return this.userRepository.save(newUser);
     }
 
-    public void login(UserEntity userEntity) {
+    public void login(String username) {
         UserDetails userDetails = this.userDetailsService
-                .loadUserByUsername(userEntity.getEmail());
+                .loadUserByUsername(username);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(userDetails,
                 userDetails.getPassword(),

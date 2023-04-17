@@ -2,6 +2,7 @@ package com.myproject.project.config;
 
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.AppUserDetailsService;
+import com.myproject.project.service.OAuthSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           OAuthSuccessHandler oAuthSuccessHandler) throws Exception {
 
         http.
                 // define which requests are allowed and which not
@@ -29,6 +31,7 @@ public class SecurityConfig {
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                 // everyone can log in and register
                         antMatchers("/",
+//                        "/login/oauth2/code/google",
                         "/users/login",
                         "/users/register",
                         "/route").permitAll().
@@ -57,7 +60,11 @@ public class SecurityConfig {
                         logoutSuccessUrl("/").
                 // invalidate the session and delete the cookies
                         invalidateHttpSession(true).
-                deleteCookies("JSESSIONID");
+                deleteCookies("JSESSIONID").
+            and().
+                oauth2Login().
+                loginPage("/users/login").
+                successHandler(oAuthSuccessHandler);
 
 
         return http.build();
