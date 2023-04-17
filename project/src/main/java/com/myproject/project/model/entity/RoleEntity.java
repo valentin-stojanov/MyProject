@@ -9,7 +9,10 @@ import javax.persistence.*;
 public class RoleEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "roles_id_seq",
+            allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "roles_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)

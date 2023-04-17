@@ -7,7 +7,10 @@ import javax.persistence.*;
 public class PictureEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "pictures_id_seq",
+            allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "pictures_id_seq")
     private Long id;
     private String title;
     private String url;

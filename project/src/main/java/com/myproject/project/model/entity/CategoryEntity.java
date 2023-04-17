@@ -8,7 +8,10 @@ import javax.persistence.*;
 @Table(name = "categories")
 public class CategoryEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "categories_id_seq",
+            allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "categories_id_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)

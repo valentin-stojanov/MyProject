@@ -10,23 +10,21 @@ import java.util.List;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @SequenceGenerator(name = "user_id_seq",
-            sequenceName = "user_sequence",
-    initialValue = 3,
-    allocationSize = 20)
+    @SequenceGenerator(name = "users_id_seq",
+    allocationSize = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-    generator = "user_id_seq")
+            generator = "users_id_seq")
     private Long id;
 
     private String firstName;
     private String lastName;
-//    @Positive
+    //    @Positive
     private int age;
 
     @NotBlank
     private String password;
 
-//    @Column(unique = true)
+    //    @Column(unique = true)
     @NotBlank
     private String email;
 

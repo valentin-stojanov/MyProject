@@ -13,7 +13,10 @@ import java.util.Set;
 @Table(name = "routes")
 public class RouteEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "routes_id_seq",
+    allocationSize = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+    generator = "routes_id_seq")
     private Long id;
 
     private String name;

@@ -71,3 +71,11 @@ VALUES (1, now(), 'Test comment', 1, 1),
        (10, now(),
         '<EMBED SRC="data:image/svg+xml;base64,PHN2ZyB4bWxuczpzdmc9Imh0dH A6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv MjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hs aW5rIiB2ZXJzaW9uPSIxLjAiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTQiIGhlaWdodD0iMjAw IiBpZD0ieHNzIj48c2NyaXB0IHR5cGU9InRleHQvZWNtYXNjcmlwdCI+YWxlcnQoIlh TUyIpOzwvc2NyaXB0Pjwvc3ZnPg==" type="image/svg+xml" AllowScriptAccess="always"></EMBED>',
         1, 1);
+
+-- For PostgreSQL DB! Used to set the next sequence value to max id for each table to prevent collision of id-s.
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+SELECT setval('routes_id_seq', (SELECT MAX(id) FROM routes));
+SELECT setval('roles_id_seq', (SELECT MAX(id) FROM roles));
+SELECT setval('pictures_id_seq', (SELECT MAX(id) FROM pictures));
+SELECT setval('comments_id_seq', (SELECT MAX(id) FROM comments));
+SELECT setval('categories_id_seq', (SELECT MAX(id) FROM categories));
