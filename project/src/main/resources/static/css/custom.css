@@ -30,3 +30,8 @@ img {
  #gallery-modal .modal-img {
      width: 100%;
  }
+
+.bg-glass {
+    background-color: hsl(0deg 0.31% 22.76% / 19%) !important;
+    backdrop-filter: saturate(100%) blur(2px);
+}
