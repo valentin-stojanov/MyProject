@@ -23,15 +23,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
     private final UserMapper userMapper;
+    private final EmailService emailService;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
                        UserDetailsService userDetailsService,
-                       UserMapper userMapper) {
+                       UserMapper userMapper, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
         this.userMapper = userMapper;
+        this.emailService = emailService;
     }
 
     public void createUserIfNotExist(String email){
@@ -52,6 +54,7 @@ public class UserService {
 
     public UserEntity registerUser(UserRegistrationDto userRegistrationDto) {
         UserEntity newUser = this.userMapper.toUserEntity(userRegistrationDto);
+        this.emailService.sendRegistrationEmail(newUser.getEmail(), newUser.getFirstName());
         return this.userRepository.save(newUser);
     }
 

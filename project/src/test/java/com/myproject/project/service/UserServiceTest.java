@@ -6,24 +6,17 @@ import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.enums.RoleEnum;
 import com.myproject.project.model.mapper.UserMapper;
-import com.myproject.project.model.user.AppUserDetails;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +35,8 @@ class UserServiceTest {
     private UserDetailsService userDetailsServiceMock;
     @Mock
     private UserMapper userMapperMock;
+    @Mock
+    private EmailService emailService;
     private UserService toTest;
 
     private UserEntity testUserEntity;
@@ -51,7 +46,7 @@ class UserServiceTest {
         toTest = new UserService(passwordEncoderMock,
                 userRepositoryMock,
                 userDetailsServiceMock,
-                userMapperMock);
+                userMapperMock, emailService);
 
         testUserEntity = new UserEntity()
                 .setEmail("test@example.com")
