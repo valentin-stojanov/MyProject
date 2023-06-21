@@ -20,7 +20,7 @@ public class UserRegistrationDto {
     @UniqueUserEmail(message = "The email is already occupied")
     private String email;
 
-    @NotNull(message = "Age must not be empty.")
+//    @NotNull(message = "Age must not be empty.") - not needed.
     @Positive(message = "Age must be positive.")
     @Max(value = 100, message = "Max age is 100.")
     private Integer age;
