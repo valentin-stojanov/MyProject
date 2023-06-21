@@ -43,8 +43,8 @@ public class UserRegistrationController {
             return "redirect:/users/register";
         }
 
-        UserEntity newUser = this.userService.registerUser(userRegistrationModel);
-        this.userService.login(newUser.getEmail());
+        String newUserEmail = this.userService.registerUser(userRegistrationModel);
+        this.userService.login(newUserEmail);
 
         return "redirect:/";
     }
