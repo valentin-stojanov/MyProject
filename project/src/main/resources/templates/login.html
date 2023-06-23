@@ -1,55 +1,121 @@
+<!doctype html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Log-in</title>
     <div th:replace="fragments/head"></div>
+    <title>Login</title>
 </head>
 <body>
+<div class="background">
+    <!--Navbar-->
+    <section th:replace="fragments/navigation"></section>
 
-<div class="container">
-    <h2 class="text-center text-white">Login</h2>
-    <form th:action="@{/users/login}"
-          th:method="post"
-          class="main-form mx-auto col-md-4 d-flex flex-column justify-content-center">
-        <div class="form-group">
-            <label for="username" class="text-white font-weight-bold">Email</label>
-            <input
-                    th:value="${username}"
-                    id="username"
-                    name="username"
-                    type="text"
-                    min="2"
-                    max="50"
-                    class="form-control"
-                    placeholder="Email"/>
-        </div>
-        <div class="form-group">
-            <label for="password" class="text-white font-weight-bold">Password</label>
-            <input
-                    value="topsecret"
-                    id="password"
-                    name="password"
-                    type="password"
-                    min="2"
-                    max="20" class="form-control"
-                    placeholder="Password"/>
-        </div>
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row gx-lg-5 align-items-center mb-5">
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
-        <p th:if="${bad_credentials}" class="errors alert alert-danger">
-            Invalid email or password.
-        </p>
+                <div class="card bg-glass">
+                    <div class="card-body px-4 py-5 px-md-5">
+                        <form th:action="@{/users/login}"
+                              th:method="post">
+                           <!-- Email input -->
+                            <div class="form-outline mb-4">
+                                <input th:value="${username}"
+                                       id="username"
+                                       name="username"
+                                       type="text"
+                                       min="2"
+                                       max="50"
+                                       class="form-control"
+                                       placeholder="Email">
+                                <label class="form-label" for="username">Email</label>
+                            </div>
 
-        <div class="row">
-            <div class="col col-md-4">
-                <div class="button-holder d-flex">
-                    <input type="submit" class="btn btn-info btn-lg" value="Login"/>
+                            <!-- Password input -->
+                            <div class="form-outline mb-4">
+                                <input value="topsecret"
+                                       id="password"
+                                       name="password"
+                                       type="password"
+                                       min="2"
+                                       max="20" class="form-control"
+                                       placeholder="Password">
+                                <label class="form-label" for="password">Password</label>
+                            </div>
+                            <p th:if="${bad_credentials}" class="errors alert alert-danger">
+                                Invalid email or password.
+                            </p>
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-3">
+                                Sign in
+                            </button>
+                        </form>
+
+                        <div class="row my-2">
+                            <a class="my-2" data-bs-toggle="collapse" href="#forgotPassword" role="button" aria-expanded="false" aria-controls="forgotPassword">
+                                Forgot password?
+                            </a>
+                            <div class="collapse" id="forgotPassword">
+                                <form th:action="@{/users/resset-password}"
+                                      th:method="post">
+                                    <!-- Email input -->
+                                    <div class="form-outline mb-1">
+                                        <input th:value="${email}"
+                                               id="email"
+                                               name="email"
+                                               type="email"
+                                               min="2"
+                                               max="50"
+                                               class="form-control"
+                                               placeholder="Email">
+                                        <label class="form-label" for="email">Email</label>
+                                    </div>
+                                    <p th:if="${invalid_email}" class="errors alert alert-danger">
+                                        Provided email doesn't exist.
+                                    </p>
+                                    <!-- Submit button -->
+                                    <button type="submit" class="btn btn-primary btn-block mb-4">
+                                        Submit email
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Register buttons -->
+                        <div class="text-center">
+                            <p class="text-primary">or sign up with:</p>
+                            <a th:href="@{/oauth2/authorization/google}" type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-google"></i>
+                            </a>
+                            <a th:href="@{/oauth2/authorization/github}" type="button" class="btn btn-link btn-floating mx-1">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div><div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+            <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                Find amazing <br>
+                <span style="color: hsl(218, 81%, 75%)">routes!</span>
+            </h1>
+            <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                Temporibus, expedita iusto veniam atque, magni tempora mollitia
+                dolorum consequatur nulla, neque debitis eos reprehenderit quasi
+                ab ipsum nisi dolorem modi. Quos?
+            </p>
         </div>
-    </form>
+        </div>
+    </div>
 </div>
 
-<!--Footer-->
+
+
 <div th:replace="fragments/footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+</script>
 </body>
 </html>

@@ -31,6 +31,9 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleEntity> roles = new ArrayList<>();
 
+    @OneToOne
+    private PasswordResetTokenEntity passwordResetToken;
+
     public Long getId() {
         return id;
     }
