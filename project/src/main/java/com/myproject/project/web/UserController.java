@@ -2,6 +2,7 @@ package com.myproject.project.web;
 
 import com.myproject.project.model.dto.UserResetEmailDto;
 import com.myproject.project.model.dto.UserViewModel;
+import com.myproject.project.service.EmailService;
 import com.myproject.project.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,10 +10,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -22,13 +20,17 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
+
     @ModelAttribute("userResetEmailModel")
     public UserResetEmailDto initUserResetEmailModel(){
         return new UserResetEmailDto();
     }
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/login")
@@ -57,11 +59,21 @@ public class UserController {
                     .addFlashAttribute("org.springframework.validation.BindingResult.userResetEmailModel", bindingResult);
             return "redirect:/users/login";
         }
+
 //        TODO: password reset logic
+        this.userService.generatePasswordResetToken(userResetEmailModel.getEmail());
+        String resetUrl = this.userService.generateResetUrl(userResetEmailModel.getEmail());
+        this.emailService.sendResetPasswordEmail(userResetEmailModel.getEmail(), resetUrl);
 
         redirectAttributes
                 .addFlashAttribute("valid_email", true);
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/reset-password/reset")
+    public String onResetPassword(@RequestParam("token") String token){
+
+        return "reset-password";
     }
 
     @GetMapping("/profile")

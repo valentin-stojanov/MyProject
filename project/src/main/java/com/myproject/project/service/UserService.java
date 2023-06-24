@@ -2,8 +2,10 @@ package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserViewModel;
+import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.mapper.UserMapper;
+import com.myproject.project.repository.PasswordResetTokenRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,9 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -26,16 +30,19 @@ public class UserService {
     private final UserDetailsService userDetailsService;
     private final UserMapper userMapper;
     private final EmailService emailService;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
                        UserDetailsService userDetailsService,
-                       UserMapper userMapper, EmailService emailService) {
+                       UserMapper userMapper, EmailService emailService,
+                       PasswordResetTokenRepository passwordResetTokenRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
         this.userMapper = userMapper;
         this.emailService = emailService;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     public String registerUserIfNotExist(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -130,5 +137,26 @@ public class UserService {
         }
 
         return userEntity;
+    }
+
+    public void generatePasswordResetToken(String email) {
+        PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
+                .setResetToken(UUID.randomUUID().toString())
+                .setCreated(LocalDateTime.now());
+
+        PasswordResetTokenEntity userResetToken = this.passwordResetTokenRepository.save(passwordResetToken);
+        UserEntity user = this.userRepository
+                .findByEmail(email)
+                .orElseThrow()
+                .setPasswordResetToken(userResetToken);
+
+        this.userRepository.save(user);
+    }
+
+    public String generateResetUrl(String email) {
+        UserEntity user = this.userRepository.findByEmail(email).get();
+        String resetToken = user.getPasswordResetToken().getResetToken();
+
+        return  "http://localhost:8080/users/reset-password/reset?token=" + resetToken;
     }
 }

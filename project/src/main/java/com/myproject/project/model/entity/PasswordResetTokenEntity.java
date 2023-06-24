@@ -2,11 +2,15 @@ package com.myproject.project.model.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "password_reset_token")
 public class PasswordResetTokenEntity {
 
+//   private static String generateToken(){
+//        return UUID.randomUUID().toString();
+//    }
     @Id
     @SequenceGenerator(name = "password_reset_token_id_seq",
             allocationSize = 10)
@@ -18,29 +22,35 @@ public class PasswordResetTokenEntity {
     private LocalDateTime created;
 
     public PasswordResetTokenEntity() {
+//        this.resetToken = generateToken();
+//        this.created = LocalDateTime.now();
     }
+
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public PasswordResetTokenEntity setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getResetToken() {
         return resetToken;
     }
 
-    public void setResetToken(String resetToken) {
+    public PasswordResetTokenEntity setResetToken(String resetToken) {
         this.resetToken = resetToken;
+        return this;
     }
 
     public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public PasswordResetTokenEntity setCreated(LocalDateTime created) {
         this.created = created;
+        return this;
     }
 }

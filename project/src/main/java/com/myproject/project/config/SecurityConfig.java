@@ -35,6 +35,7 @@ public class SecurityConfig {
                         "/users/login",
                         "/users/register",
                         "/users/reset-password",
+                        "/users/reset-password/reset/**",
                         "/route").permitAll().
                 // all other pages are available for logger in users
                         anyRequest().
@@ -62,7 +63,7 @@ public class SecurityConfig {
                 // invalidate the session and delete the cookies
                         invalidateHttpSession(true).
                 deleteCookies("JSESSIONID").
-            and().
+                and().
                 oauth2Login().
                 loginPage("/users/login").
                 successHandler(oAuthSuccessHandler);

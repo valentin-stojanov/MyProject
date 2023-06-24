@@ -34,6 +34,15 @@ public class UserEntity {
     @OneToOne
     private PasswordResetTokenEntity passwordResetToken;
 
+    public PasswordResetTokenEntity getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public UserEntity setPasswordResetToken(PasswordResetTokenEntity passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
