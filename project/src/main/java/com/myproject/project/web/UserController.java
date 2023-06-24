@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
 
 @Controller
@@ -23,7 +22,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    @ModelAttribute("userResetEmailDto")
+    @ModelAttribute("userResetEmailModel")
     public UserResetEmailDto initUserResetEmailModel(){
         return new UserResetEmailDto();
     }
@@ -47,14 +46,21 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@Valid UserResetEmailDto userResetEmailDto,
+    public String resetPassword(@Valid UserResetEmailDto userResetEmailModel,
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()){
-
+            redirectAttributes
+                    .addFlashAttribute("userResetEmailModel", userResetEmailModel)
+                    .addFlashAttribute("invalid_email", true)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userResetEmailModel", bindingResult);
+            return "redirect:/users/login";
         }
+//        TODO: password reset logic
 
+        redirectAttributes
+                .addFlashAttribute("valid_email", true);
         return "redirect:/users/login";
     }
 

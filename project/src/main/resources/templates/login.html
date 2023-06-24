@@ -54,6 +54,21 @@
                         </form>
 
                         <div class="row my-2">
+<!--                            Email errors-->
+                            <small th:if="${invalid_email}"
+                                   id="emailError"
+                                   class="errors  form-text bg-danger rounded text-white">
+                                <div th:each="err : ${#fields.errors('userResetEmailModel.email')}"
+                                     th:text="${err}">Email errors.
+                                </div>
+                            </small>
+<!--                            Valid email-->
+                            <small th:if="${valid_email}"
+                                   id="validEmail"
+                                   class="success  form-text bg-success rounded text-white">
+                                Please check your email for a password reset message that we have sent.
+                            </small>
+
                             <a class="my-2" data-bs-toggle="collapse" href="#forgotPassword" role="button" aria-expanded="false" aria-controls="forgotPassword">
                                 Forgot password?
                             </a>
@@ -62,26 +77,26 @@
                                       th:method="post">
                                     <!-- Email input -->
                                     <div class="form-outline mb-1">
-                                        <input th:value="${email}"
+                                        <input th:field="${userResetEmailModel.email}"
+                                               th:errorclass="is-invalid"
                                                id="email"
                                                name="email"
                                                type="email"
                                                min="2"
                                                max="50"
+                                               required
                                                class="form-control"
                                                placeholder="Email">
-                                        <label class="form-label" for="email">Email</label>
                                     </div>
-                                    <p th:if="${invalid_email}" class="errors alert alert-danger">
-                                        Provided email doesn't exist.
-                                    </p>
-                                    <!-- Submit button -->
+<!--                                     Submit button-->
                                     <button type="submit" class="btn btn-primary btn-block mb-4">
                                         Submit email
                                     </button>
+
                                 </form>
                             </div>
                         </div>
+
                         <!-- Register buttons -->
                         <div class="text-center">
                             <p class="text-primary">or sign up with:</p>

@@ -34,6 +34,7 @@ public class SecurityConfig {
 //                        "/login/oauth2/code/google",
                         "/users/login",
                         "/users/register",
+                        "/users/reset-password",
                         "/route").permitAll().
                 // all other pages are available for logger in users
                         anyRequest().
