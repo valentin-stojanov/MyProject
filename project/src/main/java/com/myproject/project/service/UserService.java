@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
+import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.UserEntity;
@@ -158,5 +159,17 @@ public class UserService {
         String resetToken = user.getPasswordResetToken().getResetToken();
 
         return  "http://localhost:8080/users/reset-password/reset/" + resetToken;
+    }
+
+    public void resetPasswordWithResetToken(String token, UserResetPasswordDto userResetPasswordDto){
+        Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token);
+
+        if (optionalUserEntity.isEmpty()){
+            throw new IllegalStateException("User doesn't found");
+        }
+        UserEntity user = optionalUserEntity.get();
+        user.setPassword(this.passwordEncoder.encode(userResetPasswordDto.getPassword()));
+        this.userRepository.save(user);
+
     }
 }

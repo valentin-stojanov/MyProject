@@ -1,6 +1,7 @@
 package com.myproject.project.web;
 
 import com.myproject.project.model.dto.UserResetEmailDto;
+import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.service.EmailService;
 import com.myproject.project.service.UserService;
@@ -77,18 +78,17 @@ public class UserController {
     }
 
     @PostMapping("/reset-password/reset/{token}")
-    public String onResetPassword(@PathVariable("token") String token){
-
-        System.out.println(token);
-        return "redirect:redirect:/users/login";
+    public String onResetPassword(@PathVariable("token") String token,
+                                  @Valid UserResetPasswordDto userResetPasswordDto){
+        //TODO: check token expiration
+        this.userService.resetPasswordWithResetToken(token, userResetPasswordDto);
+        return "redirect:/users/login";
     }
 
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails){
-
         UserViewModel userViewModel = this.userService.getUserInfo(userDetails.getUsername());
-
         model.addAttribute("userView", userViewModel);
         return "profileN";
     }
