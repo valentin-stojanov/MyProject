@@ -70,11 +70,19 @@ public class UserController {
         return "redirect:/users/login";
     }
 
-    @GetMapping("/reset-password/reset")
-    public String onResetPassword(@RequestParam("token") String token){
-
+    @GetMapping("/reset-password/reset/{token}")
+    public String onResetPassword(@PathVariable("token") String token, Model model){
+        model.addAttribute("resetToken", token);
         return "reset-password";
     }
+
+    @PostMapping("/reset-password/reset/{token}")
+    public String onResetPassword(@PathVariable("token") String token){
+
+        System.out.println(token);
+        return "redirect:redirect:/users/login";
+    }
+
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails){

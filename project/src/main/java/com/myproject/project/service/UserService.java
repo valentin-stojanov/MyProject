@@ -157,6 +157,6 @@ public class UserService {
         UserEntity user = this.userRepository.findByEmail(email).get();
         String resetToken = user.getPasswordResetToken().getResetToken();
 
-        return  "http://localhost:8080/users/reset-password/reset?token=" + resetToken;
+        return  "http://localhost:8080/users/reset-password/reset/" + resetToken;
     }
 }
