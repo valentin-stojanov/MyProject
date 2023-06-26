@@ -158,18 +158,26 @@ public class UserService {
         UserEntity user = this.userRepository.findByEmail(email).get();
         String resetToken = user.getPasswordResetToken().getResetToken();
 
-        return  "http://localhost:8080/users/reset-password/reset/" + resetToken;
+        return "http://localhost:8080/users/reset-password/reset/" + resetToken;
     }
 
-    public void resetPasswordWithResetToken(String token, UserResetPasswordDto userResetPasswordDto){
-        Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token);
+    public void resetPasswordWithResetToken(String token, UserResetPasswordDto userResetPasswordDto) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        int tokenExpirationSeconds = 15 * 60;
 
-        if (optionalUserEntity.isEmpty()){
-            throw new IllegalStateException("User doesn't found");
+        Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token, currentTime, tokenExpirationSeconds);
+
+        if (optionalUserEntity.isEmpty()) {
+            throw new IllegalStateException("User doesn't found or expired token");
         }
+
         UserEntity user = optionalUserEntity.get();
         user.setPassword(this.passwordEncoder.encode(userResetPasswordDto.getPassword()));
         this.userRepository.save(user);
+
+    }
+
+    public void validatePasswordResetToken(String token) {
 
     }
 }

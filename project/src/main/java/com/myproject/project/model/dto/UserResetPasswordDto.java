@@ -30,4 +30,12 @@ public class UserResetPasswordDto {
         this.confirmPassword = confirmPassword;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "UserResetPasswordDto{" +
+                "password='" + "[PROTECTED]" + '\'' +
+                ", confirmPassword='" + "[PROTECTED]" + '\'' +
+                '}';
+    }
 }
