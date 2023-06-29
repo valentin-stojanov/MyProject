@@ -61,8 +61,6 @@ public class UserController {
             return "redirect:/users/login";
         }
 
-//        TODO: password reset logic
-        this.userService.generatePasswordResetToken(userResetEmailModel.getEmail());
         String resetUrl = this.userService.generateResetUrl(userResetEmailModel.getEmail());
         this.emailService.sendResetPasswordEmail(userResetEmailModel.getEmail(), resetUrl);
 

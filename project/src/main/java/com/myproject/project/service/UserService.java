@@ -140,7 +140,7 @@ public class UserService {
         return userEntity;
     }
 
-    public void generatePasswordResetToken(String email) {
+    public UserEntity generatePasswordResetTokenForUser(String email) {
         PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
                 .setResetToken(UUID.randomUUID().toString())
                 .setCreated(LocalDateTime.now());
@@ -151,11 +151,12 @@ public class UserService {
                 .orElseThrow()
                 .setPasswordResetToken(userResetToken);
 
-        this.userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
     public String generateResetUrl(String email) {
-        UserEntity user = this.userRepository.findByEmail(email).get();
+
+        UserEntity user = generatePasswordResetTokenForUser(email);
         String resetToken = user.getPasswordResetToken().getResetToken();
 
         return "http://localhost:8080/users/reset-password/reset/" + resetToken;
