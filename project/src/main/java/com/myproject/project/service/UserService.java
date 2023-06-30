@@ -164,12 +164,12 @@ public class UserService {
 
     public void resetPasswordWithResetToken(String token, UserResetPasswordDto userResetPasswordDto) {
         LocalDateTime currentTime = LocalDateTime.now();
-        int tokenExpirationSeconds = 15 * 60;
+        int tokenExpirationSeconds = 15;
 
         Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token, currentTime, tokenExpirationSeconds);
 
         if (optionalUserEntity.isEmpty()) {
-            throw new IllegalStateException("User doesn't found or expired token");
+            throw new IllegalStateException("Invalid token");
         }
 
         UserEntity user = optionalUserEntity.get();

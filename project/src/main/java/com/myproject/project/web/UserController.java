@@ -28,6 +28,11 @@ public class UserController {
         return new UserResetEmailDto();
     }
 
+    @ModelAttribute("userResetPasswordModel")
+    public UserResetPasswordDto initUserResetPasswordModel(){
+        return new UserResetPasswordDto();
+    }
+
     public UserController(UserService userService,
                           EmailService emailService) {
         this.userService = userService;
@@ -77,9 +82,18 @@ public class UserController {
 
     @PostMapping("/reset-password/reset/{token}")
     public String onResetPassword(@PathVariable("token") String token,
-                                  @Valid UserResetPasswordDto userResetPasswordDto){
+                                  @Valid UserResetPasswordDto userResetPasswordModel,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()){
+            redirectAttributes
+                    .addFlashAttribute("userResetPasswordModel", userResetPasswordModel)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userResetPasswordModel", bindingResult);
+
+            return "redirect:/users/reset-password/reset/{token}";
+        }
         //TODO: check token expiration
-        this.userService.resetPasswordWithResetToken(token, userResetPasswordDto);
+        this.userService.resetPasswordWithResetToken(token, userResetPasswordModel);
         return "redirect:/users/login";
     }
 
