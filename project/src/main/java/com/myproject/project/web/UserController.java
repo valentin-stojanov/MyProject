@@ -5,6 +5,7 @@ import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.service.EmailService;
 import com.myproject.project.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -92,7 +94,7 @@ public class UserController {
 
             return "redirect:/users/reset-password/reset/{token}";
         }
-        //TODO: check token expiration
+
         this.userService.resetPasswordWithResetToken(token, userResetPasswordModel);
         return "redirect:/users/login";
     }
@@ -105,4 +107,12 @@ public class UserController {
         return "profileN";
     }
 
+    @ExceptionHandler({IllegalStateException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView onIllegalState(IllegalStateException ise){
+        ModelAndView modelAndView = new ModelAndView("reset-password-error");
+        modelAndView.addObject("error", ise.getMessage());
+
+        return modelAndView;
+    }
 }
