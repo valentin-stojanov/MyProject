@@ -26,6 +26,8 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+
+    private final String OAUTH2_DEFAULT_PASSWORD = "OAuth2_authentication";
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
@@ -114,7 +116,7 @@ public class UserService {
                 .getPrincipal()
                 .getAttributes();
         UserEntity userEntity = new UserEntity()
-                .setPassword("OAuth2_authentication")
+                .setPassword(OAUTH2_DEFAULT_PASSWORD)
                 .setRoles(List.of());
 
         switch (clientRegistrationId) {
@@ -177,7 +179,15 @@ public class UserService {
 
     }
 
-    public void validatePasswordResetToken(String token) {
 
+    public void checkTypeOfRegistration(String email) {
+        int oAuth2_authentication = this.userRepository
+                .findByEmail(email)
+                .get()
+                .getPassword()
+                .compareTo(OAUTH2_DEFAULT_PASSWORD);
+        if (oAuth2_authentication == 0){
+            throw new IllegalStateException("Password reset is not applicable");
+        }
     }
 }

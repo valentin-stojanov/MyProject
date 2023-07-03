@@ -67,6 +67,7 @@ public class UserController {
                     .addFlashAttribute("org.springframework.validation.BindingResult.userResetEmailModel", bindingResult);
             return "redirect:/users/login";
         }
+        this.userService.checkTypeOfRegistration(userResetEmailModel.getEmail());
 
         String resetUrl = this.userService.generateResetUrl(userResetEmailModel.getEmail());
         this.emailService.sendResetPasswordEmail(userResetEmailModel.getEmail(), resetUrl);
@@ -94,7 +95,6 @@ public class UserController {
 
             return "redirect:/users/reset-password/reset/{token}";
         }
-
         this.userService.resetPasswordWithResetToken(token, userResetPasswordModel);
         return "redirect:/users/login";
     }
