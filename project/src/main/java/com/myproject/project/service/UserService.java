@@ -55,7 +55,6 @@ public class UserService {
 
         if (userOpt.isEmpty()) {
             UserEntity newUser = createUserEntityFromOAuth2AuthenticationToken(oAuth2AuthenticationToken);
-            register(newUser);
             return register(newUser);
         }
         return userOpt.get().getEmail();
@@ -164,7 +163,7 @@ public class UserService {
 
     public void resetPasswordWithResetToken(String token, UserResetPasswordDto userResetPasswordDto) {
         LocalDateTime currentTime = LocalDateTime.now();
-        int tokenExpirationSeconds = 15;
+        int tokenExpirationSeconds = 15 * 60;
 
         Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token, currentTime, tokenExpirationSeconds);
 
