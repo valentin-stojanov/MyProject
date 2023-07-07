@@ -142,15 +142,18 @@ public class UserService {
     }
 
     public UserEntity generatePasswordResetTokenForUser(String email) {
-        PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
-                .setResetToken(UUID.randomUUID().toString())
-                .setCreated(LocalDateTime.now());
-
-        PasswordResetTokenEntity userResetToken = this.passwordResetTokenRepository.save(passwordResetToken);
         UserEntity user = this.userRepository
                 .findByEmail(email)
-                .orElseThrow()
-                .setPasswordResetToken(userResetToken);
+                .orElseThrow();
+
+        PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
+                .setResetToken(UUID.randomUUID().toString())
+                .setCreated(LocalDateTime.now())
+                .setUser(user);
+
+        PasswordResetTokenEntity userResetToken = this.passwordResetTokenRepository.save(passwordResetToken);
+
+        user.setPasswordResetToken(userResetToken);
 
         return this.userRepository.save(user);
     }

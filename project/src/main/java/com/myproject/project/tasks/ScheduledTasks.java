@@ -10,20 +10,15 @@ import javax.transaction.Transactional;
 @Component
 public class ScheduledTasks {
 
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final UserRepository userRepository;
 
-    public ScheduledTasks(PasswordResetTokenRepository passwordResetTokenRepository, UserRepository userRepository) {
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
+    public ScheduledTasks(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Scheduled(cron = "0 * * * * ?", zone = "Europe/Sofia")
-    @Transactional
-    public void deleteAllExpiredPasswordResetTokens(){
-
+    public void deleteAllExpiredPasswordResetTokens() {
         int expirationTimeInSeconds = 60;
-
         this.userRepository.deleteExpiredPasswordResetToken(expirationTimeInSeconds);
     }
 }

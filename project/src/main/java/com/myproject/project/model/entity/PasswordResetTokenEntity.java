@@ -8,7 +8,7 @@ import java.util.UUID;
 @Table(name = "password_reset_token")
 public class PasswordResetTokenEntity {
 
-//   private static String generateToken(){
+    //   private static String generateToken(){
 //        return UUID.randomUUID().toString();
 //    }
     @Id
@@ -17,15 +17,23 @@ public class PasswordResetTokenEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "password_reset_token_id_seq")
     private long id;
-
     private String resetToken;
     private LocalDateTime created;
 
+    @OneToOne
+    private UserEntity user;
+
     public PasswordResetTokenEntity() {
-//        this.resetToken = generateToken();
-//        this.created = LocalDateTime.now();
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public PasswordResetTokenEntity setUser(UserEntity user) {
+        this.user = user;
+        return this;
+    }
 
     public long getId() {
         return id;
