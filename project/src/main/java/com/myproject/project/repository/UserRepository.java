@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByPasswordResetToken(@Param("token") String passwordResetToken,
                                                   @Param("currentTime") LocalDateTime currentTime,
                                                   @Param("tokenExpirationSeconds") int tokenExpirationSeconds);
-    
+
     @Modifying
     @Transactional
     @Query(value = "WITH updated_users AS " +
