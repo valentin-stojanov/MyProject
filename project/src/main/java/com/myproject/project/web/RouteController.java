@@ -3,6 +3,9 @@ package com.myproject.project.web;
 import com.myproject.project.model.dto.RouteAddDto;
 import com.myproject.project.model.dto.RouteViewModel;
 import com.myproject.project.service.RouteService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -34,10 +37,11 @@ public class RouteController {
     }
 
     @GetMapping()
-    public String routes(Model model){
+    public String routes(Model model,
+                         @PageableDefault(size = 2) Pageable pageable){
 
-        List<RouteViewModel> routeViewModels = this.routeService
-                .findAllRoutesView();
+        Page<RouteViewModel> routeViewModels = this.routeService
+                .findAllRoutesView(pageable);
         model.addAttribute("routes", routeViewModels);
 
         return "routesN";

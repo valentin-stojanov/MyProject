@@ -9,6 +9,8 @@ import com.myproject.project.model.mapper.RouteMapper;
 import com.myproject.project.repository.RouteRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -56,18 +58,16 @@ public class RouteService {
     }
 
     @Transactional//because pictures(List<PictureEntity>) in RouteEntity are lazy loaded.
-    public List<RouteViewModel> findAllRoutesView() {
+    public Page<RouteViewModel> findAllRoutesView(Pageable pageable) {
         return this.routeRepository
-                .findAll()
-                .stream()
+                .findAll(pageable)
                 .map(e -> new RouteViewModel()
                         .setId(e.getId())
                         .setName(e.getName())
                         .setPictureUrl(e.getPictures().isEmpty() ?
                                 DEFAULT_IMAGE_URL :
                                 e.getPictures().get(0).getUrl())
-                        .setDescription(e.getDescription()))
-                .collect(Collectors.toList());
+                        .setDescription(e.getDescription()));
     }
 
     @Transactional
