@@ -17,7 +17,7 @@
         </div>
         <div class="row justify-content-center mt-3">
             <div class="col-md-6"
-                 th:each="r : ${routes}"
+                 th:each="r : ${routes.getContent()}"
                  th:object="${r}">
                 <div class="card mb-3">
                     <img th:src="*{pictureUrl}"
@@ -30,6 +30,38 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:classappend="${routes.isFirst()} ? 'disabled' : ''"
+                           th:href="@{/routes(size=${routes.getSize()}, page=0)}">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:classappend="${routes.hasPrevious()} ? '' : 'disabled'"
+                           th:href="@{/routes(size=${routes.getSize()}, page=${routes.getNumber() - 1})}">Previous</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="#"
+                           th:text="${routes.getNumber() + 1}">Current</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:classappend="${routes.hasNext()} ? '' : 'disabled'"
+                           th:href="@{/routes(size=${routes.getSize()}, page=${routes.getNumber() + 1})}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           th:classappend="${routes.isLast()} ? 'disabled' : ''"
+                           th:href="@{/routes(size=${routes.getSize()}, page=${routes.getTotalPages() - 1})}">Last</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
