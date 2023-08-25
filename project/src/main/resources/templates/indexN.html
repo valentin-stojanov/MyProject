@@ -30,9 +30,77 @@
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-center align-items-center">
+            <h2>Weather</h2>
+
+            <div class="row align-items-center py-2">
+
+                <div class="input-group col-sm">
+                    <span class="input-group-text" id="basic-addon1">Lat</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            inputmode="numeric"
+                            id="latitude"
+                            placeholder="latitude"
+                            aria-label="latitude"
+                            aria-describedby="basic-addon1"
+                            value="42.98"
+                    />
+                </div>
+                <div class="input-group col-sm">
+                    <span class="input-group-text" id="basic-addon1">Lon</span>
+                    <input
+                            type="text"
+                            class="form-control"
+                            inputmode="numeric"
+                            id="longitude"
+                            placeholder="longitude"
+                            aria-label="longitude"
+                            aria-describedby="basic-addon1"
+                            value="-81.23"
+                    />
+                </div>
+                <div id="map"></div>
+                <div class="col-auto me-auto">
+                    <button id="btnGet" type="button" class="btn btn-primary mb-3">
+                        Get Weather
+                    </button>
+                    <button id="btnCurrent" type="button" class="btn btn-primary mb-3">
+                        Use Current Location
+                    </button>
+                </div>
+                <!-- results for weather data -->
+                <div class="weather row gx-2">
+                    <div class="col">
+                        <div class="card">
+                            <h5 class="card-title p-2">Date</h5>
+                            <img
+                                    src="http://openweathermap.org/img/wn/10d@4x.png"
+                                    class="card-img-top"
+                                    alt="Weather description"
+                            />
+                            <div class="card-body">
+                                <h3 class="card-title">Weather Label</h3>
+                                <p class="card-text">High Temp Low Temp</p>
+                                <p class="card-text">HighFeels like</p>
+                                <p class="card-text">Pressure</p>
+                                <p class="card-text">Humidty</p>
+                                <p class="card-text">UV Index</p>
+                                <p class="card-text">Precipitation</p>
+                                <p class="card-text">Dew Point</p>
+                                <p class="card-text">Wind speed and direction</p>
+                                <p class="card-text">Sunrise</p>
+                                <p class="card-text">Sunset</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
-
 </div>
 
 
@@ -42,6 +110,7 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
 <script th:src="@{/js/weather.js}"></script>
+<script th:src="@{/js/map.js}"></script>
 </body>
 
 </html>
