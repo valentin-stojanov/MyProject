@@ -45,18 +45,23 @@ const app = {
             timeout: 1000 * 10, //10 seconds
             maximumAge: 1000 * 60 * 5, //5 minutes
         };
-        navigator.geolocation.getCurrentPosition(app.ftw, app.wtf, opts);
+        navigator.geolocation.getCurrentPosition(app.gotPosition, app.positionFail, opts);
     },
-    ftw: (position) => {
+    gotPosition: (position) => {
         //got position
         document.getElementById('latitude').value =
             position.coords.latitude.toFixed(2);
         document.getElementById('longitude').value =
             position.coords.longitude.toFixed(2);
     },
-    wtf: (err) => {
+    positionFail: (err) => {
         //geolocation failed
-        console.error(err);
+        // let errors = {
+        //     1: 'No permission',
+        //     2: 'Unable to determine',
+        //     3: 'Took too long'
+        // }
+        console.error(err.message);
     },
     showWeather: (resp) => {
         console.log(resp);
