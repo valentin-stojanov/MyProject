@@ -11,7 +11,7 @@
     <div th:replace="fragments/navigation"></div>
 
     <div class="container-md">
-        <div class="row justify-content-center align-items-center">
+        <div class="row justify-content-center">
             <div class="col-md-5 my-5">
                 <div class="showcase">
                     <h1>Find amazing routes</h1>
@@ -19,83 +19,163 @@
                     <a th:href="@{/routes}" class="btn btn-success">To routes</a>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
 
             </div>
-            <div class="col-md-5 my-5 text-end">
-                <div class="top-box top-box-a">
-                    <h4>Времето в София</h4>
-                    <h4><span id="box-a-temp">15</span><span>&#8451;</span></h4>
-                    <img id="box-a-img" height="150px" alt="">
+            <div class="col-md-6 my-5 text-end">
+                <div class="row md-6" id="current-weather">
+                    <div class="col">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Today
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="http://openweathermap.org/img/wn/10d@4x.png"
+                                             class="img-fluid float-start" alt="Weather description" width="150"
+                                             height="150">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>36 ged</p>
+                                                <small>feels like</small>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <small>Precipitation</small>
+                                                <small>Humidity</small>
+                                                <small>Wind</small>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+
+                                                <small>max temp</small>
+                                                <small>min temp</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">Summary</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- 4-Day Forecast -->
+                <div class="row">
+                    <!-- Day 1 -->
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Day 1
+                            </div>
+                            <div class="card-body">
+                                <!-- Weather information here -->
+                                <p>Temperature: 25°C</p>
+                                <p>Condition: Sunny</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 2 -->
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Day 2
+                            </div>
+                            <div class="card-body">
+                                <!-- Weather information here -->
+                                <p>Temperature: 22°C</p>
+                                <p>Condition: Cloudy</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 3 -->
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Day 3
+                            </div>
+                            <div class="card-body">
+                                <!-- Weather information here -->
+                                <p>Temperature: 20°C</p>
+                                <p>Condition: Rainy</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Day 4 -->
+                    <div class="col-md-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Day 4
+                            </div>
+                            <div class="card-body">
+                                <!-- Weather information here -->
+                                <p>Temperature: 18°C</p>
+                                <p>Condition: Thunderstorms</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <div class="row justify-content-center align-items-center">
-            <h2>Weather</h2>
 
-            <div class="row align-items-center py-2">
-
-                <div class="input-group col-sm">
-                    <span class="input-group-text" id="basic-addon1">Lat</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            inputmode="numeric"
-                            id="latitude"
-                            placeholder="latitude"
-                            aria-label="latitude"
-                            aria-describedby="basic-addon1"
-                            value="42.98"
-                    />
-                </div>
-                <div class="input-group col-sm">
-                    <span class="input-group-text" id="basic-addon1">Lon</span>
-                    <input
-                            type="text"
-                            class="form-control"
-                            inputmode="numeric"
-                            id="longitude"
-                            placeholder="longitude"
-                            aria-label="longitude"
-                            aria-describedby="basic-addon1"
-                            value="-81.23"
-                    />
-                </div>
-                <div id="map"></div>
-                <div class="col-auto me-auto">
-                    <button id="btnGet" type="button" class="btn btn-primary mb-3">
-                        Get Weather
-                    </button>
-                    <button id="btnCurrent" type="button" class="btn btn-primary mb-3">
-                        Use Current Location
-                    </button>
-                </div>
-                <!-- results for weather data -->
-                <div class="weather row gx-2">
-                    <div class="col">
-                        <div class="card">
-                            <h5 class="card-title p-2">Date</h5>
-                            <img
-                                    src="http://openweathermap.org/img/wn/10d@4x.png"
-                                    class="card-img-top"
-                                    alt="Weather description"
+            <div class="row py-2">
+                <div class="col-md-6">
+                    <div class="row py-2">
+                        <div class="input-group col-sm">
+                            <span class="input-group-text" id="basic-addon1">Lat</span>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    inputmode="numeric"
+                                    id="latitude"
+                                    placeholder="latitude"
+                                    aria-label="latitude"
+                                    aria-describedby="basic-addon1"
+                                    value="42.98"
                             />
-                            <div class="card-body">
-                                <h3 class="card-title">Weather Label</h3>
-                                <p class="card-text">High Temp Low Temp</p>
-                                <p class="card-text">HighFeels like</p>
-                                <p class="card-text">Pressure</p>
-                                <p class="card-text">Humidty</p>
-                                <p class="card-text">UV Index</p>
-                                <p class="card-text">Precipitation</p>
-                                <p class="card-text">Dew Point</p>
-                                <p class="card-text">Wind speed and direction</p>
-                                <p class="card-text">Sunrise</p>
-                                <p class="card-text">Sunset</p>
-                            </div>
+                        </div>
+                        <div class="input-group col-sm">
+                            <span class="input-group-text" id="basic-addon1">Lon</span>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    inputmode="numeric"
+                                    id="longitude"
+                                    placeholder="longitude"
+                                    aria-label="longitude"
+                                    aria-describedby="basic-addon1"
+                                    value="-81.23"
+                            />
                         </div>
                     </div>
+                    <div class="row">
+                        <div id="map"></div>
+                        <div class="col py-2">
+                            <button id="btnGet" type="button" class="btn btn-primary mb-3">
+                                Get Weather
+                            </button>
+                            <button id="btnCurrent" type="button" class="btn btn-primary mb-3">
+                                Use Current Location
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
                 </div>
             </div>
         </div>
