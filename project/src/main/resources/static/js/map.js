@@ -1,4 +1,4 @@
-let map = L.map('map').setView([42.76, 25.23], 8);
+let map = L.map('map').setView([42.76, 25.23], 7);
 
 let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

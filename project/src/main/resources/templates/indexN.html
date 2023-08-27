@@ -17,6 +17,49 @@
                     <h1>Find amazing routes</h1>
                     <p>Sick of staying at home, sick of limitations? Be free! Find a route and enjoy nature!</p>
                     <a th:href="@{/routes}" class="btn btn-success">To routes</a>
+                    <div class="row justify-content-center align-items-center">
+                        <div class="row py-2">
+                            <div class="col">
+                                <div class="row py-2">
+                                    <div class="input-group col-sm">
+                                        <span class="input-group-text">Lat</span>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                inputmode="numeric"
+                                                id="latitude"
+                                                placeholder="latitude"
+                                                aria-label="latitude"
+                                                value="42.70"
+                                        />
+                                    </div>
+                                    <div class="input-group col-sm">
+                                        <span class="input-group-text">Lon</span>
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                inputmode="numeric"
+                                                id="longitude"
+                                                placeholder="longitude"
+                                                aria-label="longitude"
+                                                value="23.32"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div id="map"></div>
+                                    <div class="col py-2">
+                                        <button id="btnGet" type="button" class="btn btn-primary mb-3">
+                                            Get Weather
+                                        </button>
+                                        <button id="btnCurrent" type="button" class="btn btn-primary mb-3">
+                                            Use Current Location
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-1">
@@ -68,7 +111,7 @@
                 </div>
 
                 <!-- 4-Day Forecast -->
-                <div class="row">
+                <div class="row" id="weather-forecast">
                     <!-- Day 1 -->
                     <div class="col-md-3">
                         <div class="card mb-4">
@@ -82,104 +125,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Day 2 -->
-                    <div class="col-md-3">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Day 2
-                            </div>
-                            <div class="card-body">
-                                <!-- Weather information here -->
-                                <p>Temperature: 22°C</p>
-                                <p>Condition: Cloudy</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 3 -->
-                    <div class="col-md-3">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Day 3
-                            </div>
-                            <div class="card-body">
-                                <!-- Weather information here -->
-                                <p>Temperature: 20°C</p>
-                                <p>Condition: Rainy</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 4 -->
-                    <div class="col-md-3">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                Day 4
-                            </div>
-                            <div class="card-body">
-                                <!-- Weather information here -->
-                                <p>Temperature: 18°C</p>
-                                <p>Condition: Thunderstorms</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row justify-content-center align-items-center">
-
-            <div class="row py-2">
-                <div class="col-md-6">
-                    <div class="row py-2">
-                        <div class="input-group col-sm">
-                            <span class="input-group-text" id="basic-addon1">Lat</span>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    inputmode="numeric"
-                                    id="latitude"
-                                    placeholder="latitude"
-                                    aria-label="latitude"
-                                    aria-describedby="basic-addon1"
-                                    value="42.98"
-                            />
-                        </div>
-                        <div class="input-group col-sm">
-                            <span class="input-group-text" id="basic-addon1">Lon</span>
-                            <input
-                                    type="text"
-                                    class="form-control"
-                                    inputmode="numeric"
-                                    id="longitude"
-                                    placeholder="longitude"
-                                    aria-label="longitude"
-                                    aria-describedby="basic-addon1"
-                                    value="-81.23"
-                            />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div id="map"></div>
-                        <div class="col py-2">
-                            <button id="btnGet" type="button" class="btn btn-primary mb-3">
-                                Get Weather
-                            </button>
-                            <button id="btnCurrent" type="button" class="btn btn-primary mb-3">
-                                Use Current Location
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
