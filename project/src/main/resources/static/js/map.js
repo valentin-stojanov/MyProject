@@ -46,12 +46,12 @@ const trackBtn = document.getElementById("btnTrack");
 const stopTrackBtn = document.getElementById("stopTrackBtn");
 
 trackBtn.addEventListener("click", startTracking);
-stopTrackBtn.addEventListener("click", stopTartTracking);
+stopTrackBtn.addEventListener("click", stopTracking);
 
 let positions = [];
 const HIGH_ACCURACY = true;
-const MAX_CACHE_AGE_MILLISECOND = 30000;
-const MAX_NEW_POSITION_MILLISECOND = 5000;
+const MAX_CACHE_AGE_MILLISECOND = 0;
+const MAX_NEW_POSITION_MILLISECOND = 500;
 
 const options = {
     enableHighAccuracy: HIGH_ACCURACY,
@@ -63,7 +63,7 @@ let watchPositionHandlerId;
 
 function startTracking() {
     console.log("track track ...")
-    watchPositionHandlerId = navigator.geolocation.watchPosition(positionSuccess, positionFailure);
+    watchPositionHandlerId = navigator.geolocation.watchPosition(positionSuccess, positionFailure, options);
     console.log(watchPositionHandlerId)
 }
 
@@ -86,6 +86,6 @@ function positionFailure(err) {
     console.error(`ERROR(${err.code}): ${err.message}`)
 }
 
-function stopTartTracking() {
+function stopTracking() {
     navigator.geolocation.clearWatch(watchPositionHandlerId);
 }
