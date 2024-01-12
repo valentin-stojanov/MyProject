@@ -170,7 +170,7 @@ public class UserService {
         LocalDateTime currentTime = LocalDateTime.now();
         int tokenExpirationSeconds = 15 * 60;
 
-        Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token, currentTime, tokenExpirationSeconds);
+        Optional<UserEntity> optionalUserEntity = this.userRepository.findByPasswordResetToken(token, currentTime);
 
         if (optionalUserEntity.isEmpty()) {
             throw new IllegalStateException("Invalid token");

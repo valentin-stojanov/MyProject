@@ -1,11 +1,8 @@
 package com.myproject.project.tasks;
 
-import com.myproject.project.repository.PasswordResetTokenRepository;
 import com.myproject.project.repository.UserRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import javax.transaction.Transactional;
 
 @Component
 public class ScheduledTasks {

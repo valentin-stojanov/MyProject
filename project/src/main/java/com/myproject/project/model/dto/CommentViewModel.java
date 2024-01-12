@@ -1,7 +1,5 @@
 package com.myproject.project.model.dto;
 
-import net.bytebuddy.asm.Advice;
-
 import java.time.LocalDateTime;
 
 public class CommentViewModel {

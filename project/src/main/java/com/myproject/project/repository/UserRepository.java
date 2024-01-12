@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -15,14 +15,12 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
-    @Query("SELECT u FROM UserEntity AS u " +
-            "INNER JOIN u.passwordResetToken " +
-            "AS t " +
-            "WHERE t.resetToken = :token AND " +
-            "EXTRACT(EPOCH FROM ( :currentTime - t.created )) <= :tokenExpirationSeconds")
+    @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.passwordResetToken " +
+            "WHERE u.passwordResetToken.resetToken = :token AND " +
+            "u.passwordResetToken.created < :currentTime")
     Optional<UserEntity> findByPasswordResetToken(@Param("token") String passwordResetToken,
-                                                  @Param("currentTime") LocalDateTime currentTime,
-                                                  @Param("tokenExpirationSeconds") int tokenExpirationSeconds);
+                                                             @Param("currentTime") LocalDateTime currentTime);
+
 
     @Modifying
     @Transactional

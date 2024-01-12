@@ -1,7 +1,6 @@
 package com.myproject.project.web;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
-import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/users")

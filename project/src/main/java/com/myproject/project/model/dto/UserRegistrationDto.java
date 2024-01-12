@@ -3,7 +3,7 @@ package com.myproject.project.model.dto;
 import com.myproject.project.model.validation.FieldsMatch;
 import com.myproject.project.model.validation.UniqueUserEmail;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @FieldsMatch(firstField = "password", secondField = "confirmPassword", message = "Passwords do not match!")
 public class UserRegistrationDto {

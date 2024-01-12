@@ -2,8 +2,8 @@ package com.myproject.project.model.validation;
 
 import com.myproject.project.repository.UserRepository;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class ExistingUserEmailValidator implements ConstraintValidator<ExistingUserEmail, String> {
 

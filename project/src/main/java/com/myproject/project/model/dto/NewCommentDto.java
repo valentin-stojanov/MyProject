@@ -1,7 +1,7 @@
 package com.myproject.project.model.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class NewCommentDto {
     @NotBlank

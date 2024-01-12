@@ -2,7 +2,7 @@ package com.myproject.project.model.entity;
 
 import com.myproject.project.model.enums.RouteCategoryEnum;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "categories")

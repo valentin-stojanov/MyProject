@@ -1,7 +1,6 @@
 package com.myproject.project.model.entity;
 
-import javax.persistence.*;
-import java.awt.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity

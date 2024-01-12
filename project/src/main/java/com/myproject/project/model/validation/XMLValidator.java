@@ -3,8 +3,8 @@ package com.myproject.project.model.validation;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;

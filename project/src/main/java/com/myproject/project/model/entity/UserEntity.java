@@ -1,8 +1,8 @@
 package com.myproject.project.model.entity;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
