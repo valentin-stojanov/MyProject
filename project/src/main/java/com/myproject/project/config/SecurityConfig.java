@@ -7,18 +7,11 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Configuration
 public class SecurityConfig {
@@ -69,9 +62,6 @@ public class SecurityConfig {
                 )
                 // configure OAuth2
                 .oauth2Login((oauth2Login) -> oauth2Login
-                        .userInfoEndpoint((userInfo) -> userInfo
-                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
-                        )
                         .successHandler(oAuthSuccessHandler)
                 );
 
@@ -88,29 +78,4 @@ public class SecurityConfig {
         return new AppUserDetailsService(userRepository);
     }
 
-    private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
-            authorities.forEach((authority) -> {
-                GrantedAuthority mappedAuthority;
-
-                if (authority instanceof OidcUserAuthority) {
-                    OidcUserAuthority userAuthority = (OidcUserAuthority) authority;
-                    mappedAuthority = new OidcUserAuthority(
-                            "OIDC_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
-                } else if (authority instanceof OAuth2UserAuthority) {
-                    OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
-                    mappedAuthority = new OAuth2UserAuthority(
-                            "OAUTH2_USER", userAuthority.getAttributes());
-                } else {
-                    mappedAuthority = authority;
-                }
-
-                mappedAuthorities.add(mappedAuthority);
-            });
-
-            return mappedAuthorities;
-        };
-    }
 }
