@@ -2,6 +2,7 @@ package com.myproject.project.config;
 
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.AppUserDetailsService;
+import com.myproject.project.service.OAuthSuccessHandler;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,8 @@ import java.util.Set;
 @Configuration
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           OAuthSuccessHandler oAuthSuccessHandler) throws Exception {
 
         http.
                 // define which requests are allowed and which not
@@ -32,7 +34,6 @@ public class SecurityConfig {
                                                 requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().
                                         // everyone can log in and register
                                                 requestMatchers("/",
-//                        "/login/oauth2/code/google",
                                                 "/users/login",
                                                 "/users/register",
                                                 "/users/reset-password",
@@ -44,7 +45,6 @@ public class SecurityConfig {
                 ).
                 // configuration of form login
                         formLogin((formLogin) ->
-
                         formLogin.
                                 // the custom login form
                                         loginPage("/users/login").
@@ -67,15 +67,16 @@ public class SecurityConfig {
                                 // invalidate the session and delete the cookies
                                         invalidateHttpSession(true)
                 )
+                // configure OAuth2
                 .oauth2Login((oauth2Login) -> oauth2Login
                         .userInfoEndpoint((userInfo) -> userInfo
                                 .userAuthoritiesMapper(grantedAuthoritiesMapper())
                         )
+                        .successHandler(oAuthSuccessHandler)
                 );
 
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
