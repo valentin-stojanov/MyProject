@@ -15,7 +15,7 @@ public class ScheduledTasks {
 
     @Scheduled(cron = "0 * * * * ?", zone = "Europe/Sofia")
     public void deleteAllExpiredPasswordResetTokens() {
-        int expirationTimeInSeconds = 60;
+        int expirationTimeInSeconds = 240;
         this.userRepository.deleteExpiredPasswordResetToken(expirationTimeInSeconds);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -16,11 +15,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmail(String email);
 
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.passwordResetToken " +
-            "WHERE u.passwordResetToken.resetToken = :token AND " +
-            "u.passwordResetToken.created < :currentTime")
-    Optional<UserEntity> findByPasswordResetToken(@Param("token") String passwordResetToken,
-                                                             @Param("currentTime") LocalDateTime currentTime);
-
+            "WHERE u.passwordResetToken.resetToken = :token")
+    Optional<UserEntity> findByPasswordResetToken(@Param("token") String passwordResetToken);
 
     @Modifying
     @Transactional
