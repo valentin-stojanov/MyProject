@@ -1,7 +1,8 @@
 package com.myproject.project.model.dto;
 
 public class UserViewModel {
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String email;
     private int age;
 
@@ -9,12 +10,7 @@ public class UserViewModel {
     }
 
     public String getFullName() {
-        return fullName;
-    }
-
-    public UserViewModel setFullName(String fullName) {
-        this.fullName = fullName;
-        return this;
+        return firstName;
     }
 
     public String getEmail() {
@@ -32,6 +28,24 @@ public class UserViewModel {
 
     public UserViewModel setAge(int age) {
         this.age = age;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UserViewModel setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public UserViewModel setFirstName(String firstName) {
+        this.firstName = firstName;
         return this;
     }
 }

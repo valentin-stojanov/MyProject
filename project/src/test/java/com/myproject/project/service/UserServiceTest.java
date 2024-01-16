@@ -74,7 +74,7 @@ class UserServiceTest {
                 .setPassword("topsecret")
                 .setConfirmPassword("topsecret");
 
-        when(userMapperMock.toUserEntity(userRegistrationDto))
+        when(userMapperMock.userRegistrationDtoToUserEntity(userRegistrationDto))
                 .thenReturn(new UserEntity()
                         .setAge(userRegistrationDto.getAge())
                         .setEmail(userRegistrationDto.getEmail())
@@ -83,7 +83,7 @@ class UserServiceTest {
                         .setPassword(userRegistrationDto.getPassword()));
 
         toTest.registerUser(userRegistrationDto);
-        verify(userMapperMock).toUserEntity(userRegistrationDto);
+        verify(userMapperMock).userRegistrationDtoToUserEntity(userRegistrationDto);
 //        verify(passwordEncoderMock).encode(userRegistrationDto.getPassword());
         verify(userRepositoryMock).save(any(UserEntity.class));
 

@@ -22,8 +22,8 @@
 
                     <div class="text-center mt-3">
                         <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-                        <h5 class="mt-2 mb-0">Full name</h5>
-                        <span th:text="*{fullName}">FullName</span>
+                        <h5 class="mt-2 mb-0">Name</h5>
+                        <span th:text="*{firstName + ' ' + lastName}">Name</span>
                         <h5 class="mt-2 mb-0">Email</h5>
                         <span th:text="*{email}">mail@mail.com</span>
                         <h5 class="mt-2 mb-0">Age</h5>

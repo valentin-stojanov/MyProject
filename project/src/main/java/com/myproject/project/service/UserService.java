@@ -63,7 +63,7 @@ public class UserService {
     }
 
     public String registerUser(UserRegistrationDto userRegistrationDto) {
-        UserEntity newUser = this.userMapper.toUserEntity(userRegistrationDto);
+        UserEntity newUser = this.userMapper.userRegistrationDtoToUserEntity(userRegistrationDto);
         return register(newUser);
     }
 
@@ -102,10 +102,7 @@ public class UserService {
 
         UserEntity user = optionalUserEntity.get();
 
-        UserViewModel userViewModel = new UserViewModel()
-                .setFullName(user.getFirstName() + " " + user.getLastName())
-                .setAge(user.getAge())
-                .setEmail(user.getEmail());
+        UserViewModel userViewModel = this.userMapper.userEntityToUserViewModel(user);
         return userViewModel;
     }
 
