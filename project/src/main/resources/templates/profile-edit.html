@@ -22,7 +22,7 @@
 
                     <div class="text-center mt-3">
                         <span class="bg-secondary p-1 px-4 rounded text-white">Pro</span>
-                        <form th:action="@{/users/login/edit}"
+                        <form th:action="@{/users/profile/edit}"
                               th:method="post">
                             <h5 class="mt-2 mb-0">First name</h5>
                             <input th:value="*{firstName}"
@@ -30,11 +30,14 @@
                                    name="firstName"
                                    type="text">
 
+                            <h5 class="mt-2 mb-0">Last name</h5>
+                            <input th:value="*{lastName}"
+                                   id="lastName"
+                                   name="lastName"
+                                   type="text">
+
                             <h5 class="mt-2 mb-0">Email</h5>
-                            <input th:value="*{email}"
-                                   id="email"
-                                   name="email"
-                                   type="email">
+                            <span th:text="*{email}">mail@mail.com</span>
 
                             <h5 class="mt-2 mb-0">Age</h5>
                             <input th:value="*{age}"

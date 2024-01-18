@@ -1,9 +1,6 @@
 package com.myproject.project.web;
 
-import com.myproject.project.model.dto.UserProfileEditViewModel;
-import com.myproject.project.model.dto.UserResetEmailDto;
-import com.myproject.project.model.dto.UserResetPasswordDto;
-import com.myproject.project.model.dto.UserViewModel;
+import com.myproject.project.model.dto.*;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.service.EmailService;
 import com.myproject.project.service.UserService;
@@ -29,13 +26,18 @@ public class UserController {
     private final UserMapper userMapper;
 
     @ModelAttribute("userResetEmailModel")
-    public UserResetEmailDto initUserResetEmailModel(){
+    public UserResetEmailDto initUserResetEmailModel() {
         return new UserResetEmailDto();
     }
 
     @ModelAttribute("userResetPasswordModel")
-    public UserResetPasswordDto initUserResetPasswordModel(){
+    public UserResetPasswordDto initUserResetPasswordModel() {
         return new UserResetPasswordDto();
+    }
+
+    @ModelAttribute("userProfileEditDto")
+    public UserProfileEditDto initUserProfileEditDto() {
+        return new UserProfileEditDto();
     }
 
     public UserController(UserService userService,
@@ -53,7 +55,7 @@ public class UserController {
 
     @PostMapping("/login-error")
     public String onFailedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String username,
-                                RedirectAttributes redirectAttributes){
+                                RedirectAttributes redirectAttributes) {
         redirectAttributes.
                 addFlashAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY, username)
                 .addFlashAttribute("bad_credentials", true);
@@ -65,7 +67,7 @@ public class UserController {
                                 BindingResult bindingResult,
                                 RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("userResetEmailModel", userResetEmailModel)
                     .addFlashAttribute("invalid_email", true)
@@ -83,7 +85,7 @@ public class UserController {
     }
 
     @GetMapping("/reset-password/reset/{token}")
-    public String onResetPassword(@PathVariable("token") String token, Model model){
+    public String onResetPassword(@PathVariable("token") String token, Model model) {
         model.addAttribute("resetToken", token);
         return "reset-password";
     }
@@ -92,8 +94,8 @@ public class UserController {
     public String onResetPassword(@PathVariable("token") String token,
                                   @Valid UserResetPasswordDto userResetPasswordModel,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes){
-        if (bindingResult.hasErrors()){
+                                  RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("userResetPasswordModel", userResetPasswordModel)
                     .addFlashAttribute("org.springframework.validation.BindingResult.userResetPasswordModel", bindingResult);
@@ -106,7 +108,7 @@ public class UserController {
 
 
     @GetMapping("/profile")
-    public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails){
+    public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         UserViewModel userViewModel = this.userMapper.
                 userEntityToUserViewModel(this.userService.getUserInfo(userDetails.getUsername()));
         model.addAttribute("userView", userViewModel);
@@ -114,19 +116,36 @@ public class UserController {
     }
 
     @GetMapping("/profile/edit")
-    public String editProfile(Model model, @AuthenticationPrincipal UserDetails userDetails){
+    public String editProfile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-        UserProfileEditViewModel userView = this.userMapper
-                .userEntityToUserProfileEditViewModel(this.userService.getUserInfo(userDetails.getUsername()));
-
-        model.addAttribute("userView", userView);
+        UserViewModel userViewModel = this.userMapper.
+                userEntityToUserViewModel(this.userService.getUserInfo(userDetails.getUsername()));
+        model.addAttribute("userView", userViewModel);
 
         return "profile-edit";
     }
 
+    @PostMapping("profile/edit")
+    public String editProfile(@Valid UserProfileEditDto userProfileEditDto,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes,
+                              @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes
+                    .addFlashAttribute("userProfileEditDto", userProfileEditDto)
+                    .addFlashAttribute("org.springframework.validation.BindingResult.userProfileEditDto", bindingResult);
+
+            return "redirect:/users/profile/edit";
+        }
+
+        this.userService.updateUserInfo(userDetails.getUsername(), userProfileEditDto);
+        return "redirect:/users/profile";
+    }
+
     @ExceptionHandler({IllegalStateException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView onIllegalState(IllegalStateException ise){
+    public ModelAndView onIllegalState(IllegalStateException ise) {
         ModelAndView modelAndView = new ModelAndView("reset-password-error");
         modelAndView.addObject("error", ise.getMessage());
 

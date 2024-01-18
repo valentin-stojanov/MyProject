@@ -1,5 +1,6 @@
 package com.myproject.project.service;
 
+import com.myproject.project.model.dto.UserProfileEditDto;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.dto.UserViewModel;
@@ -185,5 +186,9 @@ public class UserService {
         if (oAuth2_authentication == 0){
             throw new IllegalStateException("Password reset is not applicable");
         }
+    }
+
+    public void updateUserInfo(String username, UserProfileEditDto userProfileEditDto) {
+        //Todo
     }
 }
