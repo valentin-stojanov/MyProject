@@ -3,7 +3,6 @@ package com.myproject.project.service;
 import com.myproject.project.model.dto.UserProfileEditDto;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserResetPasswordDto;
-import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.mapper.UserMapper;
@@ -189,6 +188,17 @@ public class UserService {
     }
 
     public void updateUserInfo(String username, UserProfileEditDto userProfileEditDto) {
-        //Todo
+        Optional<UserEntity> optionalUser = this.userRepository
+                .findByEmail(username);
+
+        if (optionalUser.isEmpty()){
+            throw new IllegalStateException("Empty user");
+        }
+
+        UserEntity user = optionalUser.get().setFirstName(userProfileEditDto.getFirstName())
+                .setLastName(userProfileEditDto.getLastName())
+                .setAge(userProfileEditDto.getAge());
+        this.userRepository.save(user);
+
     }
 }
