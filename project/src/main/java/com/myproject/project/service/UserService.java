@@ -93,17 +93,14 @@ public class UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("Email: " + email + " was not found!"));
     }
 
-    public UserViewModel getUserInfo(String username) {
+    public UserEntity getUserInfo(String username) {
         Optional<UserEntity> optionalUserEntity = this.userRepository.findByEmail(username);
 
         if (optionalUserEntity.isEmpty()) {
             throw new ObjectNotFoundException("User with email: " + username + " was not found!");
         }
 
-        UserEntity user = optionalUserEntity.get();
-
-        UserViewModel userViewModel = this.userMapper.userEntityToUserViewModel(user);
-        return userViewModel;
+        return optionalUserEntity.get();
     }
 
     private UserEntity createUserEntityFromOAuth2AuthenticationToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {

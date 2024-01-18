@@ -1,5 +1,6 @@
 package com.myproject.project.model.mapper;
 
+import com.myproject.project.model.dto.UserProfileEditViewModel;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.UserEntity;
@@ -18,5 +19,7 @@ public abstract class UserMapper {
     public abstract UserEntity userRegistrationDtoToUserEntity(UserRegistrationDto userRegistrationDto);
 
     public abstract UserViewModel userEntityToUserViewModel(UserEntity user);
+
+    public abstract UserProfileEditViewModel userEntityToUserProfileEditViewModel(UserEntity user);
 
 }

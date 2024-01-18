@@ -1,8 +1,10 @@
 package com.myproject.project.web;
 
+import com.myproject.project.model.dto.UserProfileEditViewModel;
 import com.myproject.project.model.dto.UserResetEmailDto;
 import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.dto.UserViewModel;
+import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.service.EmailService;
 import com.myproject.project.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final UserMapper userMapper;
 
     @ModelAttribute("userResetEmailModel")
     public UserResetEmailDto initUserResetEmailModel(){
@@ -36,9 +39,11 @@ public class UserController {
     }
 
     public UserController(UserService userService,
-                          EmailService emailService) {
+                          EmailService emailService,
+                          UserMapper userMapper) {
         this.userService = userService;
         this.emailService = emailService;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/login")
@@ -102,9 +107,21 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails){
-        UserViewModel userViewModel = this.userService.getUserInfo(userDetails.getUsername());
+        UserViewModel userViewModel = this.userMapper.
+                userEntityToUserViewModel(this.userService.getUserInfo(userDetails.getUsername()));
         model.addAttribute("userView", userViewModel);
         return "profileN";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfile(Model model, @AuthenticationPrincipal UserDetails userDetails){
+
+        UserProfileEditViewModel userView = this.userMapper
+                .userEntityToUserProfileEditViewModel(this.userService.getUserInfo(userDetails.getUsername()));
+
+        model.addAttribute("userView", userView);
+
+        return "profile-edit";
     }
 
     @ExceptionHandler({IllegalStateException.class})
