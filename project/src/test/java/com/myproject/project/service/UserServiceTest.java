@@ -6,6 +6,7 @@ import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.enums.RoleEnum;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.PasswordResetTokenRepository;
+import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -40,6 +41,9 @@ class UserServiceTest {
     @Mock
     private EmailService emailService;
     private UserService toTest;
+
+    @Mock
+    private RoleRepository roleRepository;
 
     private UserEntity testUserEntity;
 
