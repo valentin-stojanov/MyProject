@@ -1,7 +1,6 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
-import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.enums.RoleEnum;
@@ -49,7 +48,7 @@ class UserServiceTest {
         toTest = new UserService(passwordEncoderMock,
                 userRepositoryMock,
                 userDetailsServiceMock,
-                userMapperMock, emailService, passwordResetTokenRepository);
+                userMapperMock, emailService, passwordResetTokenRepository, roleRepository);
 
         testUserEntity = new UserEntity()
                 .setEmail("test@example.com")

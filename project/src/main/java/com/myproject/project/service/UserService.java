@@ -4,9 +4,12 @@ import com.myproject.project.model.dto.UserProfileEditDto;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserResetPasswordDto;
 import com.myproject.project.model.entity.PasswordResetTokenEntity;
+import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
+import com.myproject.project.model.enums.RoleEnum;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.PasswordResetTokenRepository;
+import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,18 +37,20 @@ public class UserService {
     private final UserMapper userMapper;
     private final EmailService emailService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final RoleRepository roleRepository;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
                        UserDetailsService userDetailsService,
                        UserMapper userMapper, EmailService emailService,
-                       PasswordResetTokenRepository passwordResetTokenRepository) {
+                       PasswordResetTokenRepository passwordResetTokenRepository, RoleRepository roleRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
         this.userMapper = userMapper;
         this.emailService = emailService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.roleRepository = roleRepository;
     }
 
     public String registerUserIfNotExist(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -68,6 +73,8 @@ public class UserService {
     }
 
     private String register(UserEntity newUser) {
+        RoleEntity role = this.roleRepository.findByRole(RoleEnum.USER).orElseThrow(() -> new IllegalStateException("Invalid role"));
+        newUser.setRoles(List.of(role));
         UserEntity registeredUser = this.userRepository.save(newUser);
         this.emailService.sendRegistrationEmail(newUser.getEmail(), newUser.getFirstName());
         return registeredUser.getEmail();
@@ -110,8 +117,7 @@ public class UserService {
                 .getPrincipal()
                 .getAttributes();
         UserEntity userEntity = new UserEntity()
-                .setPassword(OAUTH2_DEFAULT_PASSWORD)
-                .setRoles(List.of());
+                .setPassword(OAUTH2_DEFAULT_PASSWORD);
 
         switch (clientRegistrationId) {
             case "google":

@@ -1,9 +1,19 @@
+INSERT INTO roles (id, role)
+VALUES
+    (1, 'USER'),
+    (2, 'ADMIN');
+
 INSERT INTO users (id, email, age, first_name, last_name, password)
 VALUES (1, 'test@mail.com', 25, 'Test', 'Testov',
         '8d135f3d664fc90ecb0d67274e3237b5fb5105e564bb86795db79756c2716f054136dc48f919e2a956b5fb1819c9465f');
 INSERT INTO users (id, email, age, first_name, last_name, password)
 VALUES (2, 'user@mail.com', 25, 'User', 'Userov',
         '8d135f3d664fc90ecb0d67274e3237b5fb5105e564bb86795db79756c2716f054136dc48f919e2a956b5fb1819c9465f');
+
+INSERT INTO users_roles (user_entity_id, roles_id)
+VALUES
+    (1 , 2),
+    (2 , 1);
 
 INSERT INTO routes (id, name, description, gpx_coordinates, level, author_id)
 VALUES (1, 'Хижа Ком - Творчески дом Петрохан',
