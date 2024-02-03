@@ -72,8 +72,13 @@ public class UserService {
         return register(newUser);
     }
 
-    private String register(UserEntity newUser) {
-        RoleEntity role = this.roleRepository.findByRole(RoleEnum.USER).orElseThrow(() -> new IllegalStateException("Invalid role"));
+    String register(UserEntity newUser) {
+        Optional<RoleEntity> optRole = this.roleRepository.findByRole(RoleEnum.USER);
+        if(optRole.isEmpty()){
+            throw new IllegalStateException("Invalid Role");
+        }
+        RoleEntity role = optRole.get();
+
         newUser.setRoles(List.of(role));
         UserEntity registeredUser = this.userRepository.save(newUser);
         this.emailService.sendRegistrationEmail(newUser.getEmail(), newUser.getFirstName());

@@ -11,6 +11,7 @@ import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -18,10 +19,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,12 +40,10 @@ class UserServiceTest {
     @Mock
     private UserMapper userMapperMock;
     @Mock
-    private EmailService emailService;
+    private EmailService emailServiceMock;
     private UserService toTest;
-
     @Mock
-    private RoleRepository roleRepository;
-
+    private RoleRepository roleRepositoryMock;
     private UserEntity testUserEntity;
 
     @BeforeEach
@@ -52,23 +51,54 @@ class UserServiceTest {
         toTest = new UserService(passwordEncoderMock,
                 userRepositoryMock,
                 userDetailsServiceMock,
-                userMapperMock, emailService, passwordResetTokenRepository, roleRepository);
+                userMapperMock,
+                emailServiceMock,
+                passwordResetTokenRepository,
+                roleRepositoryMock);
 
         testUserEntity = new UserEntity()
-                .setEmail("test@example.com")
-                .setPassword("topsecret")
                 .setFirstName("Test")
                 .setLastName("Testov")
                 .setAge(18)
-                .setRoles(List.of(
-                                new RoleEntity().setRole(RoleEnum.ADMIN),
-                                new RoleEntity().setRole(RoleEnum.USER)
-                        )
-                );
+                .setEmail("test@mail.com")
+                .setPassword("topsecret");
+    }
+
+    @Test()
+    @DisplayName("Should register user with correct data.")
+    void register_Success() {
+        RoleEntity role = new RoleEntity().setRole(RoleEnum.USER);
+
+        when(roleRepositoryMock.findByRole(RoleEnum.USER))
+                .thenReturn(Optional.of(role));
+        when(userRepositoryMock.save(testUserEntity)).thenReturn(testUserEntity);
+
+//        Act
+        String registered = toTest.register(testUserEntity);
+
+        assertThat(testUserEntity.getRoles().get(0)).isEqualTo(role);
+        assertThat(registered).isEqualTo(testUserEntity.getEmail());
+        verify(roleRepositoryMock).findByRole(RoleEnum.USER);
+        verify(userRepositoryMock).save(testUserEntity);
+        verify(emailServiceMock).sendRegistrationEmail(testUserEntity.getEmail(), testUserEntity.getFirstName());
     }
 
     @Test
-    void canRegisterUser() {
+    @DisplayName("Should not register user with role different from USER.")
+    void register_Fail() {
+        when(roleRepositoryMock.findByRole(RoleEnum.USER))
+                .thenReturn(Optional.empty());
+        //        Act
+        IllegalStateException thrownException = Assertions.assertThrows(IllegalStateException.class,
+                () -> toTest.register(testUserEntity));
+
+        assertThat(thrownException.getMessage())
+                .isEqualTo("Invalid Role");
+    }
+
+    @Test
+    @DisplayName("Check for correct invocation of of register().")
+    void registerUser_Success() {
         UserRegistrationDto userRegistrationDto = new UserRegistrationDto()
                 .setFirstName("Test")
                 .setLastName("Testov")
@@ -76,57 +106,78 @@ class UserServiceTest {
                 .setEmail("test@mail.com")
                 .setPassword("topsecret")
                 .setConfirmPassword("topsecret");
+        UserEntity newUser = testUserEntity;
+        RoleEntity role = new RoleEntity();
 
-        when(userMapperMock.userRegistrationDtoToUserEntity(userRegistrationDto))
-                .thenReturn(new UserEntity()
-                        .setAge(userRegistrationDto.getAge())
-                        .setEmail(userRegistrationDto.getEmail())
-                        .setFirstName(userRegistrationDto.getFirstName())
-                        .setLastName(userRegistrationDto.getLastName())
-                        .setPassword(userRegistrationDto.getPassword()));
+        when(userMapperMock.userRegistrationDtoToUserEntity(userRegistrationDto)).thenReturn(newUser);
+        when(roleRepositoryMock.findByRole(RoleEnum.USER)).thenReturn(Optional.of(role));
+        when(userRepositoryMock.save(newUser)).thenReturn(newUser);
 
-        toTest.registerUser(userRegistrationDto);
+//        Act
+        String registeredEmail = toTest.registerUser(userRegistrationDto);
+
         verify(userMapperMock).userRegistrationDtoToUserEntity(userRegistrationDto);
-//        verify(passwordEncoderMock).encode(userRegistrationDto.getPassword());
-        verify(userRepositoryMock).save(any(UserEntity.class));
 
+        // Indirect verification for interactions with the --> package private String register(UserEntity e)
+        verify(roleRepositoryMock).findByRole(RoleEnum.USER);
+        verify(userRepositoryMock).save(newUser);
+        verify(emailServiceMock).sendRegistrationEmail(newUser.getEmail(), newUser.getFirstName());
+
+        // Verification for return value of registerUser()
+        assertThat(registeredEmail).isEqualTo(userRegistrationDto.getEmail());
     }
 
     @Test
-    void shouldFindUserByEmail() {
+    @DisplayName("Throw an error for non existent user email.")
+    void findUserByEmail_Fail() {
+        String invalidEmail = "not-existent@email.com";
 
-        when(userRepositoryMock.findByEmail(testUserEntity.getEmail()))
+//        Act
+        ObjectNotFoundException objectNotFoundException = Assertions.assertThrows(ObjectNotFoundException.class,
+                () -> toTest
+                        .findUserByEmail(invalidEmail));
+        assertThat(objectNotFoundException.getMessage())
+                .isEqualTo("Email: " + invalidEmail + " was not found!");
+    }
+
+    @Test
+    @DisplayName("Find user by existent user email.")
+    void findUserByEmail_Success() {
+        String validEmail = testUserEntity.getEmail();
+        when(userRepositoryMock.findByEmail(validEmail))
                 .thenReturn(Optional.of(testUserEntity));
 
-        toTest.findUserByEmail(testUserEntity.getEmail());
+//        Act
+        toTest.findUserByEmail(validEmail);
 
-        verify(userRepositoryMock).findByEmail(same(testUserEntity.getEmail()));
+        verify(userRepositoryMock).findByEmail(validEmail);
     }
 
     @Test
-    void userNotFoundByEmail() {
-        Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> toTest
-                        .findUserByEmail("not-existant@email.com"));
-    }
+    @DisplayName("Should get information about given user.")
+    void getUserInfo_Success() {
+        String validEmail = testUserEntity.getEmail();
+        when(userRepositoryMock.findByEmail(validEmail))
+                .thenReturn(Optional.of(testUserEntity));
+//        Act
+        toTest.getUserInfo(validEmail);
 
-//    @Test
-//    void shouldGetUserInfo() {
-//        when(userRepositoryMock.findByEmail(testUserEntity.getEmail()))
-//                .thenReturn(Optional.of(testUserEntity));
-//
-//        UserViewModel userInfo = this.userMapperMock
-//                .userEntityToUserViewModel(toTest.getUserInfo(testUserEntity.getEmail()));
-//
-//        Assertions.assertEquals(testUserEntity.getFirstName() + " " + testUserEntity.getLastName(),
-//                userInfo.getFullName());
-//        Assertions.assertEquals(testUserEntity.getAge(), userInfo.getAge());
-//        Assertions.assertEquals(testUserEntity.getEmail(), userInfo.getEmail());
-//    }
+        verify(userRepositoryMock).findByEmail(validEmail);
+    }
 
     @Test
-    void shouldNotGetUserInfo() {
-        Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> toTest.getUserInfo(testUserEntity.getEmail()));
+    @DisplayName("Should throw an error for non existent email")
+    void getUserInfo_Fail(){
+        String invalidEmail = "not-existent@email.com";
+        when(userRepositoryMock.findByEmail(invalidEmail))
+                .thenReturn(Optional.empty());
+
+//        Act
+        ObjectNotFoundException objectNotFoundException = Assertions.assertThrows(ObjectNotFoundException.class,
+                () -> toTest.getUserInfo(invalidEmail));
+
+        assertThat(objectNotFoundException.getMessage())
+                .isEqualTo("User with email: " + invalidEmail + " was not found!");
     }
+
 }
