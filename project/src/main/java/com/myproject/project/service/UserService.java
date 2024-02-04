@@ -147,9 +147,7 @@ public class UserService {
     }
 
     public UserEntity generatePasswordResetTokenForUser(String email) {
-        UserEntity user = this.userRepository
-                .findByEmail(email)
-                .orElseThrow();
+        UserEntity user = this.findUserByEmail(email);
 
         PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
                 .setResetToken(UUID.randomUUID().toString())

@@ -1,6 +1,7 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
+import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.enums.RoleEnum;
@@ -14,15 +15,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,16 +38,18 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepositoryMock;
     @Mock
-    private PasswordResetTokenRepository passwordResetTokenRepository;
+    private PasswordResetTokenRepository passwordResetTokenRepositoryMock;
     @Mock
     private UserDetailsService userDetailsServiceMock;
     @Mock
     private UserMapper userMapperMock;
     @Mock
     private EmailService emailServiceMock;
-    private UserService toTest;
     @Mock
     private RoleRepository roleRepositoryMock;
+
+    @InjectMocks
+    private UserService toTest;
     private UserEntity testUserEntity;
 
     @BeforeEach
@@ -53,7 +59,7 @@ class UserServiceTest {
                 userDetailsServiceMock,
                 userMapperMock,
                 emailServiceMock,
-                passwordResetTokenRepository,
+                passwordResetTokenRepositoryMock,
                 roleRepositoryMock);
 
         testUserEntity = new UserEntity()
@@ -167,7 +173,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Should throw an error for non existent email")
-    void getUserInfo_Fail(){
+    void getUserInfo_Fail() {
         String invalidEmail = "not-existent@email.com";
         when(userRepositoryMock.findByEmail(invalidEmail))
                 .thenReturn(Optional.empty());
@@ -178,6 +184,28 @@ class UserServiceTest {
 
         assertThat(objectNotFoundException.getMessage())
                 .isEqualTo("User with email: " + invalidEmail + " was not found!");
+    }
+
+    @Test
+    @DisplayName("Should generate password reset token for user")
+    void generatePasswordResetTokenForUser_Success() {
+        String userEmail = testUserEntity.getEmail();
+
+        when(userRepositoryMock.findByEmail(userEmail))
+                .thenReturn(Optional.of(testUserEntity));
+        when(passwordResetTokenRepositoryMock.save(any(PasswordResetTokenEntity.class)))
+                .then(invocation -> invocation.getArgument(0));
+        when(userRepositoryMock.save(any(UserEntity.class)))
+                .then(invocation -> invocation.getArgument(0));
+//        Act
+        UserEntity updatedUser = toTest.generatePasswordResetTokenForUser(userEmail);
+
+        Assertions.assertNotNull(updatedUser.getPasswordResetToken());
+        PasswordResetTokenEntity resetToken = verify(passwordResetTokenRepositoryMock)
+                .save(any(PasswordResetTokenEntity.class));
+        Assertions.assertNotNull(resetToken.getResetToken());
+        Assertions.assertNotNull(resetToken.getCreated());
+        verify(userRepositoryMock).save(updatedUser);
     }
 
 }
