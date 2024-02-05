@@ -83,7 +83,7 @@ public class UserService {
 
     String register(UserEntity newUser) {
         Optional<RoleEntity> optRole = this.roleRepository.findByRole(RoleEnum.USER);
-        if(optRole.isEmpty()){
+        if (optRole.isEmpty()) {
             throw new IllegalStateException("Invalid Role");
         }
         RoleEntity role = optRole.get();
@@ -113,7 +113,7 @@ public class UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("User with email: " + email + " was not found!"));
     }
 
-    public UserViewModel getUserInfo(String email){
+    public UserViewModel getUserInfo(String email) {
         return this.userMapper.
                 userEntityToUserViewModel(this.findUserByEmail(email));
     }
@@ -188,20 +188,17 @@ public class UserService {
     }
 
 
-    public void checkTypeOfRegistration(String email) {
+    public boolean isOAuthRegistration(String email) {
         String userPassword = this.findUserByEmail(email).getPassword();
-
-        if (!userPassword.equals(OAUTH2_DEFAULT_PASSWORD)){
-            throw new IllegalStateException("Password reset is not applicable");
-        }
+        return userPassword.equals(OAUTH2_DEFAULT_PASSWORD);
     }
 
-    public void updateUserInfo(String email, UserProfileEditDto userProfileEditDto) {
+    public UserEntity updateUserInfo(String email, UserProfileEditDto userProfileEditDto) {
         UserEntity user = this.findUserByEmail(email);
 
         user.setFirstName(userProfileEditDto.getFirstName())
                 .setLastName(userProfileEditDto.getLastName())
                 .setAge(userProfileEditDto.getAge());
-        this.userRepository.save(user);
+        return this.userRepository.save(user);
     }
 }

@@ -1,5 +1,6 @@
 package com.myproject.project.service;
 
+import com.myproject.project.model.dto.UserProfileEditDto;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.RoleEntity;
@@ -173,7 +174,7 @@ class UserServiceTest {
         when(userRepositoryMock.findByEmail(existingEmail))
                 .thenReturn(Optional.of(testUserEntity.setPassword(OAUTH2_DEFAULT_PASSWORD)));
 
-        Assertions.assertDoesNotThrow(() ->toTest.checkTypeOfRegistration(existingEmail)) ;
+        Assertions.assertTrue(() ->toTest.isOAuthRegistration(existingEmail)); ;
 
     }
 
@@ -183,9 +184,28 @@ class UserServiceTest {
 
         when(userRepositoryMock.findByEmail(invalidEmail))
                 .thenReturn(Optional.of(testUserEntity.setPassword("some password")));
-        IllegalStateException illegalStateException = Assertions.assertThrows(IllegalStateException.class,
-                () -> toTest.checkTypeOfRegistration(invalidEmail));
+        Assertions.assertFalse(() ->toTest.isOAuthRegistration(invalidEmail)); ;
+    }
 
-        Assertions.assertEquals("Password reset is not applicable", illegalStateException.getMessage());
+    @Test
+    void updateUserInfo_Success(){
+        String existingEmail = testUserEntity.getEmail();
+        String firstName = "New firstName";
+        String lastname = "New lastname";
+        int age = 25;
+        UserProfileEditDto userProfileEditDto = new UserProfileEditDto()
+                .setFirstName(firstName)
+                .setLastName(lastname)
+                .setAge(age);
+
+        when(userRepositoryMock.findByEmail(existingEmail))
+                .thenReturn(Optional.of(testUserEntity));
+        when(userRepositoryMock.save(any(UserEntity.class)))
+                .then(invocation -> invocation.getArgument(0));
+
+        UserEntity savedUser = toTest.updateUserInfo(existingEmail, userProfileEditDto);
+
+        Assertions.assertEquals(firstName, savedUser.getFirstName());
+        Assertions.assertEquals(lastname, savedUser.getLastName());
     }
 }

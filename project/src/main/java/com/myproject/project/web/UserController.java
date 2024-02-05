@@ -74,7 +74,10 @@ public class UserController {
                     .addFlashAttribute("org.springframework.validation.BindingResult.userResetEmailModel", bindingResult);
             return "redirect:/users/login";
         }
-        this.userService.checkTypeOfRegistration(userResetEmailModel.getEmail());
+
+        if (!this.userService.isOAuthRegistration(userResetEmailModel.getEmail())) {
+            throw  new IllegalStateException("Password reset is not applicable");
+        }
 
         String resetUrl = this.userService.generateResetUrl(userResetEmailModel.getEmail());
         this.emailService.sendResetPasswordEmail(userResetEmailModel.getEmail(), resetUrl);
