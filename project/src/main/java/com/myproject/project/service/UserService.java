@@ -3,6 +3,7 @@ package com.myproject.project.service;
 import com.myproject.project.model.dto.UserProfileEditDto;
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.model.dto.UserResetPasswordDto;
+import com.myproject.project.model.dto.UserViewModel;
 import com.myproject.project.model.entity.PasswordResetTokenEntity;
 import com.myproject.project.model.entity.RoleEntity;
 import com.myproject.project.model.entity.UserEntity;
@@ -69,7 +70,7 @@ public class UserService {
         Optional<UserEntity> userOpt = this.userRepository.findByEmail(userEmail);
 
         if (userOpt.isEmpty()) {
-            UserEntity newUser = createUserEntityFromOAuth2AuthenticationToken(oAuth2AuthenticationToken);
+            UserEntity newUser = this.createUserEntityFromOAuth2AuthenticationToken(oAuth2AuthenticationToken);
             return register(newUser);
         }
         return userOpt.get().getEmail();
@@ -107,20 +108,14 @@ public class UserService {
     }
 
     public UserEntity findUserByEmail(String email) {
-
         return this.userRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new ObjectNotFoundException("Email: " + email + " was not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("User with email: " + email + " was not found!"));
     }
 
-    public UserEntity getUserInfo(String username) {
-        Optional<UserEntity> optionalUserEntity = this.userRepository.findByEmail(username);
-
-        if (optionalUserEntity.isEmpty()) {
-            throw new ObjectNotFoundException("User with email: " + username + " was not found!");
-        }
-
-        return optionalUserEntity.get();
+    public UserViewModel getUserInfo(String email){
+        return this.userMapper.
+                userEntityToUserViewModel(this.findUserByEmail(email));
     }
 
     private UserEntity createUserEntityFromOAuth2AuthenticationToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -171,7 +166,7 @@ public class UserService {
 
     public String generateResetUrl(String email) {
 
-        UserEntity user = generatePasswordResetTokenForUser(email);
+        UserEntity user = this.generatePasswordResetTokenForUser(email);
         String resetToken = user.getPasswordResetToken().getResetToken();
 
         return "http://localhost:8080/users/reset-password/reset/" + resetToken;
@@ -194,28 +189,19 @@ public class UserService {
 
 
     public void checkTypeOfRegistration(String email) {
-        int oAuth2_authentication = this.userRepository
-                .findByEmail(email)
-                .get()
-                .getPassword()
-                .compareTo(OAUTH2_DEFAULT_PASSWORD);
-        if (oAuth2_authentication == 0){
+        String userPassword = this.findUserByEmail(email).getPassword();
+
+        if (!userPassword.equals(OAUTH2_DEFAULT_PASSWORD)){
             throw new IllegalStateException("Password reset is not applicable");
         }
     }
 
-    public void updateUserInfo(String username, UserProfileEditDto userProfileEditDto) {
-        Optional<UserEntity> optionalUser = this.userRepository
-                .findByEmail(username);
+    public void updateUserInfo(String email, UserProfileEditDto userProfileEditDto) {
+        UserEntity user = this.findUserByEmail(email);
 
-        if (optionalUser.isEmpty()){
-            throw new IllegalStateException("Empty user");
-        }
-
-        UserEntity user = optionalUser.get().setFirstName(userProfileEditDto.getFirstName())
+        user.setFirstName(userProfileEditDto.getFirstName())
                 .setLastName(userProfileEditDto.getLastName())
                 .setAge(userProfileEditDto.getAge());
         this.userRepository.save(user);
-
     }
 }

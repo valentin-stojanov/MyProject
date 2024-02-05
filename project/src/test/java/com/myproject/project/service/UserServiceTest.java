@@ -11,10 +11,7 @@ import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import com.myproject.project.util.RandomUUIDGenerator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -29,6 +26,7 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -61,24 +59,13 @@ class UserServiceTest {
     private UserService toTest;
     private UserEntity testUserEntity;
     private final LocalDateTime defaultLocalDateTime = LocalDateTime.of(2023, 1, 1, 1, 1);
+    private final String OAUTH2_DEFAULT_PASSWORD = "OAuth2_authentication";
 
     @BeforeEach
     void setUp() {
-        toTest = new UserService(passwordEncoderMock,
-                userRepositoryMock,
-                userDetailsServiceMock,
-                userMapperMock,
-                emailServiceMock,
-                passwordResetTokenRepositoryMock,
-                roleRepositoryMock,
-                clockMock, randomUUIDGeneratorMock);
+        toTest = new UserService(passwordEncoderMock, userRepositoryMock, userDetailsServiceMock, userMapperMock, emailServiceMock, passwordResetTokenRepositoryMock, roleRepositoryMock, clockMock, randomUUIDGeneratorMock);
 
-        testUserEntity = new UserEntity()
-                .setFirstName("Test")
-                .setLastName("Testov")
-                .setAge(18)
-                .setEmail("test@mail.com")
-                .setPassword("topsecret");
+        testUserEntity = new UserEntity().setFirstName("Test").setLastName("Testov").setAge(18).setEmail("test@mail.com").setPassword("topsecret");
     }
 
     @Test()
@@ -86,8 +73,7 @@ class UserServiceTest {
     void register_Success() {
         RoleEntity role = new RoleEntity().setRole(RoleEnum.USER);
 
-        when(roleRepositoryMock.findByRole(RoleEnum.USER))
-                .thenReturn(Optional.of(role));
+        when(roleRepositoryMock.findByRole(RoleEnum.USER)).thenReturn(Optional.of(role));
         when(userRepositoryMock.save(testUserEntity)).thenReturn(testUserEntity);
 
 //        Act
@@ -103,26 +89,17 @@ class UserServiceTest {
     @Test
     @DisplayName("Should not register user with role different from USER.")
     void register_Fail() {
-        when(roleRepositoryMock.findByRole(RoleEnum.USER))
-                .thenReturn(Optional.empty());
+        when(roleRepositoryMock.findByRole(RoleEnum.USER)).thenReturn(Optional.empty());
         //        Act
-        IllegalStateException thrownException = Assertions.assertThrows(IllegalStateException.class,
-                () -> toTest.register(testUserEntity));
+        IllegalStateException thrownException = Assertions.assertThrows(IllegalStateException.class, () -> toTest.register(testUserEntity));
 
-        assertThat(thrownException.getMessage())
-                .isEqualTo("Invalid Role");
+        assertThat(thrownException.getMessage()).isEqualTo("Invalid Role");
     }
 
     @Test
     @DisplayName("Check for correct invocation of of register().")
     void registerUser_Success() {
-        UserRegistrationDto userRegistrationDto = new UserRegistrationDto()
-                .setFirstName("Test")
-                .setLastName("Testov")
-                .setAge(18)
-                .setEmail("test@mail.com")
-                .setPassword("topsecret")
-                .setConfirmPassword("topsecret");
+        UserRegistrationDto userRegistrationDto = new UserRegistrationDto().setFirstName("Test").setLastName("Testov").setAge(18).setEmail("test@mail.com").setPassword("topsecret").setConfirmPassword("topsecret");
         UserEntity newUser = testUserEntity;
         RoleEntity role = new RoleEntity();
 
@@ -150,19 +127,15 @@ class UserServiceTest {
         String invalidEmail = "not-existent@email.com";
 
 //        Act
-        ObjectNotFoundException objectNotFoundException = Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> toTest
-                        .findUserByEmail(invalidEmail));
-        assertThat(objectNotFoundException.getMessage())
-                .isEqualTo("Email: " + invalidEmail + " was not found!");
+        ObjectNotFoundException objectNotFoundException = Assertions.assertThrows(ObjectNotFoundException.class, () -> toTest.findUserByEmail(invalidEmail));
+        assertThat(objectNotFoundException.getMessage()).isEqualTo("User with email: " + invalidEmail + " was not found!");
     }
 
     @Test
     @DisplayName("Find user by existent user email.")
     void findUserByEmail_Success() {
         String validEmail = testUserEntity.getEmail();
-        when(userRepositoryMock.findByEmail(validEmail))
-                .thenReturn(Optional.of(testUserEntity));
+        when(userRepositoryMock.findByEmail(validEmail)).thenReturn(Optional.of(testUserEntity));
 
 //        Act
         toTest.findUserByEmail(validEmail);
@@ -171,58 +144,48 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Should get information about given user.")
-    void getUserInfo_Success() {
-        String validEmail = testUserEntity.getEmail();
-        when(userRepositoryMock.findByEmail(validEmail))
-                .thenReturn(Optional.of(testUserEntity));
-//        Act
-        toTest.getUserInfo(validEmail);
-
-        verify(userRepositoryMock).findByEmail(validEmail);
-    }
-
-    @Test
-    @DisplayName("Should throw an error for non existent email")
-    void getUserInfo_Fail() {
-        String invalidEmail = "not-existent@email.com";
-        when(userRepositoryMock.findByEmail(invalidEmail))
-                .thenReturn(Optional.empty());
-
-//        Act
-        ObjectNotFoundException objectNotFoundException = Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> toTest.getUserInfo(invalidEmail));
-
-        assertThat(objectNotFoundException.getMessage())
-                .isEqualTo("User with email: " + invalidEmail + " was not found!");
-    }
-
-    @Test
     @DisplayName("Should generate password reset token for user")
     void generatePasswordResetTokenForUser_Success() {
         String userEmail = testUserEntity.getEmail();
         String uuidString = "Unique uuid";
-        Clock fixedClock = Clock
-                .fixed(defaultLocalDateTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
+        Clock fixedClock = Clock.fixed(defaultLocalDateTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
 
         when(clockMock.instant()).thenReturn(fixedClock.instant());
         when(clockMock.getZone()).thenReturn(fixedClock.getZone());
         when(randomUUIDGeneratorMock.generateUUID()).thenReturn(uuidString);
-        when(userRepositoryMock.findByEmail(userEmail))
-                .thenReturn(Optional.of(testUserEntity));
-        when(passwordResetTokenRepositoryMock.save(any(PasswordResetTokenEntity.class)))
-                .then(invocation -> invocation.getArgument(0));
-        when(userRepositoryMock.save(any(UserEntity.class)))
-                .then(invocation -> invocation.getArgument(0));
+        when(userRepositoryMock.findByEmail(userEmail)).thenReturn(Optional.of(testUserEntity));
+        when(passwordResetTokenRepositoryMock.save(any(PasswordResetTokenEntity.class))).then(invocation -> invocation.getArgument(0));
+        when(userRepositoryMock.save(any(UserEntity.class))).then(invocation -> invocation.getArgument(0));
 //        Act
         UserEntity updatedUser = toTest.generatePasswordResetTokenForUser(userEmail);
 
         Assertions.assertNotNull(updatedUser.getPasswordResetToken());
-        verify(passwordResetTokenRepositoryMock)
-                .save(any(PasswordResetTokenEntity.class));
+        verify(passwordResetTokenRepositoryMock).save(any(PasswordResetTokenEntity.class));
         Assertions.assertEquals(uuidString, updatedUser.getPasswordResetToken().getResetToken());
         Assertions.assertEquals(defaultLocalDateTime, updatedUser.getPasswordResetToken().getCreated());
         verify(userRepositoryMock).save(updatedUser);
     }
 
+    @Test
+    void checkTypeOfRegistration_Success() {
+        String existingEmail = testUserEntity.getEmail();
+
+        when(userRepositoryMock.findByEmail(existingEmail))
+                .thenReturn(Optional.of(testUserEntity.setPassword(OAUTH2_DEFAULT_PASSWORD)));
+
+        Assertions.assertDoesNotThrow(() ->toTest.checkTypeOfRegistration(existingEmail)) ;
+
+    }
+
+    @Test
+    void checkTypeOfRegistration_Fail(){
+        String invalidEmail = "not-existent@email.com";
+
+        when(userRepositoryMock.findByEmail(invalidEmail))
+                .thenReturn(Optional.of(testUserEntity.setPassword("some password")));
+        IllegalStateException illegalStateException = Assertions.assertThrows(IllegalStateException.class,
+                () -> toTest.checkTypeOfRegistration(invalidEmail));
+
+        Assertions.assertEquals("Password reset is not applicable", illegalStateException.getMessage());
+    }
 }

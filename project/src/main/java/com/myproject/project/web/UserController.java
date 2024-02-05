@@ -109,17 +109,14 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        UserViewModel userViewModel = this.userMapper.
-                userEntityToUserViewModel(this.userService.getUserInfo(userDetails.getUsername()));
+        UserViewModel userViewModel = this.userService.getUserInfo(userDetails.getUsername());
         model.addAttribute("userView", userViewModel);
         return "profileN";
     }
 
     @GetMapping("/profile/edit")
     public String editProfile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-
-        UserViewModel userViewModel = this.userMapper.
-                userEntityToUserViewModel(this.userService.getUserInfo(userDetails.getUsername()));
+        UserViewModel userViewModel = this.userService.getUserInfo(userDetails.getUsername());
         model.addAttribute("userView", userViewModel);
 
         return "profile-edit";
