@@ -201,10 +201,10 @@ class UserServiceTest {
         UserEntity updatedUser = toTest.generatePasswordResetTokenForUser(userEmail);
 
         Assertions.assertNotNull(updatedUser.getPasswordResetToken());
-        PasswordResetTokenEntity resetToken = verify(passwordResetTokenRepositoryMock)
+        verify(passwordResetTokenRepositoryMock)
                 .save(any(PasswordResetTokenEntity.class));
-        Assertions.assertNotNull(resetToken.getResetToken());
-        Assertions.assertNotNull(resetToken.getCreated());
+        Assertions.assertNotNull(updatedUser.getPasswordResetToken().getResetToken());
+        Assertions.assertNotNull(updatedUser.getPasswordResetToken().getCreated());
         verify(userRepositoryMock).save(updatedUser);
     }
 
