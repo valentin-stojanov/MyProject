@@ -10,6 +10,7 @@ import com.myproject.project.repository.PasswordResetTokenRepository;
 import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
+import com.myproject.project.util.RandomUUIDGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,10 +22,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -47,10 +52,15 @@ class UserServiceTest {
     private EmailService emailServiceMock;
     @Mock
     private RoleRepository roleRepositoryMock;
+    @Mock
+    private Clock clockMock;
+    @Mock
+    private RandomUUIDGenerator randomUUIDGeneratorMock;
 
     @InjectMocks
     private UserService toTest;
     private UserEntity testUserEntity;
+    private final LocalDateTime defaultLocalDateTime = LocalDateTime.of(2023, 1, 1, 1, 1);
 
     @BeforeEach
     void setUp() {
@@ -60,7 +70,8 @@ class UserServiceTest {
                 userMapperMock,
                 emailServiceMock,
                 passwordResetTokenRepositoryMock,
-                roleRepositoryMock);
+                roleRepositoryMock,
+                clockMock, randomUUIDGeneratorMock);
 
         testUserEntity = new UserEntity()
                 .setFirstName("Test")
@@ -190,7 +201,13 @@ class UserServiceTest {
     @DisplayName("Should generate password reset token for user")
     void generatePasswordResetTokenForUser_Success() {
         String userEmail = testUserEntity.getEmail();
+        String uuidString = "Unique uuid";
+        Clock fixedClock = Clock
+                .fixed(defaultLocalDateTime.toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
 
+        when(clockMock.instant()).thenReturn(fixedClock.instant());
+        when(clockMock.getZone()).thenReturn(fixedClock.getZone());
+        when(randomUUIDGeneratorMock.generateUUID()).thenReturn(uuidString);
         when(userRepositoryMock.findByEmail(userEmail))
                 .thenReturn(Optional.of(testUserEntity));
         when(passwordResetTokenRepositoryMock.save(any(PasswordResetTokenEntity.class)))
@@ -203,8 +220,8 @@ class UserServiceTest {
         Assertions.assertNotNull(updatedUser.getPasswordResetToken());
         verify(passwordResetTokenRepositoryMock)
                 .save(any(PasswordResetTokenEntity.class));
-        Assertions.assertNotNull(updatedUser.getPasswordResetToken().getResetToken());
-        Assertions.assertNotNull(updatedUser.getPasswordResetToken().getCreated());
+        Assertions.assertEquals(uuidString, updatedUser.getPasswordResetToken().getResetToken());
+        Assertions.assertEquals(defaultLocalDateTime, updatedUser.getPasswordResetToken().getCreated());
         verify(userRepositoryMock).save(updatedUser);
     }
 

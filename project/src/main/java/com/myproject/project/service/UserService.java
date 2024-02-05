@@ -12,6 +12,7 @@ import com.myproject.project.repository.PasswordResetTokenRepository;
 import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
+import com.myproject.project.util.RandomUUIDGenerator;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,11 +22,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -38,12 +39,17 @@ public class UserService {
     private final EmailService emailService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final RoleRepository roleRepository;
+    private final Clock clock;
+    private final RandomUUIDGenerator randomUUIDGenerator;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
                        UserDetailsService userDetailsService,
                        UserMapper userMapper, EmailService emailService,
-                       PasswordResetTokenRepository passwordResetTokenRepository, RoleRepository roleRepository) {
+                       PasswordResetTokenRepository passwordResetTokenRepository,
+                       RoleRepository roleRepository,
+                       Clock clock,
+                       RandomUUIDGenerator randomUUIDGenerator) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
@@ -51,6 +57,8 @@ public class UserService {
         this.emailService = emailService;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.roleRepository = roleRepository;
+        this.clock = clock;
+        this.randomUUIDGenerator = randomUUIDGenerator;
     }
 
     public String registerUserIfNotExist(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -150,8 +158,8 @@ public class UserService {
         UserEntity user = this.findUserByEmail(email);
 
         PasswordResetTokenEntity passwordResetToken = new PasswordResetTokenEntity()
-                .setResetToken(UUID.randomUUID().toString())
-                .setCreated(LocalDateTime.now())
+                .setResetToken(randomUUIDGenerator.generateUUID())
+                .setCreated(LocalDateTime.now(clock))
                 .setUser(user);
 
         PasswordResetTokenEntity userResetToken = this.passwordResetTokenRepository.save(passwordResetToken);
