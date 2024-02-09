@@ -20,7 +20,7 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendRegistrationEmail(String userEmail, String username){
+    public void sendRegistrationEmail(String userEmail, String firstName){
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
@@ -28,7 +28,7 @@ public class EmailService {
             mimeMessageHelper.setFrom("routetales");
             mimeMessageHelper.setTo(userEmail);
             mimeMessageHelper.setSubject("Welcome to RouteTales.eu");
-            mimeMessageHelper.setText(generateRegistrationMessageContent(username), true);
+            mimeMessageHelper.setText(generateRegistrationMessageContent(firstName), true);
 
             this.javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
@@ -54,9 +54,9 @@ public class EmailService {
         }
     }
 
-    private String generateRegistrationMessageContent(String username) {
+    private String generateRegistrationMessageContent(String firstName) {
         Context ctx = new Context();
-        ctx.setVariable("username", username);
+        ctx.setVariable("firstName", firstName);
 
         return this.templateEngine.process("email/registration", ctx);
     }

@@ -2,7 +2,9 @@ package com.myproject.project.web;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,10 +80,13 @@ class UserRegistrationControllerIntegrationTest {
     @Test
     @Sql(value = "/data.sql")
     void testRegistration() throws Exception {
+        String firstName = "Test";
+        String lastName = "Testov";
+        String email = "example@exam.cam";
         this.mockMvc.perform(post("http://localhost/users/register")
-                        .param("email", "example@exam.cam")
-                        .param("firstName", "Test")
-                        .param("lastName", "Testov")
+                        .param("email", email)
+                        .param("firstName", firstName)
+                        .param("lastName", lastName)
                         .param("age", "18")
                         .param("password", "topsecret")
                         .param("confirmPassword", "topsecret")
@@ -89,5 +94,15 @@ class UserRegistrationControllerIntegrationTest {
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
+
+        MimeMessage[] receivedMessages = this.greenMail.getReceivedMessages();
+        Assertions.assertEquals(1, receivedMessages.length);
+        MimeMessage welcomeMessage = receivedMessages[0];
+
+        Assertions.assertTrue(welcomeMessage
+                .getContent()
+                .toString()
+                .contains(firstName));
+
     }
 }
