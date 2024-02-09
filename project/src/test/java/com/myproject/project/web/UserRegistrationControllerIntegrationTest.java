@@ -1,7 +1,12 @@
 package com.myproject.project.web;
 
+import com.icegreen.greenmail.util.GreenMail;
+import com.icegreen.greenmail.util.ServerSetup;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -22,12 +27,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserRegistrationControllerIntegrationTest {
+    @Autowired
+    private MockMvc mockMvc;
+    private GreenMail greenMail;
+
+    @Value("${spring.mail.port}")
+    private Integer port;
+    @Value("${spring.mail.host}")
+    private String host;
+    @Value("${spring.mail.protocol}")
+    private String protocol;
+    @Value("${spring.mail.password}")
+    private String password;
+    @Value("${spring.mail.username}")
+    private String username;
+
+    @BeforeEach
+    void setUp(){
+        this.greenMail = new GreenMail(new ServerSetup(port, host, protocol));
+        this.greenMail.start();
+        this.greenMail.setUser(username, password);
+    }
+
+    @AfterEach
+    void tearDown(){
+        this.greenMail.stop();
+    }
 
     @Container
     static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15-alpine")
             .withUsername("testUser")
             .withPassword("password")
             .withDatabaseName("testDB");
+
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry){
@@ -36,12 +68,9 @@ class UserRegistrationControllerIntegrationTest {
         registry.add("spring.datasource.username", container::getUsername);
     }
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
     void testRegistrationPageShown() throws Exception {
-        mockMvc.perform(get("/users/register"))
+        this.mockMvc.perform(get("/users/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("register"));
     }
@@ -49,7 +78,7 @@ class UserRegistrationControllerIntegrationTest {
     @Test
     @Sql(value = "/data.sql")
     void testRegistration() throws Exception {
-        mockMvc.perform(post("http://localhost/users/register")
+        this.mockMvc.perform(post("http://localhost/users/register")
                         .param("email", "example@exam.cam")
                         .param("firstName", "Test")
                         .param("lastName", "Testov")
@@ -60,7 +89,5 @@ class UserRegistrationControllerIntegrationTest {
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"));
-
-
     }
 }
