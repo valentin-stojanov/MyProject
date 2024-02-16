@@ -32,6 +32,7 @@ public class SecurityConfig {
                                         "/users/reset-password",
                                         "/users/reset-password/reset/**",
                                         "/route").permitAll()
+                                .requestMatchers("/admin").hasRole("ADMIN")
                                 // all other pages are available for logger in users
                                 .anyRequest()
                                 .authenticated()
