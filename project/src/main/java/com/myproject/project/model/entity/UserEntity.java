@@ -3,7 +3,13 @@ package com.myproject.project.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import org.hibernate.annotations.CollectionType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,6 +33,8 @@ public class UserEntity {
     //    @Column(unique = true)
     @NotBlank
     private String email;
+
+    private LocalDateTime created;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleEntity> roles = new ArrayList<>();
@@ -106,5 +114,12 @@ public class UserEntity {
         return this;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
 
+    public UserEntity setCreated(LocalDateTime created) {
+        this.created = created;
+        return this;
+    }
 }

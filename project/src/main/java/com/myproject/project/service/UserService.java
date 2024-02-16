@@ -70,8 +70,8 @@ public class UserService {
         Optional<UserEntity> userOpt = this.userRepository.findByEmail(userEmail);
 
         if (userOpt.isEmpty()) {
-            UserEntity newUser = this.createUserEntityFromOAuth2AuthenticationToken(oAuth2AuthenticationToken);
-            return register(newUser);
+            UserRegistrationDto userRegistrationDto = this.createUserEntityFromOAuth2AuthenticationToken(oAuth2AuthenticationToken);
+            return this.registerUser(userRegistrationDto);
         }
         return userOpt.get().getEmail();
     }
@@ -118,18 +118,18 @@ public class UserService {
                 userEntityToUserViewModel(this.findUserByEmail(email));
     }
 
-    private UserEntity createUserEntityFromOAuth2AuthenticationToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    private UserRegistrationDto createUserEntityFromOAuth2AuthenticationToken(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
 
         String clientRegistrationId = oAuth2AuthenticationToken.getAuthorizedClientRegistrationId();
         Map<String, Object> attributes = oAuth2AuthenticationToken
                 .getPrincipal()
                 .getAttributes();
-        UserEntity userEntity = new UserEntity()
+        UserRegistrationDto userRegistrationDto = new UserRegistrationDto()
                 .setPassword(OAUTH2_DEFAULT_PASSWORD);
 
         switch (clientRegistrationId) {
             case "google":
-                userEntity
+                userRegistrationDto
                         .setEmail(attributes.get("email").toString())
                         .setFirstName(attributes.get("given_name").toString())
                         .setLastName(attributes.get("family_name").toString());
@@ -137,7 +137,7 @@ public class UserService {
             case "github":
                 String name = attributes.get("name").toString();
                 String[] names = name.split("\\s+");
-                userEntity
+                userRegistrationDto
                         .setEmail(attributes.get("email").toString())
                         .setFirstName(names[0])
                         .setLastName(names.length > 1 ? names[1] : "");
@@ -146,7 +146,7 @@ public class UserService {
                 throw new IllegalStateException("Invalid client registration ID " + clientRegistrationId);
         }
 
-        return userEntity;
+        return userRegistrationDto;
     }
 
     public UserEntity generatePasswordResetTokenForUser(String email) {
