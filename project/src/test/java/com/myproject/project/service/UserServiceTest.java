@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -54,6 +55,9 @@ class UserServiceTest {
     private Clock clockMock;
     @Mock
     private RandomUUIDGenerator randomUUIDGeneratorMock;
+    @Mock
+    private AuthenticationManager authenticationManager;
+
 
     @InjectMocks
     private UserService toTest;
@@ -63,7 +67,16 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        toTest = new UserService(passwordEncoderMock, userRepositoryMock, userDetailsServiceMock, userMapperMock, emailServiceMock, passwordResetTokenRepositoryMock, roleRepositoryMock, clockMock, randomUUIDGeneratorMock, authenticationManager);
+        toTest = new UserService(passwordEncoderMock,
+                userRepositoryMock,
+                userDetailsServiceMock,
+                userMapperMock,
+                emailServiceMock,
+                passwordResetTokenRepositoryMock,
+                roleRepositoryMock,
+                clockMock,
+                randomUUIDGeneratorMock,
+                authenticationManager);
 
         testUserEntity = new UserEntity().setFirstName("Test").setLastName("Testov").setAge(18).setEmail("test@mail.com").setPassword("topsecret");
     }
