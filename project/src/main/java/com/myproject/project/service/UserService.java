@@ -14,8 +14,12 @@ import com.myproject.project.repository.RoleRepository;
 import com.myproject.project.repository.UserRepository;
 import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import com.myproject.project.util.RandomUUIDGenerator;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +32,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static org.springframework.security.web.context.HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
 @Service
 public class UserService {
@@ -42,6 +48,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final Clock clock;
     private final RandomUUIDGenerator randomUUIDGenerator;
+    private final AuthenticationManager authenticationManager;
 
     public UserService(PasswordEncoder passwordEncoder,
                        UserRepository userRepository,
@@ -50,7 +57,7 @@ public class UserService {
                        PasswordResetTokenRepository passwordResetTokenRepository,
                        RoleRepository roleRepository,
                        Clock clock,
-                       RandomUUIDGenerator randomUUIDGenerator) {
+                       RandomUUIDGenerator randomUUIDGenerator, AuthenticationManager authenticationManager) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
@@ -60,6 +67,7 @@ public class UserService {
         this.roleRepository = roleRepository;
         this.clock = clock;
         this.randomUUIDGenerator = randomUUIDGenerator;
+        this.authenticationManager = authenticationManager;
     }
 
     public String registerUserIfNotExist(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -92,6 +100,17 @@ public class UserService {
         UserEntity registeredUser = this.userRepository.save(newUser);
         this.emailService.sendRegistrationEmail(newUser.getEmail(), newUser.getFirstName());
         return registeredUser.getEmail();
+    }
+
+    public void login(HttpServletRequest req, String user, String pass) {
+        UsernamePasswordAuthenticationToken authReq
+                = new UsernamePasswordAuthenticationToken(user, pass);
+        Authentication auth = authenticationManager.authenticate(authReq);
+
+        SecurityContext sc = SecurityContextHolder.getContext();
+        sc.setAuthentication(auth);
+        HttpSession session = req.getSession(true);
+        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
     }
 
     public void login(String username) {

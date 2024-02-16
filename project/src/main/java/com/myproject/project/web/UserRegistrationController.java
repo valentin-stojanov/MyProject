@@ -2,6 +2,7 @@ package com.myproject.project.web;
 
 import com.myproject.project.model.dto.UserRegistrationDto;
 import com.myproject.project.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,8 @@ public class UserRegistrationController {
     @PostMapping("/register")
     public String register(@Valid UserRegistrationDto userRegistrationModel,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes,
+                           HttpServletRequest req){
         if (bindingResult.hasErrors()){
             redirectAttributes
                     .addFlashAttribute("userRegistrationModel", userRegistrationModel)
@@ -43,7 +45,7 @@ public class UserRegistrationController {
         }
 
         String newUserEmail = this.userService.registerUser(userRegistrationModel);
-        this.userService.login(newUserEmail);
+        this.userService.login(req, newUserEmail, userRegistrationModel.getPassword());
 
         return "redirect:/";
     }

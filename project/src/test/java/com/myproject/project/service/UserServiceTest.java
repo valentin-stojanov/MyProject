@@ -27,7 +27,6 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,7 +63,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        toTest = new UserService(passwordEncoderMock, userRepositoryMock, userDetailsServiceMock, userMapperMock, emailServiceMock, passwordResetTokenRepositoryMock, roleRepositoryMock, clockMock, randomUUIDGeneratorMock);
+        toTest = new UserService(passwordEncoderMock, userRepositoryMock, userDetailsServiceMock, userMapperMock, emailServiceMock, passwordResetTokenRepositoryMock, roleRepositoryMock, clockMock, randomUUIDGeneratorMock, authenticationManager);
 
         testUserEntity = new UserEntity().setFirstName("Test").setLastName("Testov").setAge(18).setEmail("test@mail.com").setPassword("topsecret");
     }
