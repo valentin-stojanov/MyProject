@@ -1,10 +1,13 @@
 package com.myproject.project.model.dto;
 
 public class UserViewModel {
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private int age;
+
+    private boolean isAccountNonLocked;
 
     public UserViewModel() {
     }
@@ -46,6 +49,24 @@ public class UserViewModel {
 
     public UserViewModel setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public UserViewModel setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserViewModel setId(Long id) {
+        this.id = id;
         return this;
     }
 }

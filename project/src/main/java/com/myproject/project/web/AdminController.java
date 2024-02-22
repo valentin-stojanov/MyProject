@@ -8,8 +8,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -18,7 +21,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping()
     String adminPage(Model model,
                      @PageableDefault(size = 2) Pageable pageable){
         Page<UserViewModel> users = this.adminService.getAllUsers(pageable);
@@ -27,6 +30,10 @@ public class AdminController {
         return "admin";
     }
 
-
+    @GetMapping("/lock/{userId}")
+    String lockUser(@PathVariable Long userId){
+        this.adminService.lockUser(userId);
+        return "redirect:/admin";
+    }
 
 }

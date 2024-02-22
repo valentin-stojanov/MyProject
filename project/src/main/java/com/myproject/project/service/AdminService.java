@@ -1,8 +1,10 @@
 package com.myproject.project.service;
 
 import com.myproject.project.model.dto.UserViewModel;
+import com.myproject.project.model.entity.UserEntity;
 import com.myproject.project.model.mapper.UserMapper;
 import com.myproject.project.repository.UserRepository;
+import com.myproject.project.service.exceptions.ObjectNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,5 +25,14 @@ public class AdminService {
         return this.userRepository
                 .findAll(pageable)
                 .map(this.userMapper::userEntityToUserViewModel);
+    }
+
+    public UserEntity lockUser(Long userId){
+        return this.userRepository.save(
+                this.userRepository
+                        .findById(userId)
+                        .orElseThrow(() -> new ObjectNotFoundException("User with id: " + userId + " was not found!"))
+                        .setAccountNonLocked(false)
+                );
     }
 }

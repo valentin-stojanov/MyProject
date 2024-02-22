@@ -11,6 +11,7 @@ public class AppUserDetails implements UserDetails {
     private final String email;
     private final String firstName;
     private final String lastName;
+    private final boolean isAccountNonLocked;
 
     private final Collection<GrantedAuthority> authorities;
 
@@ -19,11 +20,12 @@ public class AppUserDetails implements UserDetails {
             String email,
             String firstName,
             String lastName,
-            Collection<GrantedAuthority> authorities) {
+            boolean isAccountNonLocked, Collection<GrantedAuthority> authorities) {
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.isAccountNonLocked = isAccountNonLocked;
         this.authorities = authorities;
     }
 
@@ -55,12 +57,12 @@ public class AppUserDetails implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public boolean isAccountNonLocked() {
+        return this.isAccountNonLocked;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonExpired() {
         return true;
     }
 

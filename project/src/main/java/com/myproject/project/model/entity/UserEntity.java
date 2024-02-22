@@ -22,6 +22,9 @@ public class UserEntity {
             generator = "users_id_seq")
     private Long id;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean isAccountNonLocked;
+
     private String firstName;
     private String lastName;
     //    @Positive
@@ -120,6 +123,15 @@ public class UserEntity {
 
     public UserEntity setCreated(LocalDateTime created) {
         this.created = created;
+        return this;
+    }
+
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    public UserEntity setAccountNonLocked(boolean accountNonLocked) {
+        isAccountNonLocked = accountNonLocked;
         return this;
     }
 }

@@ -8,6 +8,8 @@
 <body>
 
 <div class="background">
+    <!--Navbar-->
+    <div th:replace="fragments/navigation"></div>
 
     <table class="table table-hover">
         <thead>
@@ -16,18 +18,24 @@
             <th scope="col">First name</th>
             <th scope="col">Last name</th>
             <th scope="col">email</th>
+            <th scope="col">Is account non locked</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="u , iStat : ${users.getContent()}"
             th:object="${u}">
             <th scope="row" th:text="${iStat.count}">1</th>
-            <td th:text="*{firstName}">Mark</td>
-            <td th:text="*{lastName}">Otto</td>
-            <td th:text="*{email}">@mdo</td>
+            <td th:text="*{firstName}">FirstName</td>
+            <td th:text="*{lastName}">LastName</td>
+            <td th:text="*{email}">some@mail.com</td>
+            <td th:text="*{isAccountNonLocked}">true</td>
+            <td>
+                <a th:href="@{/admin/lock/{id}(id=*{id})}" class="btn btn-danger">Lock account</a>
+            </td>
         </tr>
         </tbody>
     </table>
+
 </div>
 
 

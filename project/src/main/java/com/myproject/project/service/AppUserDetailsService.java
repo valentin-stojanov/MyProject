@@ -31,6 +31,7 @@ public class AppUserDetailsService implements UserDetailsService {
                 userEntity.getEmail(),
                 userEntity.getFirstName(),
                 userEntity.getLastName(),
+                userEntity.isAccountNonLocked(),
                 userEntity
                         .getRoles()
                         .stream()
