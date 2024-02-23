@@ -30,7 +30,8 @@
             <td th:text="*{email}">some@mail.com</td>
             <td th:text="*{isAccountNonLocked}">true</td>
             <td>
-                <a th:href="@{/admin/lock/{id}(id=*{id})}" class="btn btn-danger">Lock account</a>
+                <a th:if="*{isAccountNonLocked}" th:href="@{/admin/users/{id}/actions/lock(id=*{id})}" class="btn btn-danger">Lock account</a>
+                <a th:if="*{!isAccountNonLocked}" th:href="@{/admin/users/{id}/actions/unlock(id=*{id})}" class="btn btn-success">Unlock account</a>
             </td>
         </tr>
         </tbody>

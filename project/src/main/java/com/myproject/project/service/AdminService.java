@@ -35,4 +35,13 @@ public class AdminService {
                         .setAccountNonLocked(false)
                 );
     }
+
+    public UserEntity unlockUser(Long userId) {
+        return this.userRepository.save(
+                this.userRepository
+                        .findById(userId)
+                        .orElseThrow(() -> new ObjectNotFoundException("User with id: " + userId + " was not found!"))
+                        .setAccountNonLocked(true)
+        );
+    }
 }

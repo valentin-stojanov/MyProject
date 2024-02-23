@@ -21,7 +21,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping()
+    @GetMapping("/users")
     String adminPage(Model model,
                      @PageableDefault(size = 2) Pageable pageable){
         Page<UserViewModel> users = this.adminService.getAllUsers(pageable);
@@ -30,10 +30,16 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/lock/{userId}")
+    @GetMapping("users/{userId}/actions/lock")
     String lockUser(@PathVariable Long userId){
         this.adminService.lockUser(userId);
-        return "redirect:/admin";
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("users/{userId}/actions/unlock")
+    String unlockUser(@PathVariable Long userId){
+        this.adminService.unlockUser(userId);
+        return "redirect:/admin/users";
     }
 
 }
